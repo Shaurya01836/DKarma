@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Sora:wght@600;700&display=swap");
+
+@import "tailwindcss";
+
+/* ✅ Theme token mappings for Tailwind 4.1 design tokens */
+@theme {
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-foreground: #111827;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-secondary: #64748b;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+ 
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Sora", sans-serif;
+}
+
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+}
