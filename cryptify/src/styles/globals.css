@@ -4,29 +4,29 @@
 
 /* ✅ Theme token mappings for Tailwind 4.1 design tokens */
 @theme {
-  --color-background: #f9fafb;
-  --color-surface: #ffffff;
-  --color-foreground: #111827;
-  --color-muted: #6b7280;
-  --color-border: #e5e7eb;
+  --color-background: #0d1117;
+  --color-surface: #161b22;
+  --color-foreground: #e5e7eb;
+  --color-muted: #9ca3af;
+  --color-border: #2c2f36;
 
   --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-secondary: #64748b;
+  --color-primary-hover: #93c5fd;
+  --color-secondary: #94a3b8;
   --color-success: #10b981;
   --color-error: #ef4444;
- 
+
   --font-sans: "Inter", sans-serif;
   --font-display: "Sora", sans-serif;
 }
 
-
+/* ✅ Base Styles */
 @layer base {
   html,
   body {
     height: 100%;
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   body {

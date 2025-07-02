@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import dynamic from "next/dynamic";
+import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
 
 const World = dynamic(() => import("../ui/globe").then((m) => m.World), {
   ssr: false,
@@ -12,7 +13,7 @@ export function HeroSection() {
     pointSize: 4,
     globeColor: "#062056",
     showAtmosphere: true,
-    atmosphereColor: "#FFFFFF",
+    atmosphereColor: "#3b82f6",
     atmosphereAltitude: 0.1,
     emissive: "#062056",
     emissiveIntensity: 0.1,
@@ -30,7 +31,7 @@ export function HeroSection() {
     autoRotate: true,
     autoRotateSpeed: 0.5,
   };
-  const colors = ["#06b6d4", "#3b82f6", "#6366f1"];
+  const colors = ["#3b82f6", "#06b6d4", "#6366f1"];
   const sampleArcs = [
     {
       order: 1,
@@ -394,25 +395,52 @@ export function HeroSection() {
     },
   ];
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Typing:", e.target.value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Search submitted");
+  };
+
   return (
-    <div className="relative w-full h-[calc(100vh-4rem)] overflow-hidden bg-white text-gray-800">
-      <World data={sampleArcs} globeConfig={globeConfig} />
-      {/* Optional: Add foreground content */}
-      <motion.div
-        className="absolute top-0 left-0 w-full h-full flex items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white bg-black bg-opacity-50 p-4 rounded-lg">
-            Connect. Collaborate. Create.
-          </h1>
-          <p className="mt-4 text-lg text-white">
-            Your global freelancing platform to bring ideas to life.
+    <div className="relative w-full h-screen overflow-hidden bg-background">
+      {/* 🌍 Fullscreen Globe Background */}
+      <div className="absolute inset-0 z-0">
+        <World data={sampleArcs} globeConfig={globeConfig} />
+        {/* Optional: Overlay for contrast */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      </div>
+
+      {/* 🌐 Hero Content Overlay */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full max-w-4xl mx-auto px-4 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <h2 className="text-2xl md:text-5xl font-bold text-white">
+            Empowering Global Freelancing
+          </h2>
+          <p className="mt-4 text-base md:text-lg font-normal text-slate-300 max-w-xl mx-auto">
+            Blockchain-powered contracts, secure payments, verified identities.
           </p>
-        </div>
-      </motion.div>
+
+          <div className="mt-8 w-full px-4">
+            <PlaceholdersAndVanishInput
+              placeholders={[
+                "Find top freelance talent...",
+                "Search verified clients...",
+                "Explore secure contracts...",
+                "Track smart payments...",
+              ]}
+              onChange={handleChange}
+              onSubmit={handleSubmit}
+            />
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 }
