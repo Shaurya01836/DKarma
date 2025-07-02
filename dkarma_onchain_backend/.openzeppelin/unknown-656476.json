@@ -1,0 +1,403 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0xA18938653750B70DCBbC0DF5a03D9F2e5958D8E8",
+      "txHash": "0x8fe3e1e658dc9d982da6dfb841b4748c0a16ee4145c615d9d5a8a9bbfe94298a",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xbe5064fa89f7533def973EaF00BAc0BD87fcA40f",
+      "txHash": "0x55427ba36cf13cc0c3ab58f6cd62687cc3827399173a0132f5063f7414ec1359",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xB8cD6666092ad5b2a5bDa1756Ff7903E5ad2Fd7e",
+      "txHash": "0x30a87e84024a6b34577e185ae9fa8ec016d40cba874c60ac539ea3042d493932",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xA0373da214b8414fF254f2eefbE4f8c69B0F2E4B",
+      "txHash": "0x05f9e8128cbfbf00286a6f009122d88ba816c16ebae19977f92359ba4391b5ef",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x790e0C5746157E74A59B1a2C8f2d6BF125CE7A2A",
+      "txHash": "0xaf871f7335008d5067702d294fe19d8e0ed7d4f835c2e0e9e883cc70d9ce5d04",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xad546B8Af6dDDc3113705aa3Eb659D67141A264F",
+      "txHash": "0xd9a1215b3ab5412f62edd94e95760b88cdce4bf65aabe9ac26fae4c6ac34cc3f",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "caba6b1f0e9f3fc605eeffe0d3a65925b6b8a9b782008735a05407209f5a357d": {
+      "address": "0x97cFF7a2B8321c8B60c173FcB2a50459F879b759",
+      "txHash": "0xa30e21cf538076ffe39361f658d7795898fecc6a8a4bd0cef85ac2948e0902f5",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "taskCounter",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256",
+            "contract": "EscrowStorage",
+            "src": "contracts\\EscrowStorage.sol:47"
+          },
+          {
+            "label": "tasks",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_uint256,t_struct(Task)2000_storage)",
+            "contract": "EscrowStorage",
+            "src": "contracts\\EscrowStorage.sol:49"
+          },
+          {
+            "label": "milestones",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_uint256,t_array(t_struct(Milestone)2009_storage)dyn_storage)",
+            "contract": "EscrowStorage",
+            "src": "contracts\\EscrowStorage.sol:50"
+          },
+          {
+            "label": "disputes",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_uint256,t_struct(Dispute)2027_storage)",
+            "contract": "EscrowStorage",
+            "src": "contracts\\EscrowStorage.sol:51"
+          },
+          {
+            "label": "disputeJudges",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint256,t_array(t_address)dyn_storage)",
+            "contract": "EscrowStorage",
+            "src": "contracts\\EscrowStorage.sol:52"
+          },
+          {
+            "label": "dao",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_address",
+            "contract": "EscrowStorage",
+            "src": "contracts\\EscrowStorage.sol:54"
+          },
+          {
+            "label": "fallbackPercent",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "EscrowStorage",
+            "src": "contracts\\EscrowStorage.sol:55"
+          },
+          {
+            "label": "judgePercent",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "EscrowStorage",
+            "src": "contracts\\EscrowStorage.sol:56"
+          },
+          {
+            "label": "validatorRegistry",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_contract(ValidatorRegistry)2752",
+            "contract": "FreelanceEscrow",
+            "src": "contracts\\FreelanceEscrow.sol:13"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)24_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AccessControlStorage)34_storage": {
+            "label": "struct AccessControlUpgradeable.AccessControlStorage",
+            "members": [
+              {
+                "label": "_roles",
+                "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(InitializableStorage)145_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)24_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "hasRole",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(Milestone)2009_storage)dyn_storage": {
+            "label": "struct EscrowStorage.Milestone[]",
+            "numberOfBytes": "32"
+          },
+          "t_contract(ValidatorRegistry)2752": {
+            "label": "contract ValidatorRegistry",
+            "numberOfBytes": "20"
+          },
+          "t_enum(TaskStatus)1982": {
+            "label": "enum EscrowStorage.TaskStatus",
+            "members": [
+              "Open",
+              "Assigned",
+              "Submitted",
+              "Approved",
+              "Completed",
+              "Cancelled",
+              "Disputed"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_array(t_address)dyn_storage)": {
+            "label": "mapping(uint256 => address[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_struct(Milestone)2009_storage)dyn_storage)": {
+            "label": "mapping(uint256 => struct EscrowStorage.Milestone[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Dispute)2027_storage)": {
+            "label": "mapping(uint256 => struct EscrowStorage.Dispute)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Task)2000_storage)": {
+            "label": "mapping(uint256 => struct EscrowStorage.Task)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Dispute)2027_storage": {
+            "label": "struct EscrowStorage.Dispute",
+            "members": [
+              {
+                "label": "raisedBy",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "resolved",
+                "type": "t_bool",
+                "offset": 20,
+                "slot": "0"
+              },
+              {
+                "label": "voters",
+                "type": "t_array(t_address)dyn_storage",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "voted",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "freelancerVotes",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "clientVotes",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "fallbackApplied",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_struct(Milestone)2009_storage": {
+            "label": "struct EscrowStorage.Milestone",
+            "members": [
+              {
+                "label": "deliverableUri",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "submitted",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "approved",
+                "type": "t_bool",
+                "offset": 1,
+                "slot": "1"
+              },
+              {
+                "label": "submittedAt",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_struct(Task)2000_storage": {
+            "label": "struct EscrowStorage.Task",
+            "members": [
+              {
+                "label": "client",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "freelancer",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "createdAt",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "deadline",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "status",
+                "type": "t_enum(TaskStatus)1982",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "lastActionAt",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "disputed",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.AccessControl": [
+            {
+              "contract": "AccessControlUpgradeable",
+              "label": "_roles",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:61",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
