@@ -431,7 +431,7 @@ export function HeroSection() {
             <PlaceholdersAndVanishInput
               placeholders={[
                 "Find top freelance talent...",
-                "Search verified clients...",
+                "Search tasks by domain — e.g., Web3, UI/UX, Solidity",
                 "Explore secure contracts...",
                 "Track smart payments...",
               ]}
