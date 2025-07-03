@@ -7,9 +7,9 @@ import { PricingTable } from "@/components/layout/PricingTable";
 import { WobbleCardDemo } from "@/components/layout/WobbleCardDemo";
 import { Stick } from "next/font/google";
 import ScrollVelocity from "../components/ui/ScrollVelocity";
-import { LinkPreview } from "@/components/ui/link-preview";
 
 import React from "react";
+import { AnimatedPinDemo } from "@/components/layout/AnimatedPinDemo";
 
 function page() {
   return (
@@ -17,18 +17,12 @@ function page() {
       <NavbarDemo />
       <HeroSection />
       <GlareCardDemo />
+      <AnimatedPinDemo />
       <WobbleCardDemo />
 
       <ScrollVelocity
         velocity={100}
-        texts={[
-          <LinkPreview key="1" url="https://react.dev">
-            React Docs
-          </LinkPreview>,
-          <LinkPreview key="2" url="https://scrollvelocity.vercel.app">
-            Scroll Velocity
-          </LinkPreview>,
-        ]}
+        texts={["React Docs ", "  Scroll Velocity"]}
       />
       <BentoGridSecondDemo />
       <PricingTable />
