@@ -1,16 +1,15 @@
 import { GlareCard } from "../ui/glare-card";
 
-// Card data
 const cardItems = [
-  { title: "Programming & Tech", iconColor: "text-blue-400" },
-  { title: "Graphics & Design", iconColor: "text-green-400" },
-  { title: "Digital Marketing", iconColor: "text-emerald-400" },
-  { title: "Writing & Translation", iconColor: "text-yellow-400" },
-  { title: "Video & Animation", iconColor: "text-purple-400" },
-  { title: "AI Services", iconColor: "text-pink-400" },
-  { title: "Music & Audio", iconColor: "text-orange-400" },
-  { title: "Business", iconColor: "text-red-400" },
-  { title: "Consulting", iconColor: "text-cyan-400" },
+  { title: "Programming & Tech", iconColor: "text-primary" },
+  { title: "Graphics & Design", iconColor: "text-success" },
+  { title: "Digital Marketing", iconColor: "text-primary-hover" },
+  { title: "Writing & Translation", iconColor: "text-secondary" },
+  { title: "Video & Animation", iconColor: "text-error" },
+  { title: "AI Services", iconColor: "text-primary" },
+  { title: "Music & Audio", iconColor: "text-muted" },
+  { title: "Business", iconColor: "text-foreground" },
+  { title: "Consulting", iconColor: "text-secondary" },
 ];
 
 export function GlareCardDemo() {

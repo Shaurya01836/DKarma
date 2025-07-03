@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="w-full bg-[var(--color-surface)] border-t border-[var(--color-border)] text-[var(--color-muted)]">
+    <footer className="w-full bg-background border-t border-[var(--color-border)] text-[var(--color-muted)]">
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-10 text-sm">
         {/* Column 1: Brand */}
         <div>

@@ -60,9 +60,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
 
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
-                <Link key={idx} href={link.href}>
-                  <SidebarLink link={link} />
-                </Link>
+                <SidebarLink key={idx} link={link} />
               ))}
             </div>
           </div>

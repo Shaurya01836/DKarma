@@ -43,7 +43,10 @@ export function AnimatedPinDemo() {
   ];
 
   return (
-    <div className="w-full mx-auto py-16 px-4 overflow-hidden">
+    <div className="w-full mx-auto py-20 px-4 overflow-hidden">
+      <h2 className="text-3xl font-bold text-center text-white mb-10">
+        Popular Services
+      </h2>
       <div className="flex flex-wrap justify-center w-full gap-6 md:gap-10 xl:gap-20 max-w-full">
         {cards.map((card, index) => (
           <PinContainer
