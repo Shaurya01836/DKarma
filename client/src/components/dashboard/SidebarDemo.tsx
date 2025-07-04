@@ -6,8 +6,15 @@ import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import {
   IconArrowLeft,
   IconBrandTabler,
+  IconCurrencyDollar,
+  IconFocusCentered,
+  IconMapSearch,
+  IconMessage2Dollar,
+  IconScoreboard,
   IconSettings,
+  IconStatusChange,
   IconUserBolt,
+  IconView360,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -21,6 +28,55 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       href: "/dashboard",
       icon: (
         <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Explore Work",
+      href: "/dashboard/explore",
+      icon: (
+        <IconMapSearch className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Task Overview",
+      href: "/dashboard/task-overview",
+      icon: (
+        <IconView360 className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Dispute Center",
+      href: "/dashboard/dispute",
+      icon: (
+        <IconFocusCentered className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Proposal Status",
+      href: "/dashboard/proposal",
+      icon: (
+        <IconStatusChange className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Payments",
+      href: "/dashboard/payment",
+      icon: (
+        <IconCurrencyDollar className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Message & Chats",
+      href: "/dashboard/chats",
+      icon: (
+        <IconMessage2Dollar className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Dkarma Scores",
+      href: "/dashboard/dscore",
+      icon: (
+        <IconScoreboard className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
@@ -103,7 +159,7 @@ const Logo = () => {
         animate={{ opacity: 1 }}
         className="font-medium whitespace-pre text-black dark:text-white"
       >
-        Acet Labs
+        Dkarma
       </motion.span>
     </Link>
   );
