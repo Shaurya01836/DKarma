@@ -3,7 +3,6 @@ import React from "react";
 import { motion } from "motion/react";
 import dynamic from "next/dynamic";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
-import { BackgroundLines } from "@/components/ui/background-lines";
 
 const World = dynamic(() => import("../ui/globe").then((m) => m.World), {
   ssr: false,

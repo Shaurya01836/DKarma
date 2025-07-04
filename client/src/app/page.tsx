@@ -11,7 +11,11 @@ import { AnimatedBeamDemo } from "@/components/layout/AnimatedBeamDemo";
 
 function page() {
   return (
-    <div className="bg-background text-foreground ">
+    <div
+      className="bg-background text-foreground
+        [background-image:linear-gradient(to_right,var(--color-surface)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-surface)_1px,transparent_1px)]
+        [background-size:40px_40px]"
+    >
       <NavbarDemo />
       <HeroSection />
       <GlareCardDemo />
@@ -20,7 +24,6 @@ function page() {
       <BentoGridSecondDemo />
       <AnimatedBeamDemo />
       <PricingTable />
-
       <Footer />
     </div>
   );

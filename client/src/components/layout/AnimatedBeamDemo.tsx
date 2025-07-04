@@ -34,58 +34,152 @@ export function AnimatedBeamDemo() {
   const daoRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-8">
+    <div className="min-h-screen flex items-center justify-center p-8">
       <div className="w-full max-w-6xl">
         {/* Title */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-            Web3 Freelancing Platform
+        <div className="text-center mb-10">
+          <h1 className="font-display text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-hover)] to-primary inline-block tracking-tight">
+            How Cryptify Connects Freelancers & Clients
           </h1>
-          <p className="text-xl text-muted max-w-3xl mx-auto">
-            Decentralized marketplace connecting talent with opportunity through blockchain technology
+          <div className="flex justify-center mt-2 mb-2">
+            <span className="block w-16 h-1 rounded-full bg-gradient-to-r from-[var(--color-primary)] via-primary-hover to-primary opacity-70"></span>
+          </div>
+          <p className="mx-auto mt-3 max-w-xl text-base sm:text-lg font-normal tracking-tight text-[var(--color-muted)]">
+            A visual journey of secure, decentralized collaboration on our
+            platform.
           </p>
+        </div>
+
+        {/* Legend */}
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <div className="flex items-center gap-2">
+            <span className="w-4 h-4 rounded-full bg-gradient-to-br from-[var(--color-success)] to-emerald-700 border border-[var(--color-border)]" />
+            <span className="text-[var(--color-muted)] text-sm">
+              Freelancer
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-4 h-4 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 border border-[var(--color-border)]" />
+            <span className="text-[var(--color-muted)] text-sm">Client</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-4 h-4 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border border-[var(--color-border)]" />
+            <span className="text-[var(--color-muted)] text-sm">
+              Escrow Contract
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-4 h-4 rounded-full bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-border)] border border-[var(--color-border)]" />
+            <span className="text-[var(--color-muted)] text-sm">
+              Infrastructure
+            </span>
+          </div>
         </div>
 
         {/* Animated Beams Section */}
         <div
-          className="relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-2xl bg-surface border border-border backdrop-blur-sm "
+          className="relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] backdrop-blur-sm"
           ref={containerRef}
         >
           <div className="flex size-full max-h-[350px] max-w-5xl flex-col items-stretch justify-between gap-8 p-8">
             {/* Top row - Freelancers and Clients */}
             <div className="flex flex-row items-center justify-between">
-              <Circle ref={freelancerRef} className="bg-gradient-to-br from-green-500 to-emerald-600 shadow-[0_0_20px_-12px_rgba(34,197,94,0.8)]">
-                <Icons.freelancer />
-              </Circle>
-              <Circle ref={clientRef} className="bg-gradient-to-br from-blue-500 to-cyan-600 shadow-[0_0_20px_-12px_rgba(59,130,246,0.8)]">
-                <Icons.client />
-              </Circle>
+              <div className="flex flex-col items-center">
+                <Circle
+                  ref={freelancerRef}
+                  className="bg-gradient-to-br from-[var(--color-success)] to-emerald-700 border-[var(--color-success)]"
+                >
+                  <Icons.freelancer />
+                </Circle>
+                <span className="mt-2 text-xs text-[var(--color-success)] font-semibold font-display">
+                  Freelancer
+                </span>
+              </div>
+              <div className="flex flex-col items-center">
+                <Circle
+                  ref={clientRef}
+                  className="bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 border-[var(--color-primary)]"
+                >
+                  <Icons.client />
+                </Circle>
+                <span className="mt-2 text-xs text-[var(--color-primary)] font-semibold font-display">
+                  Client
+                </span>
+              </div>
             </div>
 
             {/* Middle row - Core platform */}
             <div className="flex flex-row items-center justify-between">
-              <Circle ref={walletRef} className="bg-gradient-to-br from-orange-500 to-red-600 shadow-[0_0_20px_-12px_rgba(249,115,22,0.8)]">
-                <Icons.wallet />
-              </Circle>
-              <Circle ref={smartContractRef} className="size-20 bg-gradient-to-br from-purple-600 to-pink-600 shadow-[0_0_30px_-12px_rgba(147,51,234,0.8)]">
-                <Icons.smartContract />
-              </Circle>
-              <Circle ref={ipfsRef} className="bg-gradient-to-br from-indigo-500 to-purple-600 shadow-[0_0_20px_-12px_rgba(99,102,241,0.8)]">
-                <Icons.ipfs />
-              </Circle>
+              <div className="flex flex-col items-center">
+                <Circle
+                  ref={walletRef}
+                  className="bg-gradient-to-br from-orange-400 to-orange-700 border-orange-400"
+                >
+                  <Icons.wallet />
+                </Circle>
+                <span className="mt-2 text-xs text-orange-400 font-semibold font-display">
+                  Wallet
+                </span>
+              </div>
+              <div className="flex flex-col items-center">
+                <Circle
+                  ref={smartContractRef}
+                  className="size-20 bg-gradient-to-br from-purple-600 to-pink-600 border-purple-600"
+                >
+                  <Icons.smartContract />
+                </Circle>
+                <span className="mt-2 text-xs text-purple-400 font-semibold font-display">
+                  Escrow Contract
+                </span>
+              </div>
+              <div className="flex flex-col items-center">
+                <Circle
+                  ref={ipfsRef}
+                  className="bg-gradient-to-br from-[var(--color-primary-hover)] to-[var(--color-border)] border-[var(--color-primary-hover)]"
+                >
+                  <Icons.ipfs />
+                </Circle>
+                <span className="mt-2 text-xs text-[var(--color-primary-hover)] font-semibold font-display">
+                  IPFS
+                </span>
+              </div>
             </div>
 
             {/* Bottom row - Blockchain infrastructure */}
             <div className="flex flex-row items-center justify-between">
-              <Circle ref={blockchainRef} className="bg-gradient-to-br from-yellow-500 to-orange-600 shadow-[0_0_20px_-12px_rgba(234,179,8,0.8)]">
-                <Icons.blockchain />
-              </Circle>
-              <Circle ref={tokenRef} className="bg-gradient-to-br from-pink-500 to-rose-600 shadow-[0_0_20px_-12px_rgba(236,72,153,0.8)]">
-                <Icons.token />
-              </Circle>
-              <Circle ref={daoRef} className="bg-gradient-to-br from-teal-500 to-cyan-600 shadow-[0_0_20px_-12px_rgba(20,184,166,0.8)]">
-                <Icons.dao />
-              </Circle>
+              <div className="flex flex-col items-center">
+                <Circle
+                  ref={blockchainRef}
+                  className="bg-gradient-to-br from-yellow-400 to-yellow-700 border-yellow-400"
+                >
+                  <Icons.blockchain />
+                </Circle>
+                <span className="mt-2 text-xs text-yellow-400 font-semibold font-display">
+                  Blockchain
+                </span>
+              </div>
+              <div className="flex flex-col items-center">
+                <Circle
+                  ref={tokenRef}
+                  className="bg-gradient-to-br from-pink-500 to-rose-600 border-pink-500"
+                >
+                  <Icons.token />
+                </Circle>
+                <span className="mt-2 text-xs text-pink-400 font-semibold font-display">
+                  Token
+                </span>
+              </div>
+              <div className="flex flex-col items-center">
+                <Circle
+                  ref={daoRef}
+                  className="bg-gradient-to-br from-teal-400 to-cyan-600 border-teal-400"
+                >
+                  <Icons.dao />
+                </Circle>
+                <span className="mt-2 text-xs text-teal-400 font-semibold font-display">
+                  DAO
+                </span>
+              </div>
             </div>
           </div>
 
@@ -96,8 +190,8 @@ export function AnimatedBeamDemo() {
             toRef={smartContractRef}
             curvature={-75}
             endYOffset={-10}
-            gradientStartColor="#10b981"
-            gradientStopColor="#8b5cf6"
+            gradientStartColor="var(--color-success)"
+            gradientStopColor="var(--color-primary-hover)"
           />
           <AnimatedBeam
             containerRef={containerRef}
@@ -105,22 +199,22 @@ export function AnimatedBeamDemo() {
             toRef={smartContractRef}
             curvature={75}
             endYOffset={-10}
-            gradientStartColor="#3b82f6"
-            gradientStopColor="#8b5cf6"
+            gradientStartColor="var(--color-primary)"
+            gradientStopColor="var(--color-primary-hover)"
           />
           <AnimatedBeam
             containerRef={containerRef}
             fromRef={walletRef}
             toRef={smartContractRef}
-            gradientStartColor="#f97316"
-            gradientStopColor="#8b5cf6"
+            gradientStartColor="#f59e42"
+            gradientStopColor="var(--color-primary-hover)"
           />
           <AnimatedBeam
             containerRef={containerRef}
             fromRef={ipfsRef}
             toRef={smartContractRef}
-            gradientStartColor="#6366f1"
-            gradientStopColor="#8b5cf6"
+            gradientStartColor="var(--color-primary-hover)"
+            gradientStopColor="var(--color-primary)"
           />
           <AnimatedBeam
             containerRef={containerRef}
@@ -129,8 +223,8 @@ export function AnimatedBeamDemo() {
             curvature={-60}
             endYOffset={10}
             reverse
-            gradientStartColor="#8b5cf6"
-            gradientStopColor="#eab308"
+            gradientStartColor="var(--color-primary-hover)"
+            gradientStopColor="#fde047"
           />
           <AnimatedBeam
             containerRef={containerRef}
@@ -138,8 +232,8 @@ export function AnimatedBeamDemo() {
             toRef={tokenRef}
             endYOffset={10}
             reverse
-            gradientStartColor="#8b5cf6"
-            gradientStopColor="#ec4899"
+            gradientStartColor="var(--color-primary-hover)"
+            gradientStopColor="#fb7185"
           />
           <AnimatedBeam
             containerRef={containerRef}
@@ -148,46 +242,55 @@ export function AnimatedBeamDemo() {
             curvature={60}
             endYOffset={10}
             reverse
-            gradientStartColor="#8b5cf6"
-            gradientStopColor="#14b8a6"
+            gradientStartColor="var(--color-primary-hover)"
+            gradientStopColor="#2dd4bf"
           />
         </div>
 
         {/* Features Grid */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-surface backdrop-blur-sm border border-border rounded-xl p-6">
+          <div className="bg-[var(--color-surface)] backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6">
             <div className="flex items-center mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center mr-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-success)] to-emerald-700 flex items-center justify-center mr-3">
                 <Icons.shield className="w-4 h-4 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-white">Trustless Payments</h3>
+              <h3 className="text-lg font-semibold text-[var(--color-foreground)] font-display">
+                Trustless Payments
+              </h3>
             </div>
-            <p className="text-foreground">
-              Smart contracts ensure automatic payment release upon milestone completion, eliminating disputes.
+            <p className="text-[var(--color-muted)]">
+              Escrow contracts ensure automatic payment release upon milestone
+              completion, eliminating disputes.
             </p>
           </div>
 
-            <div className="bg-surface backdrop-blur-sm border border-border rounded-xl p-6">
+          <div className="bg-[var(--color-surface)] backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6">
             <div className="flex items-center mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mr-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 flex items-center justify-center mr-3">
                 <Icons.globe className="w-4 h-4 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-white">Global Access</h3>
+              <h3 className="text-lg font-semibold text-[var(--color-foreground)] font-display">
+                Global Access
+              </h3>
             </div>
-            <p className="text-foreground">
-              Borderless platform accessible to anyone with a crypto wallet, no traditional banking required.
+            <p className="text-[var(--color-muted)]">
+              Borderless platform accessible to anyone with a crypto wallet, no
+              traditional banking required.
             </p>
           </div>
 
-          <div className="bg-surface backdrop-blur-sm border border-border rounded-xl p-6">
+          <div className="bg-[var(--color-surface)] backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6">
             <div className="flex items-center mb-4">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mr-3">
                 <Icons.users className="w-4 h-4 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-white">Community Governed</h3>
+              <h3 className="text-lg font-semibold text-[var(--color-foreground)] font-display">
+                Community Governed
+              </h3>
             </div>
-            <p className="text-foreground">
-              DAO governance allows the community to vote on platform changes and dispute resolutions.
+            <p className="text-[var(--color-muted)]">
+              DAO governance allows the community to vote on platform changes
+              and dispute resolutions.
             </p>
           </div>
         </div>
@@ -198,78 +301,276 @@ export function AnimatedBeamDemo() {
 
 const Icons = {
   freelancer: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="white"/>
-      <path d="M12 14C8.13401 14 5 17.134 5 21C5 21.5523 5.44772 22 6 22H18C18.5523 22 19 21.5523 19 21C19 17.134 15.866 14 12 14Z" fill="white"/>
-      <path d="M20 8L18 10L20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+        fill="white"
+      />
+      <path
+        d="M12 14C8.13401 14 5 17.134 5 21C5 21.5523 5.44772 22 6 22H18C18.5523 22 19 21.5523 19 21C19 17.134 15.866 14 12 14Z"
+        fill="white"
+      />
+      <path
+        d="M20 8L18 10L20 12"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   client: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 6L9 17L4 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20 6L9 17L4 12"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   smartContract: () => (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M14 2V8H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M16 13H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M16 17H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M10 9H9H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 2V8H20"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16 13H8"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16 17H8"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10 9H9H8"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   blockchain: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2L2 7L12 12L22 7L12 2Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M2 17L12 22L22 17"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M2 12L12 17L22 12"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   token: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2"/>
-      <path d="M12 6V18" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M8 10H16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M8 14H16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" />
+      <path d="M12 6V18" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <path d="M8 10H16" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <path d="M8 14H16" stroke="white" strokeWidth="2" strokeLinecap="round" />
     </svg>
   ),
   wallet: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" strokeWidth="2"/>
-      <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" stroke="white" strokeWidth="2"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <path
+        d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
+        stroke="white"
+        strokeWidth="2"
+      />
     </svg>
   ),
   ipfs: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M13 2L3 14H12L11 22L21 10H12L13 2Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   dao: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M17 21V19C17 17.9 16.1 17 15 17H9C7.9 17 7 17.9 7 19V21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 13C14.2091 13 16 11.2091 16 9C16 6.79086 14.2091 5 12 5C9.79086 5 8 6.79086 8 9C8 11.2091 9.79086 13 12 13Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 1L3 5V11C3 16 12 21 12 21C12 21 21 16 21 11V5L12 1Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M17 21V19C17 17.9 16.1 17 15 17H9C7.9 17 7 17.9 7 19V21"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 13C14.2091 13 16 11.2091 16 9C16 6.79086 14.2091 5 12 5C9.79086 5 8 6.79086 8 9C8 11.2091 9.79086 13 12 13Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 1L3 5V11C3 16 12 21 12 21C12 21 21 16 21 11V5L12 1Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   shield: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 1L3 5V11C3 16 12 21 12 21C12 21 21 16 21 11V5L12 1Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 1L3 5V11C3 16 12 21 12 21C12 21 21 16 21 11V5L12 1Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   globe: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-      <path d="M2 12H22" stroke="currentColor" strokeWidth="2"/>
-      <path d="M12 2C14.5 4.5 16 8.5 16 12C16 15.5 14.5 19.5 12 22C9.5 19.5 8 15.5 8 12C8 8.5 9.5 4.5 12 2Z" stroke="currentColor" strokeWidth="2"/>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+      <path d="M2 12H22" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M12 2C14.5 4.5 16 8.5 16 12C16 15.5 14.5 19.5 12 22C9.5 19.5 8 15.5 8 12C8 8.5 9.5 4.5 12 2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
     </svg>
   ),
   users: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M17 21V19C17 17.9 16.1 17 15 17H9C7.9 17 7 17.9 7 19V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="12" cy="9" r="4" stroke="currentColor" strokeWidth="2"/>
-      <path d="M22 21V19C22 17.9 21.1 17 20 17H19.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M16 3.13C16.8 3.35 17.3 4.24 17.3 5.05C17.3 5.86 16.8 6.75 16 6.97" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M17 21V19C17 17.9 16.1 17 15 17H9C7.9 17 7 17.9 7 19V21"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="9" r="4" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M22 21V19C22 17.9 21.1 17 20 17H19.5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16 3.13C16.8 3.35 17.3 4.24 17.3 5.05C17.3 5.86 16.8 6.75 16 6.97"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
 };

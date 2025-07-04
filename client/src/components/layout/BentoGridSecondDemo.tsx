@@ -2,12 +2,15 @@ import React from "react";
 
 function BentoGridSecondDemo() {
   return (
-    <div className="bg-background py-24 sm:py-32">
+    <div className=" py-24 sm:py-32">
       <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="text-center text-base/7 font-semibold text-primary">
+        <h2 className="text-center text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-hover)] to-primary">
           Empowering Freelancers with Web3
         </h2>
-        <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl">
+        <div className="flex justify-center mt-2 mb-2">
+          <span className="block w-16 h-1 rounded-full bg-gradient-to-r from-[var(--color-primary)] via-primary-hover to-primary opacity-70"></span>
+        </div>
+        <p className="mx-auto mt-2 max-w-lg text-center text-base sm:text-lg font-normal tracking-tight text-muted">
           Redefining Trust, Ownership & Work in the Decentralized Era
         </p>
 
@@ -54,7 +57,7 @@ function BentoGridSecondDemo() {
               <div className="flex flex-1 items-center justify-center px-8 max-lg:pt-10 max-lg:pb-12 sm:px-10 lg:pb-2">
                 <img
                   alt="Escrow Illustration"
-                  src="/assets/escrow-contract.png"
+                  src="https://tailwindcss.com/plus-assets/img/component-images/bento-03-performance.png"
                   className="w-full max-lg:max-w-xs"
                 />
               </div>
@@ -78,7 +81,7 @@ function BentoGridSecondDemo() {
               <div className="@container flex flex-1 items-center max-lg:py-6 lg:pb-2">
                 <img
                   alt="Reputation System"
-                  src="/assets/reputation-score.png"
+                  src="https://tailwindcss.com/plus-assets/img/component-images/bento-03-security.png"
                   className="h-[min(152px,40cqw)] object-cover"
                 />
               </div>
