@@ -15,12 +15,17 @@ import {
   IconStatusChange,
   IconUserBolt,
   IconView360,
+  IconBuilding, // Added for By Organization
+  IconChecklist, // Added for By Tasks
 } from "@tabler/icons-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [exploreDropdownOpen, setExploreDropdownOpen] = useState<number | null>(
+    null
+  );
 
   const links = [
     {
@@ -36,6 +41,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       icon: (
         <IconMapSearch className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
+      hasDropdown: true,
     },
     {
       label: "Task Overview",
@@ -102,6 +108,56 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     },
   ];
 
+  const CustomSidebarLink = ({ link, idx }: { link: any; idx: number }) => {
+    if (link.hasDropdown && link.label === "Explore Work") {
+      return (
+        <motion.div
+          className="relative"
+          onMouseEnter={() => setExploreDropdownOpen(idx)}
+          onMouseLeave={() => setExploreDropdownOpen(null)}
+          layout // Enable layout animation for smooth push-down
+        >
+          <SidebarLink link={link} />
+          {/* Animated sub-links below Explore Work */}
+          <AnimatePresence initial={false}>
+            {exploreDropdownOpen === idx && (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                className="flex flex-col gap-2 mt-2 ml-6"
+                layout // Animate height/layout for smooth sidebar movement
+              >
+                <SidebarLink
+                  link={{
+                    label: "By Organization",
+                    href: "/dashboard/explore/by-organization",
+                    icon: (
+                      <IconBuilding className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+                    ),
+                  }}
+                  className="pl-7"
+                />
+                <SidebarLink
+                  link={{
+                    label: "By Tasks",
+                    href: "/dashboard/explore/by-tasks",
+                    icon: (
+                      <IconChecklist className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+                    ),
+                  }}
+                  className="pl-7"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      );
+    }
+    return <SidebarLink key={idx} link={link} />;
+  };
+
   return (
     <div
       className={cn(
@@ -116,7 +172,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
 
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
+                <CustomSidebarLink key={idx} link={link} idx={idx} />
               ))}
             </div>
           </div>
