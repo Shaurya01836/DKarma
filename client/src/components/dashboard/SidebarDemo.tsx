@@ -161,7 +161,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "mx-auto flex w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-neutral-700 dark:bg-neutral-800",
+        "mx-auto flex w-full flex-1 flex-col overflow-hidden md:flex-row",
         "h-screen"
       )}
     >
@@ -198,7 +198,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       </Sidebar>
 
       {/* Render the page content */}
-      <div className="flex-1 overflow-y-auto p-4">{children}</div>
+      <div className="flex-1 overflow-y-auto">{children}</div>
     </div>
   );
 }
