@@ -12,8 +12,10 @@ import {
   limit,
   onSnapshot,
   DocumentData,
-  QuerySnapshot,
-  DocumentSnapshot
+  WhereFilterOp,
+  WithFieldValue,
+  Query,
+  CollectionReference
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -50,7 +52,7 @@ export class FirestoreService {
   }
 
   // Add a new document
-  static async addDocument<T>(collectionName: string, data: T): Promise<string> {
+  static async addDocument<T extends WithFieldValue<DocumentData>>(collectionName: string, data: T): Promise<string> {
     try {
       const docRef = await addDoc(collection(db, collectionName), data);
       return docRef.id;
@@ -61,7 +63,7 @@ export class FirestoreService {
   }
 
   // Update a document
-  static async updateDocument<T>(collectionName: string, docId: string, data: Partial<T>): Promise<void> {
+  static async updateDocument<T extends WithFieldValue<DocumentData>>(collectionName: string, docId: string, data: Partial<T>): Promise<void> {
     try {
       const docRef = doc(db, collectionName, docId);
       await updateDoc(docRef, data as DocumentData);
@@ -85,13 +87,13 @@ export class FirestoreService {
   // Query documents with filters
   static async queryDocuments<T>(
     collectionName: string,
-    filters?: Array<{ field: string; operator: any; value: any }>,
+    filters?: Array<{ field: string; operator: WhereFilterOp; value: unknown }>,
     orderByField?: string,
     orderDirection?: 'asc' | 'desc',
     limitCount?: number
   ): Promise<T[]> {
     try {
-      let q = collection(db, collectionName);
+      let q: CollectionReference<DocumentData> | Query<DocumentData> = collection(db, collectionName);
       
       // Apply filters
       if (filters) {
@@ -141,11 +143,11 @@ export class FirestoreService {
   static onCollectionSnapshot<T>(
     collectionName: string,
     callback: (data: T[]) => void,
-    filters?: Array<{ field: string; operator: any; value: any }>,
+    filters?: Array<{ field: string; operator: WhereFilterOp; value: unknown }>,
     orderByField?: string,
     orderDirection?: 'asc' | 'desc'
   ) {
-    let q = collection(db, collectionName);
+    let q: CollectionReference<DocumentData> | Query<DocumentData> = collection(db, collectionName);
     
     if (filters) {
       filters.forEach(filter => {

@@ -8,7 +8,6 @@ import {
   NavbarButton,
   MobileNavHeader,
   MobileNavToggle,
-  MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -58,34 +57,33 @@ export function NavbarDemo() {
             />
           </MobileNavHeader>
 
-          <MobileNavMenu
-            isOpen={isMobileMenuOpen}
-            onClose={() => setIsMobileMenuOpen(false)}
-          >
-            {navItems.map((item, idx) => (
-              <a
-                key={`mobile-link-${idx}`}
-                href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
-              >
-                <span className="block">{item.name}</span>
-              </a>
-            ))}
-            <div className="flex w-full flex-col gap-4">
-              <NavbarButton
-                as="button"
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  router.push("/auth/login");
-                }}
-                variant="primary"
-                className="w-full"
-              >
-                Login
-              </NavbarButton>
+          {isMobileMenuOpen && (
+            <div className="absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-surface text-foreground px-4 py-8 shadow-md">
+              {navItems.map((item, idx) => (
+                <a
+                  key={`mobile-link-${idx}`}
+                  href={item.link}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="relative text-neutral-600 dark:text-neutral-300"
+                >
+                  <span className="block">{item.name}</span>
+                </a>
+              ))}
+              <div className="flex w-full flex-col gap-4">
+                <NavbarButton
+                  as="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    router.push("/auth/login");
+                  }}
+                  variant="primary"
+                  className="w-full"
+                >
+                  Login
+                </NavbarButton>
+              </div>
             </div>
-          </MobileNavMenu>
+          )}
         </MobileNav>
       </Navbar>
     </div>

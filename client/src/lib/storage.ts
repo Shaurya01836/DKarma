@@ -4,7 +4,7 @@ import {
   getDownloadURL,
   deleteObject,
   listAll,
-  UploadResult
+  UploadMetadata
 } from 'firebase/storage';
 import { storage } from './firebase';
 
@@ -13,11 +13,11 @@ export class StorageService {
   static async uploadFile(
     file: File,
     path: string,
-    metadata?: any
-  ): Promise<UploadResult> {
+    metadata?: UploadMetadata
+  ): Promise<void> {
     try {
       const storageRef = ref(storage, path);
-      return await uploadBytes(storageRef, file, metadata);
+      await uploadBytes(storageRef, file, metadata);
     } catch (error) {
       console.error('Error uploading file:', error);
       throw error;
@@ -69,7 +69,7 @@ export class StorageService {
       const fileName = `${timestamp}_${file.name}`;
       const path = `${folder}/${userId}/${fileName}`;
       
-      const uploadResult = await this.uploadFile(file, path);
+      await this.uploadFile(file, path);
       const url = await this.getDownloadUrl(path);
       
       return { url, path };
@@ -89,7 +89,7 @@ export class StorageService {
       const fileName = `profile_${timestamp}.jpg`;
       const path = `profiles/${userId}/${fileName}`;
       
-      const uploadResult = await this.uploadFile(file, path);
+      await this.uploadFile(file, path);
       const url = await this.getDownloadUrl(path);
       
       return { url, path };

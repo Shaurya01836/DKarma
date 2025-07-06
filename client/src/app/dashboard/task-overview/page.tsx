@@ -212,7 +212,22 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("Search submitted");
   };
 
-  const renderTaskCard = (task: any) => {
+  const renderTaskCard = (task: {
+    id: number;
+    title: string;
+    description: string;
+    organization: string;
+    type: string;
+    price: string;
+    duration?: string;
+    status?: string;
+    appliedDate?: string;
+    progress?: number;
+    deadline?: string;
+    rating?: number;
+    completedDate?: string;
+    urgent?: boolean;
+  }) => {
     return (
       <Card
         key={task.id}
@@ -312,7 +327,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < task.rating
+                            i < (task.rating || 0)
                               ? "text-[var(--color-success)] fill-[var(--color-success)] drop-shadow-md"
                               : "text-[var(--color-muted)]"
                           }`}

@@ -507,13 +507,14 @@ const Icons = {
       />
     </svg>
   ),
-  shield: () => (
+  shield: (props?: React.SVGProps<SVGSVGElement>) => (
     <svg
       width="16"
       height="16"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         d="M12 1L3 5V11C3 16 12 21 12 21C12 21 21 16 21 11V5L12 1Z"
@@ -524,13 +525,14 @@ const Icons = {
       />
     </svg>
   ),
-  globe: () => (
+  globe: (props?: React.SVGProps<SVGSVGElement>) => (
     <svg
       width="16"
       height="16"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
       <path d="M2 12H22" stroke="currentColor" strokeWidth="2" />
@@ -541,13 +543,14 @@ const Icons = {
       />
     </svg>
   ),
-  users: () => (
+  users: (props?: React.SVGProps<SVGSVGElement>) => (
     <svg
       width="16"
       height="16"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         d="M17 21V19C17 17.9 16.1 17 15 17H9C7.9 17 7 17.9 7 19V21"

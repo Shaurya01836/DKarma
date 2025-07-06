@@ -26,8 +26,9 @@ export default function LoginPage() {
     try {
       await signIn(form.email, form.password);
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Login failed");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Login failed";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -39,8 +40,9 @@ export default function LoginPage() {
     try {
       await signInWithGoogle();
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Google login failed");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Google login failed";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -137,7 +139,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-6 flex flex-col items-center">
-          <span className="text-sm text-muted">Don't have an account?</span>
+          <span className="text-sm text-muted">Don&apos;t have an account?</span>
           <Button
             variant="secondary"
             className="mt-2 w-full bg-surface text-foreground border border-border hover:bg-border hover:text-white transition"

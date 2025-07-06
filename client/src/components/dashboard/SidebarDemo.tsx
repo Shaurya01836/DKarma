@@ -113,7 +113,16 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     },
   ];
 
-  const CustomSidebarLink = ({ link, idx }: { link: any; idx: number }) => {
+  const CustomSidebarLink = ({ link, idx }: { 
+    link: {
+      label: string;
+      href: string;
+      icon: React.ReactNode;
+      hasDropdown?: boolean;
+      onClick?: () => void;
+    }; 
+    idx: number 
+  }) => {
     if (link.hasDropdown && link.label === "Explore Work") {
       return (
         <motion.div

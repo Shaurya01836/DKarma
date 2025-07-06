@@ -41,12 +41,7 @@ interface MobileNavHeaderProps {
   className?: string;
 }
 
-interface MobileNavMenuProps {
-  children: React.ReactNode;
-  className?: string;
-  isOpen: boolean;
-  onClose: () => void;
-}
+
 
 export const Navbar = ({ children, className }: NavbarProps) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -180,8 +175,11 @@ export const MobileNavMenu = ({
   children,
   className,
   isOpen,
-  onClose,
-}: MobileNavMenuProps) => {
+}: {
+  children: React.ReactNode;
+  className?: string;
+  isOpen: boolean;
+}) => {
   return (
     <AnimatePresence>
       {isOpen && (

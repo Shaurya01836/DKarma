@@ -13,7 +13,6 @@ import {
   ExternalLink,
   Eye,
   EyeOff,
-  Save,
   MapPin,
   Mail,
   Phone,
@@ -32,27 +31,6 @@ import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-const skillsOptions = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "JavaScript",
-  "Node.js",
-  "Python",
-  "Solidity",
-  "Web3",
-  "Smart Contracts",
-  "Blockchain",
-  "DeFi",
-  "NFT",
-  "UI/UX Design",
-  "Figma",
-  "Photoshop",
-  "Tailwind CSS",
-  "MongoDB",
-  "PostgreSQL",
-]
 
 const workingDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 

@@ -32,8 +32,9 @@ export default function RegisterPage() {
     try {
       await signUp(form.email, form.password, form.name);
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Registration failed");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Registration failed";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -45,8 +46,9 @@ export default function RegisterPage() {
     try {
       await signInWithGoogle();
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Google registration failed");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Google registration failed";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
