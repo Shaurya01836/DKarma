@@ -1,40 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { signUp } from "@/lib/auth";
-import { UserService } from "@/services/userService";
+import { signUp, signInWithGoogle } from "@/lib/auth";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    walletAddress: "",
-    OCID: "",
-    skills: "",
-    role: "freelancer",
-    profileImage: "",
   });
-  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setForm({ ...form, role: e.target.value });
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setProfileImageFile(e.target.files[0]);
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,38 +30,8 @@ export default function RegisterPage() {
     setError("");
     setSuccess("");
     try {
-      // Register with Firebase Auth
-      const userCredential = await signUp(form.email, form.password, form.name);
-      const user = userCredential.user;
-
-      // Prepare additional profile data
-      let profileImageUrl = "";
-      if (profileImageFile) {
-        profileImageUrl = await UserService.uploadProfilePicture(user.uid, profileImageFile);
-      }
-      const skillsArray = form.skills.split(",").map((s) => s.trim()).filter(Boolean);
-      await UserService.createUserProfile(user, {
-        name: form.name,
-        walletAddress: form.walletAddress,
-        OCID: form.OCID,
-        skills: skillsArray,
-        role: form.role as "freelancer" | "organization",
-        profileImage: profileImageUrl,
-        stats: { jobsDone: 0, ratings: 0 },
-        verified: false,
-      });
-      setSuccess("Registration successful! You can now log in.");
-      setForm({
-        name: "",
-        email: "",
-        password: "",
-        walletAddress: "",
-        OCID: "",
-        skills: "",
-        role: "freelancer",
-        profileImage: "",
-      });
-      setProfileImageFile(null);
+      await signUp(form.email, form.password, form.name);
+      router.push("/dashboard");
     } catch (err: any) {
       setError(err.message || "Registration failed");
     } finally {
@@ -82,25 +39,52 @@ export default function RegisterPage() {
     }
   };
 
+  const handleGoogleRegister = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      await signInWithGoogle();
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message || "Google registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Register</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
-        <Input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-        <Input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required />
-        <Input name="walletAddress" placeholder="Wallet Address" value={form.walletAddress} onChange={handleChange} required />
-        <Input name="OCID" placeholder="OCID (for organizations)" value={form.OCID} onChange={handleChange} />
-        <Textarea name="skills" placeholder="Skills (comma separated)" value={form.skills} onChange={handleChange} />
-        <select name="role" value={form.role} onChange={handleRoleChange} className="w-full border rounded px-3 py-2">
-          <option value="freelancer">Freelancer</option>
-          <option value="organization">Organization</option>
-        </select>
-        <Input name="profileImage" type="file" accept="image/*" onChange={handleImageChange} />
-        {error && <div className="text-red-500 text-sm">{error}</div>}
-        {success && <div className="text-green-600 text-sm">{success}</div>}
-        <Button type="submit" disabled={loading}>{loading ? "Registering..." : "Register"}</Button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0a0a23] dark">
+      <div className="w-full max-w-md p-8 bg-[#18181b] rounded-2xl shadow-2xl border border-[#232334]">
+        <div className="flex flex-col items-center mb-6">
+          <img src="/favicon.ico" alt="Logo" className="w-12 h-12 mb-2" />
+          <h1 className="text-3xl font-extrabold text-white mb-1">Create Account</h1>
+          <p className="text-sm text-gray-400">Sign up to get started</p>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <Input name="name" placeholder="Name" value={form.name} onChange={handleChange} required className="bg-[#232334] text-white focus:ring-2 focus:ring-blue-500" />
+          <Input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required className="bg-[#232334] text-white focus:ring-2 focus:ring-blue-500" />
+          <div className="relative">
+            <Input name="password" type={showPassword ? "text" : "password"} placeholder="Password" value={form.password} onChange={handleChange} required className="bg-[#232334] text-white focus:ring-2 focus:ring-blue-500 pr-10" />
+            <button type="button" tabIndex={-1} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-400" onClick={() => setShowPassword((v) => !v)}>
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+          {error && <div className="text-red-400 text-sm text-center">{error}</div>}
+          {success && <div className="text-green-400 text-sm text-center">{success}</div>}
+          <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition">
+            {loading ? <span className="flex items-center justify-center"><svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>Registering...</span> : "Register"}
+          </Button>
+        </form>
+        <div className="mt-4">
+          <Button type="button" onClick={handleGoogleRegister} disabled={loading} className="w-full flex items-center justify-center gap-2 bg-white text-black font-semibold py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+            <FcGoogle size={22} /> Register with Google
+          </Button>
+        </div>
+        <div className="mt-6 flex flex-col items-center">
+          <span className="text-sm text-gray-400">Already have an account?</span>
+          <Button variant="secondary" className="mt-2 w-full bg-[#232334] text-white border-blue-700 hover:bg-blue-900" onClick={() => router.push("/auth/login")}>Login</Button>
+        </div>
+      </div>
     </div>
   );
 }

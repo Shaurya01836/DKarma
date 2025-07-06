@@ -6,7 +6,9 @@ import {
   updateProfile,
   sendPasswordResetEmail,
   User,
-  UserCredential
+  UserCredential,
+  GoogleAuthProvider,
+  signInWithPopup
 } from 'firebase/auth';
 import { auth } from './firebase';
 
@@ -60,6 +62,16 @@ export const onAuthStateChange = (callback: (user: User | null) => void) => {
 export const resetPassword = async (email: string): Promise<void> => {
   try {
     await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Sign in with Google
+export const signInWithGoogle = async (): Promise<UserCredential> => {
+  const provider = new GoogleAuthProvider();
+  try {
+    return await signInWithPopup(auth, provider);
   } catch (error) {
     throw error;
   }

@@ -37,7 +37,7 @@ export function NavbarDemo() {
   const router = useRouter();
 
   return (
-    <div className="relative w-full z-100">
+    <div className="fixed top-0 left-0 w-full z-[100]">
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
