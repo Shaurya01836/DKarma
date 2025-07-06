@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import { Inter, Sora } from 'next/font/google';
+import { AuthProvider } from '@/context/AuthContext';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -17,7 +18,11 @@ const sora = Sora({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${sora.variable}`}>
-      <body className="bg-background text-foreground font-sans">{children}</body>
+      <body className="bg-background text-foreground font-sans">
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }

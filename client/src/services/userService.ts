@@ -1,0 +1,144 @@
+import { FirestoreService } from '@/lib/db';
+import { StorageService } from '@/lib/storage';
+import { User } from 'firebase/auth';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  bio?: string;
+  skills?: string[];
+  organization?: string;
+  role?: string;
+}
+
+export class UserService {
+  private static COLLECTION_NAME = 'users';
+
+  // Create or update user profile
+  static async createUserProfile(user: User, additionalData?: Partial<UserProfile>): Promise<string> {
+    try {
+      const userData: Omit<UserProfile, 'id' | 'createdAt' | 'updatedAt'> = {
+        email: user.email || '',
+        displayName: user.displayName || additionalData?.displayName,
+        photoURL: user.photoURL || additionalData?.photoURL,
+        bio: additionalData?.bio,
+        skills: additionalData?.skills || [],
+        organization: additionalData?.organization,
+        role: additionalData?.role,
+      };
+
+      // Check if user profile already exists
+      const existingProfile = await this.getUserProfile(user.uid);
+      
+      if (existingProfile) {
+        // Update existing profile
+        await this.updateUserProfile(user.uid, {
+          ...userData,
+          updatedAt: new Date(),
+        });
+        return user.uid;
+      } else {
+        // Create new profile
+        const profileData = {
+          ...userData,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        
+        await FirestoreService.updateDocument(this.COLLECTION_NAME, user.uid, profileData);
+        return user.uid;
+      }
+    } catch (error) {
+      console.error('Error creating user profile:', error);
+      throw error;
+    }
+  }
+
+  // Get user profile
+  static async getUserProfile(userId: string): Promise<UserProfile | null> {
+    try {
+      return await FirestoreService.getDocument<UserProfile>(this.COLLECTION_NAME, userId);
+    } catch (error) {
+      console.error('Error getting user profile:', error);
+      throw error;
+    }
+  }
+
+  // Update user profile
+  static async updateUserProfile(userId: string, data: Partial<UserProfile>): Promise<void> {
+    try {
+      await FirestoreService.updateDocument(this.COLLECTION_NAME, userId, {
+        ...data,
+        updatedAt: new Date(),
+      });
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw error;
+    }
+  }
+
+  // Upload profile picture
+  static async uploadProfilePicture(userId: string, file: File): Promise<string> {
+    try {
+      const { url } = await StorageService.uploadProfilePicture(file, userId);
+      
+      // Update user profile with new photo URL
+      await this.updateUserProfile(userId, { photoURL: url });
+      
+      return url;
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+      throw error;
+    }
+  }
+
+  // Get all users
+  static async getAllUsers(): Promise<UserProfile[]> {
+    try {
+      return await FirestoreService.getDocuments<UserProfile>(this.COLLECTION_NAME);
+    } catch (error) {
+      console.error('Error getting all users:', error);
+      throw error;
+    }
+  }
+
+  // Search users by skills
+  static async searchUsersBySkills(skills: string[]): Promise<UserProfile[]> {
+    try {
+      // Note: This is a simplified search. For production, consider using Algolia or similar
+      const allUsers = await this.getAllUsers();
+      return allUsers.filter(user => 
+        user.skills?.some(skill => 
+          skills.some(searchSkill => 
+            skill.toLowerCase().includes(searchSkill.toLowerCase())
+          )
+        )
+      );
+    } catch (error) {
+      console.error('Error searching users by skills:', error);
+      throw error;
+    }
+  }
+
+  // Get users by organization
+  static async getUsersByOrganization(organization: string): Promise<UserProfile[]> {
+    try {
+      return await FirestoreService.queryDocuments<UserProfile>(
+        this.COLLECTION_NAME,
+        [{ field: 'organization', operator: '==', value: organization }]
+      );
+    } catch (error) {
+      console.error('Error getting users by organization:', error);
+      throw error;
+    }
+  }
+
+  // Real-time user profile listener
+  static onUserProfileChange(userId: string, callback: (profile: UserProfile | null) => void) {
+    return FirestoreService.onDocumentSnapshot<UserProfile>(this.COLLECTION_NAME, userId, callback);
+  }
+}
