@@ -20,12 +20,16 @@ import {
 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { signOutUser } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [exploreDropdownOpen, setExploreDropdownOpen] = useState<number | null>(
     null
   );
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const router = useRouter();
 
   const links = [
     {
@@ -101,10 +105,11 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     },
     {
       label: "Logout",
-      href: "/logout",
+      href: "#logout",
       icon: (
         <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
+      onClick: () => setShowLogoutModal(true),
     },
   ];
 
@@ -155,6 +160,18 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
         </motion.div>
       );
     }
+    if (link.label === "Logout") {
+      return (
+        <button
+          key={idx}
+          className="w-full flex items-center gap-3 px-4 py-2 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 transition text-left"
+          onClick={link.onClick}
+        >
+          {link.icon}
+          <span>{link.label}</span>
+        </button>
+      );
+    }
     return <SidebarLink key={idx} link={link} />;
   };
 
@@ -196,6 +213,34 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
           </div>
         </SidebarBody>
       </Sidebar>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-neutral-900 rounded-lg p-6 shadow-lg w-full max-w-sm">
+            <h2 className="text-lg font-bold mb-4 text-center">Confirm Logout</h2>
+            <p className="mb-6 text-center">Are you sure you want to log out?</p>
+            <div className="flex justify-center gap-4">
+              <button
+                className="px-4 py-2 rounded bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-800 transition"
+                onClick={() => setShowLogoutModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition"
+                onClick={async () => {
+                  await signOutUser();
+                  setShowLogoutModal(false);
+                  router.push("/");
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Render the page content */}
       <div className="flex-1 overflow-y-auto">{children}</div>
