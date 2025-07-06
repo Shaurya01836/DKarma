@@ -51,38 +51,119 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0a0a23] dark">
-      <div className="w-full max-w-md p-8 bg-[#18181b] rounded-2xl shadow-2xl border border-[#232334]">
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="w-full max-w-md p-8 bg-surface rounded-2xl shadow-2xl border border-border">
         <div className="flex flex-col items-center mb-6">
           <img src="/favicon.ico" alt="Logo" className="w-12 h-12 mb-2" />
-          <h1 className="text-3xl font-extrabold text-white mb-1">Create Account</h1>
-          <p className="text-sm text-gray-400">Sign up to get started</p>
+          <h1 className="text-3xl font-extrabold text-[--color-foreground] mb-1">
+            Create Account
+          </h1>
+          <p className="text-sm text-muted]">Sign up to get started</p>
         </div>
+
         <form onSubmit={handleSubmit} className="space-y-5">
-          <Input name="name" placeholder="Name" value={form.name} onChange={handleChange} required className="bg-[#232334] text-white focus:ring-2 focus:ring-blue-500" />
-          <Input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required className="bg-[#232334] text-white focus:ring-2 focus:ring-blue-500" />
+          <Input
+            name="name"
+            placeholder="Name"
+            value={form.name}
+            onChange={handleChange}
+            required
+            className="bg-surface text-foreground] "
+          />
+          <Input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="bg-surface text-foreground] "
+          />
           <div className="relative">
-            <Input name="password" type={showPassword ? "text" : "password"} placeholder="Password" value={form.password} onChange={handleChange} required className="bg-[#232334] text-white focus:ring-2 focus:ring-blue-500 pr-10" />
-            <button type="button" tabIndex={-1} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-400" onClick={() => setShowPassword((v) => !v)}>
+            <Input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="bg-surface text-foreground] pr-10"
+            />
+            <button
+              type="button"
+              tabIndex={-1}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-primary-hover"
+              onClick={() => setShowPassword((v) => !v)}
+            >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-          {error && <div className="text-red-400 text-sm text-center">{error}</div>}
-          {success && <div className="text-green-400 text-sm text-center">{success}</div>}
-          <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition">
-            {loading ? <span className="flex items-center justify-center"><svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>Registering...</span> : "Register"}
+
+          {error && (
+            <div className="text-error text-sm text-center">{error}</div>
+          )}
+          {success && (
+            <div className="text-success text-sm text-center">{success}</div>
+          )}
+
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-primary hover:bg-primary-hover1 text-white font-semibold py-2 rounded-lg transition"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <svg
+                  className="animate-spin h-5 w-5 mr-2 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  ></path>
+                </svg>
+                Registering...
+              </span>
+            ) : (
+              "Register"
+            )}
           </Button>
         </form>
+
         <div className="mt-4">
-          <Button type="button" onClick={handleGoogleRegister} disabled={loading} className="w-full flex items-center justify-center gap-2 bg-white text-black font-semibold py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+          <Button
+            type="button"
+            onClick={handleGoogleRegister}
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2 bg-white text-black font-semibold py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition"
+          >
             <FcGoogle size={22} /> Register with Google
           </Button>
         </div>
+
         <div className="mt-6 flex flex-col items-center">
-          <span className="text-sm text-gray-400">Already have an account?</span>
-          <Button variant="secondary" className="mt-2 w-full bg-[#232334] text-white border-blue-700 hover:bg-blue-900" onClick={() => router.push("/auth/login")}>Login</Button>
+          <span className="text-sm text-[--color-muted]">
+            Already have an account?
+          </span>
+          <Button
+            variant="secondary"
+            className="mt-2 w-full bg-surface text-white border border-border hover:bg-border"
+            onClick={() => router.push("/auth/login")}
+          >
+            Login
+          </Button>
         </div>
       </div>
     </div>
