@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import Image from "next/image";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -57,7 +58,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-md p-8 bg-surface rounded-2xl shadow-2xl border border-border">
         <div className="flex flex-col items-center mb-6">
-          <img src="/favicon.ico" alt="Logo" className="w-12 h-12 mb-2" />
+          <Image src="/favicon.ico" alt="Logo" className="w-12 h-12 mb-2" width={48} height={48} />
           <h1 className="text-3xl font-extrabold text-[--color-foreground] mb-1">
             Create Account
           </h1>
