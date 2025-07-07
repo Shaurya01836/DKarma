@@ -83,13 +83,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
         <IconMessage2Dollar className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
-    {
-      label: "Dkarma Scores",
-      href: "/dashboard/dscore",
-      icon: (
-        <IconScoreboard className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
+
     {
       label: "Profile",
       href: "/dashboard/profile",
@@ -205,7 +199,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
 const Logo = () => {
   return (
     <Link
-      href="#"
+      href="/"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
       <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
@@ -223,7 +217,7 @@ const Logo = () => {
 const LogoIcon = () => {
   return (
     <Link
-      href="#"
+      href="/"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
       <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
