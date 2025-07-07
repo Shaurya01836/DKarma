@@ -203,7 +203,7 @@ export default function TaskOverview() {
     }
   };
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("Typing:", e.target.value);
   };
 
@@ -231,7 +231,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     return (
       <Card
         key={task.id}
-        className="bg-[var(--color-surface)]/90 border-[var(--color-border)] hover:border-[var(--color-success)]/70 hover:bg-[var(--color-success)]/10 transition-all duration-300 hover:scale-[1.035] hover:shadow-2xl backdrop-blur-lg relative overflow-hidden group rounded-2xl shadow-lg"
+        className="bg-[var(--color-surface)]/90 border-[var(--color-border)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10 transition-all duration-500 hover:scale-[1.03] cursor-pointer group backdrop-blur-lg relative overflow-hidden shadow-xl rounded-3xl"
       >
         {task.urgent && (
           <div className="absolute top-4 right-4 z-10 animate-pulse">
@@ -243,7 +243,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <CardContent className="p-6">
           <div className="flex">
             <div className="flex-1 pr-4">
-              <h3 className="text-lg font-semibold text-[var(--color-foreground)] mb-1 group-hover:text-[var(--color-success)] transition-colors duration-300 font-display">
+              <h3 className="text-lg font-semibold text-[var(--color-foreground)] mb-1 group-hover:text-[var(--color-primary)] transition-colors duration-300 font-display">
                 {task.title}
               </h3>
               <p className="text-sm font-medium text-[var(--color-muted)] mb-3 font-sans">
@@ -259,10 +259,10 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   <div className="flex items-center gap-4 text-[var(--color-muted)] text-xs">
                     <span>Duration: {task.duration}</span>
                   </div>
-                  <p className="text-lg font-bold text-[var(--color-success)] font-display drop-shadow-md">
+                  <p className="text-lg font-bold text-[var(--color-primary)] font-display drop-shadow-md">
                     {task.price}
                   </p>
-                  <Button className="w-full bg-[var(--color-success)] hover:bg-[var(--color-primary)] text-[var(--color-surface)] rounded-lg py-2 transition-all duration-300 font-display font-bold shadow-md hover:shadow-lg">
+                  <Button className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-surface)] rounded-lg py-2 transition-all duration-300 font-display font-bold shadow-md hover:shadow-lg">
                     Request to Join
                   </Button>
                 </div>
@@ -273,7 +273,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   <div className="flex items-center justify-between">
                     <Badge
                       variant="outline"
-                      className="border-[var(--color-success)]/30 text-[var(--color-success)] bg-[var(--color-success)]/10 font-bold"
+                      className="border-[var(--color-primary)]/30 text-[var(--color-primary)] bg-[var(--color-primary)]/10 font-bold"
                     >
                       {task.status}
                     </Badge>
@@ -281,12 +281,12 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                       Applied {task.appliedDate}
                     </span>
                   </div>
-                  <p className="text-lg font-bold text-[var(--color-success)] font-display drop-shadow-md">
+                  <p className="text-lg font-bold text-[var(--color-primary)] font-display drop-shadow-md">
                     {task.price}
                   </p>
                   <Button
                     variant="outline"
-                    className="w-full border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-success)]/10 rounded-lg py-2 bg-transparent font-sans shadow-sm"
+                    className="w-full border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-primary)]/10 rounded-lg py-2 bg-transparent font-sans shadow-sm"
                   >
                     View Application
                   </Button>
@@ -298,11 +298,11 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-[var(--color-muted)]">Progress</span>
-                      <span className="text-[var(--color-success)] font-bold">{task.progress}%</span>
+                      <span className="text-[var(--color-primary)] font-bold">{task.progress}%</span>
                     </div>
                     <div className="w-full bg-[var(--color-border)]/40 rounded-full h-2">
                       <div
-                        className="bg-gradient-to-r from-[var(--color-success)] to-[var(--color-primary)] h-2 rounded-full transition-all duration-300 shadow-md"
+                        className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] h-2 rounded-full transition-all duration-300 shadow-md"
                         style={{ width: `${task.progress}%` }}
                       ></div>
                     </div>
@@ -310,10 +310,10 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                       {task.deadline}
                     </span>
                   </div>
-                  <p className="text-lg font-bold text-[var(--color-success)] font-display drop-shadow-md">
+                  <p className="text-lg font-bold text-[var(--color-primary)] font-display drop-shadow-md">
                     {task.price}
                   </p>
-                  <Button className="w-full bg-[var(--color-success)] hover:bg-[var(--color-primary)] text-[var(--color-surface)] rounded-lg py-2 font-display font-bold shadow-md hover:shadow-lg">
+                  <Button className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-surface)] rounded-lg py-2 font-display font-bold shadow-md hover:shadow-lg">
                     Continue Work
                   </Button>
                 </div>
@@ -326,11 +326,10 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-4 h-4 ${
-                            i < (task.rating || 0)
-                              ? "text-[var(--color-success)] fill-[var(--color-success)] drop-shadow-md"
-                              : "text-[var(--color-muted)]"
-                          }`}
+                          className={`w-4 h-4 ${i < (task.rating || 0)
+                            ? "text-[var(--color-primary)] fill-[var(--color-primary)] drop-shadow-md"
+                            : "text-[var(--color-muted)]"
+                            }`}
                         />
                       ))}
                     </div>
@@ -338,12 +337,12 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                       Completed {task.completedDate}
                     </span>
                   </div>
-                  <p className="text-lg font-bold text-[var(--color-success)] font-display drop-shadow-md">
+                  <p className="text-lg font-bold text-[var(--color-primary)] font-display drop-shadow-md">
                     {task.price}
                   </p>
                   <Button
                     variant="outline"
-                    className="w-full border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-success)]/10 rounded-lg py-2 bg-transparent font-sans shadow-sm"
+                    className="w-full border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-primary)]/10 rounded-lg py-2 bg-transparent font-sans shadow-sm"
                   >
                     View Details
                   </Button>
@@ -409,19 +408,17 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 <button
                   key={tab.name}
                   onClick={() => setActiveTab(tab.name)}
-                  className={`px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 font-sans ${
-                    activeTab === tab.name
-                      ? "bg-[var(--color-success)] text-[var(--color-surface)] shadow-lg scale-105"
-                      : "text-[var(--color-muted)] hover:text-[var(--color-success)] hover:bg-[var(--color-success)]/10"
-                  }`}
+                  className={`px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 font-sans ${activeTab === tab.name
+                    ? "bg-[var(--color-success)] text-[var(--color-surface)] shadow-lg scale-105"
+                    : "text-[var(--color-muted)] hover:text-[var(--color-success)] hover:bg-[var(--color-success)]/10"
+                    }`}
                 >
                   <IconComponent className="w-4 h-4" />
                   {tab.name}
                   {tab.count && (
                     <span
-                      className={`ml-1 px-2 py-0.5 rounded-full text-xs ${
-                        activeTab === tab.name ? "bg-[var(--color-surface)]/20" : "bg-[var(--color-surface)]/10"
-                      }`}
+                      className={`ml-1 px-2 py-0.5 rounded-full text-xs ${activeTab === tab.name ? "bg-[var(--color-surface)]/20" : "bg-[var(--color-surface)]/10"
+                        }`}
                     >
                       {tab.count}
                     </span>

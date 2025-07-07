@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Bell, TrendingUp, Wallet, Award, ArrowRight, Clock, MapPin,Sparkles } from "lucide-react"
+import { Bell, TrendingUp, Wallet, Award, ArrowRight, Clock, MapPin, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -158,17 +158,17 @@ export default function FreelancerDashboard() {
           <div className="flex items-center justify-between gap-6">
             {/* Search Bar */}
             <div className="flex-1 max-w-lg relative">
-                <PlaceholdersAndVanishInput 
-                  placeholders={["Find freelance gigs...","Search by domain or org...","Secure your contracts...","Track payments live...","Search tasks or clients..."]}
-                  onChange={handleChange}
-                  onSubmit={handleSubmit}
-                />
+              <PlaceholdersAndVanishInput
+                placeholders={["Find freelance gigs...", "Search by domain or org...", "Secure your contracts...", "Track payments live...", "Search tasks or clients..."]}
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+              />
             </div>
             {/* Notification Bell */}
             <Button
               variant="ghost"
               size="icon"
-              className="relative h-12 w-12 bg-[var(--color-surface)] hover:bg-[var(--color-primary-hover)] border border-[var(--color-border)] rounded-2xl transition-all duration-300 hover:scale-110 shadow-lg"
+              className="relative h-12 w-12 bg-[var(--color-surface)] hover:bg-surface border border-[var(--color-border)] rounded-2xl transition-all duration-300 hover:scale-110 shadow-lg"
             >
               <Bell className="w-5 h-5 text-[var(--color-muted)]" />
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-[var(--color-error)] rounded-full animate-pulse"></div>
@@ -193,8 +193,8 @@ export default function FreelancerDashboard() {
 
         {/* Motivational Quote */}
         <section className="flex justify-center">
-          <div className={`bg-gradient-to-r from-[var(--color-primary-hover)]/40 via-[var(--color-success)]/20 to-[var(--color-secondary)]/30 px-8 py-4 rounded-2xl shadow-xl flex items-center gap-3 transition-opacity duration-500 ${quoteFade ? 'opacity-100' : 'opacity-0'} backdrop-blur-md border border-[var(--color-border)]`}> 
-            <Sparkles className="w-5 h-5 text-[var(--color-success)] animate-pulse" />
+          <div className={`bg-gradient-to-r from-[var(--color-primary-hover)]/40 via-[var(--color-primary)]/20 to-[var(--color-secondary)]/30 px-8 py-4 rounded-2xl shadow-xl flex items-center gap-3 transition-opacity duration-500 ${quoteFade ? 'opacity-100' : 'opacity-0'} backdrop-blur-md border border-[var(--color-border)]`}>
+            <Sparkles className="w-5 h-5 text-[var(--color-primary)] animate-pulse" />
             <span className="italic text-[var(--color-foreground)]/80 text-lg font-medium font-sans">{motivationalQuotes[quoteIdx]}</span>
           </div>
         </section>
@@ -204,16 +204,16 @@ export default function FreelancerDashboard() {
           {statsData.map((stat, index) => (
             <Card
               key={index}
-              className="bg-[var(--color-surface)]/90 border-[var(--color-border)] hover:border-[var(--color-success)]/40 hover:bg-[var(--color-success)]/10 transition-all duration-500 hover:scale-[1.04] backdrop-blur-lg shadow-xl group cursor-pointer rounded-3xl"
+              className="bg-[var(--color-surface)]/90 border-[var(--color-border)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10 transition-all duration-500 hover:scale-[1.04] backdrop-blur-lg shadow-xl group cursor-pointer rounded-3xl"
             >
               <CardContent className="p-8">
                 <div className="flex items-start justify-between">
                   <div className="space-y-3">
-                    <p className="text-[var(--color-muted)] text-sm font-medium uppercase tracking-wider group-hover:text-[var(--color-success)] transition-colors font-sans">{stat.label}</p>
-                    <p className="text-4xl font-bold text-[var(--color-foreground)] group-hover:text-[var(--color-success)] transition-colors drop-shadow-md font-display">{stat.value}</p>
+                    <p className="text-[var(--color-muted)] text-sm font-medium uppercase tracking-wider group-hover:text-[var(--color-primary)] transition-colors font-sans">{stat.label}</p>
+                    <p className="text-4xl font-bold text-[var(--color-foreground)] group-hover:text-[var(--color-primary)] transition-colors drop-shadow-md font-display">{stat.value}</p>
                     <p className="text-[var(--color-muted)] text-sm font-sans">{stat.subtext}</p>
                   </div>
-                  <div className={`p-4 rounded-2xl ${stat.bgColor} ${stat.color} shadow-md group-hover:scale-110 transition-transform bg-[var(--color-surface)]/80`}> 
+                  <div className={`p-4 rounded-2xl ${stat.bgColor} ${stat.color} shadow-md group-hover:scale-110 transition-transform bg-[var(--color-surface)]/80`}>
                     <stat.icon className="w-7 h-7" />
                   </div>
                 </div>
@@ -233,7 +233,7 @@ export default function FreelancerDashboard() {
             </div>
             <Button
               variant="outline"
-              className="border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-success)]/10 hover:border-[var(--color-success)]/40 transition-all duration-300 rounded-2xl bg-transparent px-6 py-3 text-base font-medium shadow-lg font-sans"
+              className="border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-primary)]/10 hover:border-[var(--color-primary)]/40 transition-all duration-300 rounded-2xl bg-transparent px-6 py-3 text-base font-medium shadow-lg font-sans"
             >
               View All
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -244,7 +244,7 @@ export default function FreelancerDashboard() {
             {jobsData.slice(0, visibleJobs).map((job) => (
               <Card
                 key={job.id}
-                className="bg-[var(--color-surface)]/90 border-[var(--color-border)] hover:border-[var(--color-success)]/40 hover:bg-[var(--color-success)]/10 transition-all duration-500 hover:scale-[1.03] cursor-pointer group backdrop-blur-lg relative overflow-hidden shadow-xl rounded-3xl"
+                className="bg-[var(--color-surface)]/90 border-[var(--color-border)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10 transition-all duration-500 hover:scale-[1.03] cursor-pointer group backdrop-blur-lg relative overflow-hidden shadow-xl rounded-3xl"
               >
                 {job.urgent && (
                   <div className="absolute top-4 right-4">
@@ -255,7 +255,7 @@ export default function FreelancerDashboard() {
                 )}
                 <CardContent className="p-8 space-y-6">
                   <div className="space-y-3">
-                    <h3 className="font-bold text-xl text-[var(--color-foreground)] group-hover:text-[var(--color-success)] transition-colors duration-300 leading-tight font-display">
+                    <h3 className="font-bold text-xl text-[var(--color-foreground)] group-hover:text-[var(--color-primary)] transition-colors duration-300 leading-tight font-display">
                       {job.title}
                     </h3>
                     <p className="text-[var(--color-muted)] font-medium font-sans">{job.organization}</p>
@@ -263,7 +263,7 @@ export default function FreelancerDashboard() {
 
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-3xl font-bold text-[var(--color-success)] font-display">{job.payment}</span>
+                      <span className="text-3xl font-bold text-[var(--color-primary)] font-display">{job.payment}</span>
                       <Badge
                         variant="secondary"
                         className={
@@ -293,7 +293,7 @@ export default function FreelancerDashboard() {
                       <Badge
                         key={tagIndex}
                         variant="outline"
-                        className="text-xs border-[var(--color-border)] text-[var(--color-muted)] hover:border-[var(--color-success)] hover:text-[var(--color-success)] transition-all duration-300 rounded-full px-3 py-1 font-medium font-sans"
+                        className="text-xs border-[var(--color-border)] text-[var(--color-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all duration-300 rounded-full px-3 py-1 font-medium font-sans"
                       >
                         {tag}
                       </Badge>
@@ -310,7 +310,7 @@ export default function FreelancerDashboard() {
           <div className="flex justify-center">
             <Button
               onClick={handleLoadMore}
-              className="bg-[var(--color-success)] hover:bg-[var(--color-primary)] transition-all duration-300 rounded-2xl px-8 py-4 text-lg font-bold shadow-xl tracking-wide text-[var(--color-surface)] font-display"
+              className="bg-[var(--color-success)] hover:bg-[var(--color-primary-hover)] transition-all duration-300 rounded-2xl px-8 py-4 text-lg font-bold shadow-xl tracking-wide text-[var(--color-surface)] font-display"
             >
               More
             </Button>

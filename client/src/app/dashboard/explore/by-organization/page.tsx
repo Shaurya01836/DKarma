@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Filter, ChevronDown, Star, Users, Briefcase, ExternalLink } from "lucide-react"
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input"
 
 // Sample organization data
 const organizations = [
@@ -92,6 +93,15 @@ const organizations = [
 
 const categories = ["All", "DeFi", "DAOs", "NFT", "Infra", "Trading"]
 const sortOptions = ["Most Active", "Top Rated", "Newest", "Most Followers"]
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	console.log("Typing:", e.target.value);
+};
+
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	e.preventDefault();
+	console.log("Search submitted");
+};
+
 
 export default function ExploreOrganizations() {
 	const [activeCategory, setActiveCategory] = useState("All")
@@ -111,59 +121,60 @@ export default function ExploreOrganizations() {
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-[var(--color-background)] via-[var(--color-surface)] to-[var(--color-background)] text-[var(--color-foreground)] font-sans">
 			{/* Header Section */}
-			<div className="bg-[var(--color-surface)]/95 backdrop-blur-xl border-b border-[var(--color-border)] shadow-lg">
-				<div className="max-w-7xl mx-auto px-6 py-8">
-					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-						<div>
-							<h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-foreground)] mb-2 font-display">Explore By Organizations</h1>
-							<p className="text-lg text-[var(--color-muted)]">Discover opportunities from leading Web3 companies</p>
-						</div>
-						<div className="flex gap-2">
-							<input
-								type="text"
-								placeholder="Search organizations..."
-								value={search}
-								onChange={(e) => setSearch(e.target.value)}
-								className="px-4 py-2 rounded-xl bg-[var(--color-background)]/60 border border-[var(--color-border)] text-[var(--color-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-success)] transition-all"
-							/>
-							<Button
-								variant="outline"
-								className="bg-transparent border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-success)]/10 hover:text-[var(--color-success)] transition-colors"
-							>
-								<Filter className="w-4 h-4 mr-2" />
-								Filter
-							</Button>
+			{/* Top Bar */}
+			<header className="bg-[var(--color-surface)]/95 backdrop-blur-xl border-b border-[var(--color-border)] shadow-lg">
+				<div className="max-w-7xl mx-auto px-6 py-4">
+					<div className="flex items-center justify-between gap-6">
+						{/* Left: Menu and Search */}
+						<div className="flex items-center gap-4 flex-1">
+							<div className="flex-1 max-w-md relative">
+								<PlaceholdersAndVanishInput
+									placeholders={[
+										"Find freelance gigs...",
+										"Search by domain or org...",
+										"Secure your contracts...",
+										"Track payments live...",
+										"Search tasks or clients...",
+									]}
+									onChange={handleChange}
+									onSubmit={handleSubmit}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</header>
 
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-				{/* Category Filter and Sort */}
-				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-					{/* Category Chips */}
-					<div className="flex flex-wrap gap-2">
+			{/* Header Section */}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-0">
+				<div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-2">
+					<div>
+						<h1 className="text-4xl font-bold text-[var(--color-foreground)] font-display mb-1">Explore By Organizations</h1>
+						<p className="text-[var(--color-muted)] text-lg font-sans">Discover opportunities from leading Web3 companies</p>
+					</div>
+				</div>
+				<div className="border-b border-[var(--color-border)] mb-8" />
+				{/* Tabs and Sort Dropdown in one line */}
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
+					<div className="bg-[var(--color-surface)]/80 rounded-2xl p-1 inline-flex border border-[var(--color-border)] shadow-md">
 						{categories.map((category) => (
 							<button
 								key={category}
 								onClick={() => setActiveCategory(category)}
-								className={`px-4 py-2 rounded-full text-sm font-medium transition-colors font-sans ${
-									activeCategory === category
-										? "bg-[var(--color-success)] text-[var(--color-surface)] shadow-md"
-										: "bg-[var(--color-surface)]/70 text-[var(--color-muted)] hover:bg-[var(--color-success)]/10 hover:text-[var(--color-success)]"
+								className={`px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 font-sans ${activeCategory === category
+									? "bg-[var(--color-success)] text-[var(--color-surface)] shadow-lg scale-105"
+									: "text-[var(--color-muted)] hover:text-[var(--color-success)] hover:bg-[var(--color-success)]/10"
 								}`}
 							>
 								{category}
 							</button>
 						))}
 					</div>
-
-					{/* Sort Dropdown */}
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button
 								variant="outline"
-								className="bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-success)]/10 hover:text-[var(--color-success)]"
+								className="bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)]"
 							>
 								Sort by: {sortBy}
 								<ChevronDown className="w-4 h-4 ml-2" />
@@ -174,7 +185,7 @@ export default function ExploreOrganizations() {
 								<DropdownMenuItem
 									key={option}
 									onClick={() => setSortBy(option)}
-									className="text-[var(--color-foreground)] hover:bg-[var(--color-success)]/10 hover:text-[var(--color-success)] focus:bg-[var(--color-success)]/10 focus:text-[var(--color-success)]"
+									className="text-[var(--color-foreground)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] focus:bg-[var(--color-primary)]/10 focus:text-[var(--color-primary)]"
 								>
 									{option}
 								</DropdownMenuItem>
@@ -182,25 +193,27 @@ export default function ExploreOrganizations() {
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
+			</div>
 
-				{/* Organization Cards Grid */}
+			{/* Organization Cards Grid */}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
 					{filteredOrgs.map((org, index) => (
 						<div
 							key={org.id}
-							className="pt-4 bg-[var(--color-surface)]/90 border border-[var(--color-border)] hover:border-[var(--color-success)]/70 hover:bg-[var(--color-success)]/10 transition-all duration-300 hover:scale-[1.035] hover:shadow-2xl backdrop-blur-lg relative overflow-hidden group rounded-2xl shadow-lg flex flex-col justify-between min-h-[320px]"
+							className="pt-4 bg-[var(--color-surface)]/90 border border-[var(--color-border)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10 transition-all duration-500 hover:scale-[1.03] cursor-pointer group backdrop-blur-lg relative overflow-hidden shadow-xl rounded-3xl min-h-[320px]"
 							style={{ animationDelay: `${index * 100}ms` }}
 						>
 							{/* Top-right tilted arrow icon */}
 							<ExternalLink
-								className="absolute top-4 right-4 w-6 h-6 text-[var(--color-success)] opacity-80 cursor-pointer transition-transform transition-colors duration-200 hover:scale-125 hover:text-[var(--color-success)]/90 z-20"
+								className="absolute top-4 right-4 w-6 h-6 text-[var(--color-primary)] opacity-80 cursor-pointer transition-transform transition-colors duration-200 hover:scale-125 hover:text-[var(--color-primary)]/90 z-20"
 								aria-label="Open organization"
 							/>
 							<div className="flex flex-col items-center gap-4 mb-4 pt-2">
-								<div className="w-16 h-16 rounded-full flex items-center justify-center bg-[var(--color-success)]/80 text-white text-3xl font-extrabold shadow-md mb-2 select-none">
+								<div className="w-16 h-16 rounded-full flex items-center justify-center bg-[var(--color-primary)]/80 text-white text-3xl font-extrabold shadow-md mb-2 select-none">
 									{org.name.charAt(0)}
 								</div>
-								<h3 className="text-xl font-bold text-[var(--color-foreground)] mb-1 truncate font-display group-hover:text-[var(--color-success)] transition-colors duration-300 text-center">
+								<h3 className="text-xl font-bold text-[var(--color-foreground)] mb-1 truncate font-display group-hover:text-[var(--color-primary)] transition-colors duration-300 text-center">
 									{org.name}
 								</h3>
 								<p className="text-[var(--color-muted)] text-sm line-clamp-2 font-sans text-center mb-2 px-2">{org.description}</p>
@@ -209,7 +222,7 @@ export default function ExploreOrganizations() {
 							{/* Tags */}
 							<div className="flex flex-wrap gap-2 justify-center mb-4">
 								{org.tags.map((tag) => (
-									<Badge key={tag} variant="secondary" className="bg-[var(--color-background)]/70 text-[var(--color-success)] border-[var(--color-success)]/30 text-xs font-bold px-3 py-1 rounded-full">
+									<Badge key={tag} variant="secondary" className="bg-[var(--color-background)]/70 text-[var(--color-primary)] border-[var(--color-primary)]/30 text-xs font-bold px-3 py-1 rounded-full">
 										{tag}
 									</Badge>
 								))}
@@ -218,8 +231,8 @@ export default function ExploreOrganizations() {
 							{/* Stats */}
 							<div className="flex items-center justify-center gap-6 text-sm text-[var(--color-muted)] mb-6">
 								<div className="flex items-center gap-1">
-									<Star className="w-4 h-4 fill-[var(--color-success)] text-[var(--color-success)]" />
-									<span className="font-bold text-[var(--color-success)]">{org.rating}</span>
+									<Star className="w-4 h-4 fill-[var(--color-primary)] text-[var(--color-primary)]" />
+									<span className="font-bold text-[var(--color-primary)]">{org.rating}</span>
 								</div>
 								<div className="flex items-center gap-1">
 									<Briefcase className="w-4 h-4" />
@@ -239,7 +252,7 @@ export default function ExploreOrganizations() {
 					<Button
 						variant="outline"
 						size="lg"
-						className="border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-success)]/10 font-bold px-8 py-3 rounded-xl bg-transparent font-sans shadow-md w-full sm:w-auto"
+						className="border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-primary)]/10 font-bold px-8 py-3 rounded-xl bg-transparent font-sans shadow-md w-full sm:w-auto"
 					>
 						Load More Organizations
 					</Button>
