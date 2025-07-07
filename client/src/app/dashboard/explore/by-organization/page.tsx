@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Filter, ChevronDown, Star, Users, Briefcase, ExternalLink } from "lucide-react"
+import { ChevronDown, Star, Users, Briefcase, ExternalLink } from "lucide-react"
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input"
 
 // Sample organization data
@@ -102,20 +102,12 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 	console.log("Search submitted");
 };
 
-
 export default function ExploreOrganizations() {
 	const [activeCategory, setActiveCategory] = useState("All")
 	const [sortBy, setSortBy] = useState("Most Active")
-	const [followed, setFollowed] = useState<number[]>([])
-	const [search, setSearch] = useState("")
-
-	const handleFollow = (id: number) => {
-		setFollowed((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]))
-	}
 
 	const filteredOrgs = organizations.filter((org) =>
-		(activeCategory === "All" || org.tags.some((tag) => tag.toLowerCase().includes(activeCategory.toLowerCase()))) &&
-		(org.name.toLowerCase().includes(search.toLowerCase()) || org.description.toLowerCase().includes(search.toLowerCase()))
+		(activeCategory === "All" || org.tags.some((tag) => tag.toLowerCase().includes(activeCategory.toLowerCase())))
 	)
 
 	return (
