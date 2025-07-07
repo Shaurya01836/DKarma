@@ -4,7 +4,6 @@ import {
   getDoc,
   getDocs,
   addDoc,
-  updateDoc,
   deleteDoc,
   query,
   where,
@@ -15,7 +14,8 @@ import {
   WhereFilterOp,
   WithFieldValue,
   Query,
-  CollectionReference
+  CollectionReference,
+  setDoc
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -65,8 +65,7 @@ export class FirestoreService {
   // Update a document
   static async updateDocument<T extends WithFieldValue<DocumentData>>(collectionName: string, docId: string, data: Partial<T>): Promise<void> {
     try {
-      const docRef = doc(db, collectionName, docId);
-      await updateDoc(docRef, data as DocumentData);
+      await setDoc(doc(db, collectionName, docId), data as DocumentData, { merge: true });
     } catch (error) {
       console.error('Error updating document:', error);
       throw error;

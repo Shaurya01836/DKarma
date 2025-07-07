@@ -13,6 +13,36 @@ export interface UserProfile {
   skills?: string[];
   organization?: string;
   role?: string;
+  location?: string;
+  phone?: string;
+  username?: string;
+  experience?: string;
+  domain?: string;
+  hourlyRate?: string;
+  available?: boolean;
+  workingDays?: string[];
+  totalEarned?: number;
+  projectsDone?: number;
+  averageRating?: number;
+  workHistory?: Array<{
+    id: string | number;
+    title: string;
+    organization: string;
+    payment: string;
+    rating: number;
+    date: string;
+  }>;
+  portfolio?: Array<{
+    id: string | number;
+    title: string;
+    description: string;
+    tags: string[];
+    link: string;
+  }>;
+  github?: string;
+  linkedin?: string;
+  website?: string;
+  deleted?: boolean;
 }
 
 export class UserService {
@@ -21,15 +51,26 @@ export class UserService {
   // Create or update user profile
   static async createUserProfile(user: User, additionalData?: Partial<UserProfile>): Promise<string> {
     try {
-      const userData: Omit<UserProfile, 'id' | 'createdAt' | 'updatedAt'> = {
+      const userData: any = {
         email: user.email || '',
         displayName: user.displayName || additionalData?.displayName,
-        photoURL: user.photoURL || additionalData?.photoURL,
         bio: additionalData?.bio,
         skills: additionalData?.skills || [],
         organization: additionalData?.organization,
         role: additionalData?.role,
+        location: additionalData?.location,
+        phone: additionalData?.phone,
+        username: additionalData?.username,
+        experience: additionalData?.experience,
+        domain: additionalData?.domain,
+        hourlyRate: additionalData?.hourlyRate,
+        available: additionalData?.available,
+        workingDays: additionalData?.workingDays,
       };
+      const photoURL = user.photoURL || additionalData?.photoURL;
+      if (photoURL) {
+        userData.photoURL = photoURL;
+      }
 
       // Check if user profile already exists
       const existingProfile = await this.getUserProfile(user.uid);

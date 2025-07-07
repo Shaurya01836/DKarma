@@ -4,6 +4,8 @@ import { TrendingUp, Wallet, Award, ArrowRight, Clock, MapPin, Sparkles } from "
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { useUser } from "@/hooks/useUser"
+import { useAuth } from "@/context/AuthContext"
 
 const jobsData = [
   {
@@ -110,6 +112,8 @@ const motivationalQuotes = [
 ]
 
 export default function FreelancerDashboard() {
+  const { user } = useAuth();
+  const { profile, loading } = useUser()
   const [visibleJobs, setVisibleJobs] = useState(3)
   const [quoteIdx, setQuoteIdx] = useState(0)
   const [quoteFade, setQuoteFade] = useState(true)
@@ -137,6 +141,14 @@ export default function FreelancerDashboard() {
     return "Good evening"
   }
 
+  // Get user's display name
+  const getUserDisplayName = () => {
+    if (loading) return "Loading...";
+    if (profile?.displayName) return profile.displayName;
+    if (user?.displayName) return user.displayName;
+    return "User";
+  }
+
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] relative overflow-x-hidden font-sans">
       {/* Animated background sparkles */}
@@ -153,7 +165,7 @@ export default function FreelancerDashboard() {
         <section className="text-center space-y-6">
           <div className="space-y-3">
             <h1 className="text-5xl md:text-6xl font-bold flex items-center justify-center gap-2 drop-shadow-lg font-display text-[var(--color-foreground)]">
-              {getGreeting()}, <span className="text-[var(--color-primary)]">Nitin</span>
+              {getGreeting()}, <span className="text-[var(--color-primary)]">{getUserDisplayName()}</span>
               <Sparkles className="w-7 h-7 text-[var(--color-success)] animate-spin-slow" />
             </h1>
             <p className="text-xl text-[var(--color-muted)] max-w-2xl mx-auto leading-relaxed font-sans">
