@@ -1,11 +1,9 @@
 "use client"
-
 import { useState, useEffect } from "react"
-import { Bell, TrendingUp, Wallet, Award, ArrowRight, Clock, MapPin, Sparkles } from "lucide-react"
+import { TrendingUp, Wallet, Award, ArrowRight, Clock, MapPin, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input"
 
 const jobsData = [
   {
@@ -139,41 +137,14 @@ export default function FreelancerDashboard() {
     return "Good evening"
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Typing:", e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Search submitted");
-  };
-
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] relative overflow-x-hidden font-sans">
       {/* Animated background sparkles */}
       <div className="pointer-events-none fixed inset-0 z-0 opacity-20 animate-pulse bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[var(--color-primary)] via-transparent to-transparent" />
       {/* Top Bar */}
-      <header className="sticky top-0 z-50 bg-[color:var(--color-surface)/0.8] backdrop-blur-2xl border-b border-[var(--color-border)] shadow-2xl">
+      <header className="sticky top-0 z-50 bg-[color:var(--color-surface)/0.8] backdrop-blur-2xl shadow-2xl">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between gap-6">
-            {/* Search Bar */}
-            <div className="flex-1 max-w-lg relative">
-              <PlaceholdersAndVanishInput
-                placeholders={["Find freelance gigs...", "Search by domain or org...", "Secure your contracts...", "Track payments live...", "Search tasks or clients..."]}
-                onChange={handleChange}
-                onSubmit={handleSubmit}
-              />
-            </div>
-            {/* Notification Bell */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative h-12 w-12 bg-[var(--color-surface)] hover:bg-surface border border-[var(--color-border)] rounded-2xl transition-all duration-300 hover:scale-110 shadow-lg"
-            >
-              <Bell className="w-5 h-5 text-[var(--color-muted)]" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-[var(--color-error)] rounded-full animate-pulse"></div>
-            </Button>
-          </div>
+
         </div>
       </header>
 

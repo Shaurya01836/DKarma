@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 
 const tabs = [
   { name: "Available", count: 18, active: true },
@@ -203,15 +202,6 @@ export default function TaskOverview() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Typing:", e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Search submitted");
-  };
-
   const renderTaskCard = (task: {
     id: number;
     title: string;
@@ -366,30 +356,6 @@ export default function TaskOverview() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[var(--color-background)] via-[var(--color-surface)] to-[var(--color-background)] text-[var(--color-foreground)] font-sans">
-      {/* Top Bar */}
-      <header className="bg-[var(--color-surface)]/95 backdrop-blur-xl border-b border-[var(--color-border)] shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between gap-6">
-            {/* Left: Menu and Search */}
-            <div className="flex items-center gap-4 flex-1">
-              <div className="flex-1 max-w-md relative">
-                <PlaceholdersAndVanishInput
-                  placeholders={[
-                    "Find freelance gigs...",
-                    "Search by domain or org...",
-                    "Secure your contracts...",
-                    "Track payments live...",
-                    "Search tasks or clients...",
-                  ]}
-                  onChange={handleChange}
-                  onSubmit={handleSubmit}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Header Section */}
         <div className="mb-10 border-b border-[var(--color-border)] pb-6">

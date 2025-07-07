@@ -8,26 +8,21 @@ import {
   IconBrandTabler,
   IconCurrencyDollar,
   IconFocusCentered,
-  IconMapSearch,
   IconMessage2Dollar,
   IconScoreboard,
-  IconSettings,
   IconStatusChange,
   IconUserBolt,
   IconView360,
-  IconBuilding, // Added for By Organization
-  IconChecklist, // Added for By Tasks
+  IconBuilding,
+  IconChecklist,
 } from "@tabler/icons-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { signOutUser } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [exploreDropdownOpen, setExploreDropdownOpen] = useState<number | null>(
-    null
-  );
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const router = useRouter();
 
@@ -40,12 +35,18 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       ),
     },
     {
-      label: "Explore Work",
-      href: "/dashboard/explore",
+      label: "By Organization",
+      href: "/dashboard/explore/by-organization",
       icon: (
-        <IconMapSearch className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconBuilding className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
-      hasDropdown: true,
+    },
+    {
+      label: "By Tasks",
+      href: "/dashboard/explore/by-tasks",
+      icon: (
+        <IconChecklist className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
     },
     {
       label: "Task Overview",
@@ -96,89 +97,31 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
         <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
-    {
-      label: "Settings",
-      href: "/dashboard/settings",
-      icon: (
-        <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
+
     {
       label: "Logout",
       href: "#logout",
       icon: (
         <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
-      onClick: () => setShowLogoutModal(true),
     },
   ];
 
-  const CustomSidebarLink = ({ link, idx }: { 
+  const CustomSidebarLink = ({ link, idx }: {
     link: {
       label: string;
       href: string;
       icon: React.ReactNode;
       hasDropdown?: boolean;
       onClick?: () => void;
-    }; 
-    idx: number 
+    };
+    idx: number
   }) => {
-    if (link.hasDropdown && link.label === "Explore Work") {
-      return (
-        <motion.div
-          className="relative"
-          onMouseEnter={() => setExploreDropdownOpen(idx)}
-          onMouseLeave={() => setExploreDropdownOpen(null)}
-          layout // Enable layout animation for smooth push-down
-        >
-          <SidebarLink link={link} />
-          {/* Animated sub-links below Explore Work */}
-          <AnimatePresence initial={false}>
-            {exploreDropdownOpen === idx && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
-                className="flex flex-col gap-2 mt-2 ml-6"
-                layout // Animate height/layout for smooth sidebar movement
-              >
-                <SidebarLink
-                  link={{
-                    label: "By Organization",
-                    href: "/dashboard/explore/by-organization",
-                    icon: (
-                      <IconBuilding className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-                    ),
-                  }}
-                  className="pl-7"
-                />
-                <SidebarLink
-                  link={{
-                    label: "By Tasks",
-                    href: "/dashboard/explore/by-tasks",
-                    icon: (
-                      <IconChecklist className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-                    ),
-                  }}
-                  className="pl-7"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      );
-    }
     if (link.label === "Logout") {
       return (
-        <button
-          key={idx}
-          className="w-full flex items-center gap-3 px-4 py-2 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 transition text-left"
-          onClick={link.onClick}
-        >
-          {link.icon}
-          <span>{link.label}</span>
-        </button>
+        <div key={idx} onClick={() => setShowLogoutModal(true)} className="cursor-pointer">
+          <SidebarLink link={link} noLink />
+        </div>
       );
     }
     return <SidebarLink key={idx} link={link} />;
@@ -187,41 +130,43 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "mx-auto flex w-full flex-1 flex-col overflow-hidden md:flex-row",
-        "h-screen"
+        "mx-auto flex w-full flex-1 flex-col overflow-hidden md:flex-row h-screen",
+        "[&_.sidebar-custom]:border-r [&_.sidebar-custom]:border-[var(--color-border)]"
       )}
     >
-      <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10">
-          <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-            {open ? <Logo /> : <LogoIcon />}
+      <div className="sidebar-custom scrollbar-hide">
+        <Sidebar open={open} setOpen={setOpen}>
+          <SidebarBody className="justify-between gap-10 scrollbar-hide">
+            <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
+              {open ? <Logo /> : <LogoIcon />}
 
-            <div className="mt-8 flex flex-col gap-2">
-              {links.map((link, idx) => (
-                <CustomSidebarLink key={idx} link={link} idx={idx} />
-              ))}
+              <div className="mt-8 flex flex-col gap-2">
+                {links.map((link, idx) => (
+                  <CustomSidebarLink key={idx} link={link} idx={idx} />
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div>
-            <SidebarLink
-              link={{
-                label: "Manu Arora",
-                href: "#",
-                icon: (
-                  <img
-                    src="https://assets.aceternity.com/manu.png"
-                    className="h-7 w-7 shrink-0 rounded-full"
-                    width={50}
-                    height={50}
-                    alt="Avatar"
-                  />
-                ),
-              }}
-            />
-          </div>
-        </SidebarBody>
-      </Sidebar>
+            <div>
+              <SidebarLink
+                link={{
+                  label: "Manu Arora",
+                  href: "#",
+                  icon: (
+                    <img
+                      src="https://assets.aceternity.com/manu.png"
+                      className="h-7 w-7 shrink-0 rounded-full"
+                      width={50}
+                      height={50}
+                      alt="Avatar"
+                    />
+                  ),
+                }}
+              />
+            </div>
+          </SidebarBody>
+        </Sidebar>
+      </div>
 
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (
