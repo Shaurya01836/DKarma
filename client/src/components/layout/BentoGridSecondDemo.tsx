@@ -1,4 +1,5 @@
 import React from "react";
+import Image from 'next/image'
 
 function BentoGridSecondDemo() {
   return (
@@ -30,10 +31,12 @@ function BentoGridSecondDemo() {
               </div>
               <div className="@container relative min-h-120 w-full grow max-lg:mx-auto max-lg:max-w-sm">
                 <div className="absolute inset-x-10 top-10 bottom-0 overflow-hidden rounded-t-[12cqw] border-x-[3cqw] border-t-[3cqw] border-gray-700 bg-gray-900 shadow-2xl">
-                  <img
+                  <Image
                     alt="Decentralized Identity"
                     src="/assets/did-profile.png"
                     className="size-full object-cover object-top"
+                    width={500}
+                    height={500}
                   />
                 </div>
               </div>
@@ -55,10 +58,12 @@ function BentoGridSecondDemo() {
                 </p>
               </div>
               <div className="flex flex-1 items-center justify-center px-8 max-lg:pt-10 max-lg:pb-12 sm:px-10 lg:pb-2">
-                <img
+                <Image
                   alt="Escrow Illustration"
                   src="https://tailwindcss.com/plus-assets/img/component-images/bento-03-performance.png"
                   className="w-full max-lg:max-w-xs"
+                  width={500}
+                  height={500}
                 />
               </div>
             </div>
@@ -79,10 +84,12 @@ function BentoGridSecondDemo() {
                 </p>
               </div>
               <div className="@container flex flex-1 items-center max-lg:py-6 lg:pb-2">
-                <img
+                <Image
                   alt="Reputation System"
                   src="https://tailwindcss.com/plus-assets/img/component-images/bento-03-security.png"
                   className="h-[min(152px,40cqw)] object-cover"
+                  width={500}
+                  height={500}
                 />
               </div>
             </div>

@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export function Footer() {
   return (
     <footer className="w-full border-t border-[var(--color-border)] text-[var(--color-muted)]">
@@ -5,7 +7,7 @@ export function Footer() {
         {/* Column 1: Brand */}
         <div>
           <a href="#" className="flex items-center gap-2 text-white text-lg font-semibold">
-            <img
+            <Image
               src="https://assets.aceternity.com/logo-dark.png"
               alt="logo"
               width={30}

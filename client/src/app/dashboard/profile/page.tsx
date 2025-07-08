@@ -10,7 +10,6 @@ import {
   Plus,
   X,
   Star,
-  ExternalLink,
   Eye,
   EyeOff,
   MapPin,
@@ -36,6 +35,7 @@ import { useAuth } from "@/context/AuthContext"
 import { getAuth, EmailAuthProvider, reauthenticateWithCredential, updatePassword, deleteUser } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 import { UserService } from '@/services/userService'
+import Image from 'next/image'
 
 const workingDaysList = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -62,6 +62,33 @@ const predefinedSkills = [
   "Digital Marketing", "SEO", "SEM", "Google Analytics", "Facebook Ads", "Google Ads", "Content Marketing"
 ];
 
+type PartialPortfolioItem = Partial<{
+  id: string | number;
+  title: string;
+  description: string;
+  tech: string[];
+  tags: string[];
+  link: string;
+  demo: string;
+  github: string;
+  year: string;
+  image: string;
+}>;
+function normalizePortfolioItem(item: PartialPortfolioItem) {
+  return {
+    id: item.id !== undefined && item.id !== null ? String(item.id) : '',
+    title: item.title ?? '',
+    description: item.description ?? '',
+    tech: Array.isArray(item.tech) ? item.tech : [],
+    tags: Array.isArray(item.tags) ? item.tags : [],
+    link: typeof item.link === 'string' ? item.link : '',
+    demo: typeof item.demo === 'string' ? item.demo : '',
+    github: typeof item.github === 'string' ? item.github : '',
+    year: typeof item.year === 'string' ? item.year : '',
+    image: typeof item.image === 'string' ? item.image : '',
+  };
+}
+
 export default function FreelancerProfile() {
   const { profile, loading: profileLoading, updateUserProfile } = useUser();
   const { user, loading: authLoading } = useAuth();
@@ -81,26 +108,20 @@ export default function FreelancerProfile() {
   const [saving, setSaving] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true)
   const [selectedSkills, setSelectedSkills] = useState<string[]>(profile?.skills || ["React", "Web3", "Solidity", "TypeScript"])
-  const [selectedDays, setSelectedDays] = useState(["Mon", "Tue", "Wed", "Thu", "Fri"])
-  const [showPassword, setShowPassword] = useState(false)
-  const [enable2FA, setEnable2FA] = useState(false)
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [editingRole, setEditingRole] = useState(false);
-  const [experience, setExperience] = useState('');
-  const [domain, setDomain] = useState('');
-  const [hourlyRate, setHourlyRate] = useState('');
-  const [workingDays, setWorkingDays] = useState<string[]>(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
-  const [editingBio, setEditingBio] = useState(false);
-  const [newSkill, setNewSkill] = useState('');
   const [showSkillInput, setShowSkillInput] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [newSkill, setNewSkill] = useState('');
   const filteredSkills = predefinedSkills.filter(skill =>
     skill.toLowerCase().includes(newSkill.toLowerCase()) && !selectedSkills.includes(skill)
   );
+  const [experience, setExperience] = useState(profile?.experience || '');
+  const [editingBio, setEditingBio] = useState(false);
 
-  const [workHistory, setWorkHistory] = useState<any[]>(profile?.workHistory || []);
-  const [portfolio, setPortfolio] = useState<any[]>(profile?.portfolio || []);
+  const [workHistory, setWorkHistory] = useState<{ id: string | number; title: string; organization: string; payment: string; rating: number; date: string }[]>(profile?.workHistory || []);
+  const [portfolio, setPortfolio] = useState<{ id: string; title: string; description: string; tech: string[]; tags: string[]; link: string; demo: string; github: string; year: string; image: string }[]>(
+    (profile?.portfolio || []).map(normalizePortfolioItem)
+  );
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [newProject, setNewProject] = useState({
     title: '',
@@ -118,9 +139,8 @@ export default function FreelancerProfile() {
   const [linkedin, setLinkedin] = useState(profile?.linkedin || '');
   const [website, setWebsite] = useState(profile?.website || '');
 
-  const [projectImage, setProjectImage] = useState<File | null>(null);
   const [projectImageUrl, setProjectImageUrl] = useState('');
-  const [viewProject, setViewProject] = useState<any | null>(null);
+  const [viewProject, setViewProject] = useState<{ id: string | number; title: string; description: string; tech: string[]; tags: string[]; link: string; demo: string; github: string; year: string; image: string } | null>(null);
   const [isEditingProject, setIsEditingProject] = useState(false);
   const [editingProjectIndex, setEditingProjectIndex] = useState<number | null>(null);
 
@@ -139,6 +159,12 @@ export default function FreelancerProfile() {
   const [deleteError, setDeleteError] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+  const [domain, setDomain] = useState(profile?.domain || '');
+  const [hourlyRate, setHourlyRate] = useState(profile?.hourlyRate || '');
+  const [workingDays, setWorkingDays] = useState<string[]>(profile?.workingDays || ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [editingRole, setEditingRole] = useState(false);
+
   useEffect(() => {
     setFullName(profile?.displayName || user?.displayName || '');
     setEmail(profile?.email || user?.email || '');
@@ -155,7 +181,7 @@ export default function FreelancerProfile() {
     setWorkingDays(profile?.workingDays || ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
     setSelectedSkills(profile?.skills || []);
     setWorkHistory(profile?.workHistory || []);
-    setPortfolio(profile?.portfolio || []);
+    setPortfolio((profile?.portfolio || []).map(item => normalizePortfolioItem({ ...item, id: String(item.id) })));
     setGithub(profile?.github || '');
     setLinkedin(profile?.linkedin || '');
     setWebsite(profile?.website || '');
@@ -173,7 +199,7 @@ export default function FreelancerProfile() {
         location,
         phone,
         username,
-        experience,
+        experience: experience || '',
         domain,
         hourlyRate,
         available: isAvailable,
@@ -185,16 +211,12 @@ export default function FreelancerProfile() {
       });
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2000);
-    } catch (err) {
+    } catch {
       alert('Error saving profile!');
     } finally {
       setSaving(false);
     }
   };
-
-  const toggleSkill = (skill: string) => {
-    setSelectedSkills((prev) => (prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]))
-  }
 
   const addCustomSkill = () => {
     if (newSkill.trim() && !selectedSkills.includes(newSkill.trim())) {
@@ -208,18 +230,15 @@ export default function FreelancerProfile() {
     setSelectedSkills(prev => prev.filter(s => s !== skill));
   }
 
-  const toggleDay = (day: string) => {
-    setSelectedDays((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]))
-  }
-
   const totalEarned = profile?.totalEarned ?? 0;
   const projectsDone = profile?.projectsDone ?? 0;
   const averageRating = profile?.averageRating ?? null;
   const hourlyRateStat = profile?.hourlyRate ?? 0;
 
-  const savePortfolio = async (updatedPortfolio: any[]) => {
-    setPortfolio(updatedPortfolio);
-    await updateUserProfile({ portfolio: updatedPortfolio });
+  const savePortfolio = async (updatedPortfolio: { id: string; title: string; description: string; tech: string[]; tags: string[]; link: string; demo: string; github: string; year: string; image: string }[]) => {
+    const normalized = updatedPortfolio.map(item => ({ ...item, id: String(item.id) }));
+    setPortfolio(normalized);
+    await updateUserProfile({ portfolio: normalized });
   };
 
   const handleAddProject = async () => {
@@ -234,7 +253,7 @@ export default function FreelancerProfile() {
       ...newProject,
       tags: newProject.tags.split(',').map(t => t.trim()).filter(Boolean),
       tech: newProject.tech.split(',').map(t => t.trim()).filter(Boolean),
-      id: isEditingProject && editingProjectIndex !== null ? portfolio[editingProjectIndex].id : Date.now(),
+      id: String(isEditingProject && editingProjectIndex !== null ? portfolio[editingProjectIndex].id : Date.now()),
       image: imageUrl,
     };
     let updated;
@@ -249,11 +268,10 @@ export default function FreelancerProfile() {
     setIsEditingProject(false);
     setEditingProjectIndex(null);
     setNewProject({ title: '', description: '', tech: '', tags: '', link: '', demo: '', github: '', year: '', image: '' });
-    setProjectImage(null);
     setProjectImageUrl('');
   };
 
-  const handleDeleteProject = async (id: number) => {
+  const handleDeleteProject = async (id: string) => {
     const updated = portfolio.filter(p => p.id !== id);
     await savePortfolio(updated);
   };
@@ -281,11 +299,11 @@ export default function FreelancerProfile() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmNewPassword('');
-    } catch (err: any) {
-      if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password') {
+    } catch (err: unknown) {
+      if ((err as { code?: string }).code === 'auth/invalid-credential' || (err as { code?: string }).code === 'auth/wrong-password') {
         setPasswordError('Your current password is incorrect.');
       } else {
-        setPasswordError(err.message || 'Failed to change password.');
+        setPasswordError((err as Error).message || 'Failed to change password.');
       }
     } finally {
       setChangingPassword(false);
@@ -301,8 +319,8 @@ export default function FreelancerProfile() {
       await deleteUser(user);
       setShowDeleteConfirm(false);
       router.push('/auth/login');
-    } catch (err: any) {
-      setDeleteError(err.message || 'Failed to delete account.');
+    } catch (err: unknown) {
+      setDeleteError((err as Error).message || 'Failed to delete account.');
     } finally {
       setDeletingAccount(false);
     }
@@ -914,7 +932,6 @@ export default function FreelancerProfile() {
                   setIsEditingProject(false);
                   setEditingProjectIndex(null);
                   setNewProject({ title: '', description: '', tech: '', tags: '', link: '', demo: '', github: '', year: '', image: '' });
-                  setProjectImage(null);
                   setProjectImageUrl('');
                 }}>
                   <Plus className="w-4 h-4 mr-2" />
@@ -947,7 +964,6 @@ export default function FreelancerProfile() {
                                 tags: Array.isArray(project.tags) ? project.tags.join(', ') : project.tags || '',
                               });
                               setProjectImageUrl(project.image || '');
-                              setProjectImage(null);
                             }}>
                               Edit
                             </Button>
@@ -1042,19 +1058,12 @@ export default function FreelancerProfile() {
                               accept="image/*"
                               onChange={e => {
                                 const file = e.target.files?.[0] || null;
-                                setProjectImage(file);
-                                if (file) {
-                                  const reader = new FileReader();
-                                  reader.onload = ev => setProjectImageUrl(ev.target?.result as string);
-                                  reader.readAsDataURL(file);
-                                } else {
-                                  setProjectImageUrl('');
-                                }
+                                setProjectImageUrl(file ? URL.createObjectURL(file) : '');
                               }}
                               className="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                             />
                             {projectImageUrl && (
-                              <img src={projectImageUrl} alt="Preview" className="mt-2 rounded-lg max-h-32 border border-white/10" />
+                              <Image src={projectImageUrl} alt="Preview" width={100} height={40} className="mt-2 rounded-lg max-h-32 border border-white/10" />
                             )}
                           </div>
                         </div>
@@ -1073,7 +1082,7 @@ export default function FreelancerProfile() {
                       </button>
                       <div className="flex flex-col md:flex-row gap-8">
                         {viewProject.image && (
-                          <img src={viewProject.image} alt="Project" className="rounded-lg max-h-60 border border-white/10 object-cover" />
+                          <Image src={viewProject.image} alt="Project" width={240} height={100} className="rounded-lg max-h-60 border border-white/10 object-cover" />
                         )}
                         <div className="flex-1">
                           <h2 className="text-3xl font-bold text-white mb-2">{viewProject.title}</h2>

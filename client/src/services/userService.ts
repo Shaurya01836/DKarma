@@ -51,7 +51,7 @@ export class UserService {
   // Create or update user profile
   static async createUserProfile(user: User, additionalData?: Partial<UserProfile>): Promise<string> {
     try {
-      const userData: any = {
+      const userData: Partial<UserProfile> = {
         email: user.email || '',
         displayName: user.displayName || additionalData?.displayName,
         bio: additionalData?.bio,
