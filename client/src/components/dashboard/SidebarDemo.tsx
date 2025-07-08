@@ -14,6 +14,8 @@ import {
   IconView360,
   IconBuilding,
   IconChecklist,
+  IconCloudNetwork,
+  IconContract,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -31,56 +33,56 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       label: "Dashboard",
       href: "/dashboard",
       icon: (
-        <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconBrandTabler className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "By Organization",
       href: "/dashboard/explore/by-organization",
       icon: (
-        <IconBuilding className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconBuilding className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "By Tasks",
       href: "/dashboard/explore/by-tasks",
       icon: (
-        <IconChecklist className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconChecklist className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Task Overview",
       href: "/dashboard/task-overview",
       icon: (
-        <IconView360 className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconView360 className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Dispute Center",
       href: "/dashboard/dispute",
       icon: (
-        <IconFocusCentered className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconFocusCentered className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Proposal Status",
       href: "/dashboard/proposal",
       icon: (
-        <IconStatusChange className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconStatusChange className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Payments",
       href: "/dashboard/payment",
       icon: (
-        <IconCurrencyDollar className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconCurrencyDollar className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Message & Chats",
       href: "/dashboard/chats",
       icon: (
-        <IconMessage2Dollar className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconMessage2Dollar className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
 
@@ -88,7 +90,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       label: "Profile",
       href: "/dashboard/profile",
       icon: (
-        <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconUserBolt className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
 
@@ -96,7 +98,23 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       label: "Logout",
       href: "#logout",
       icon: (
-        <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconArrowLeft className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+
+    //client ke liye
+    {
+      label: "My Tasks",
+      href: "/dashboard/myTasks",
+      icon: (
+        <IconCloudNetwork className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Contracts",
+      href: "/dashboard/contracts",
+      icon: (
+        <IconContract className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
   ];
