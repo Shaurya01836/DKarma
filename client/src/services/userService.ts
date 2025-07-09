@@ -44,6 +44,9 @@ export interface UserProfile {
   website?: string;
   deleted?: boolean;
   userType?: 'freelancer' | 'client';
+  // Wallet authentication fields
+  walletAddress?: string;
+  walletConnectedAt?: Date;
 }
 
 export class UserService {
@@ -67,6 +70,7 @@ export class UserService {
         hourlyRate: additionalData?.hourlyRate,
         available: additionalData?.available,
         workingDays: additionalData?.workingDays,
+        walletAddress: additionalData?.walletAddress,
       };
       const photoURL = user.photoURL || additionalData?.photoURL;
       if (photoURL) {
@@ -119,6 +123,33 @@ export class UserService {
       });
     } catch (error) {
       console.error('Error updating user profile:', error);
+      throw error;
+    }
+  }
+
+  // Link wallet to user
+  static async linkWalletToUser(userId: string, walletAddress: string): Promise<void> {
+    try {
+      await this.updateUserProfile(userId, {
+        walletAddress,
+        walletConnectedAt: new Date(),
+      });
+    } catch (error) {
+      console.error('Error linking wallet to user:', error);
+      throw error;
+    }
+  }
+
+  // Get user by wallet address
+  static async getUserByWalletAddress(walletAddress: string): Promise<UserProfile | null> {
+    try {
+      const users = await FirestoreService.queryDocuments<UserProfile>(
+        this.COLLECTION_NAME,
+        [{ field: 'walletAddress', operator: '==', value: walletAddress }]
+      );
+      return users.length > 0 ? users[0] : null;
+    } catch (error) {
+      console.error('Error getting user by wallet address:', error);
       throw error;
     }
   }

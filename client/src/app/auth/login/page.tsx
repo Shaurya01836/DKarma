@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
+import { Wallet } from "lucide-react";
 import Image from "next/image";
 import { useUserType } from "@/context/UserTypeContext";
+import { WalletConnectButton } from "@/components/auth/WalletConnectButton";
 
 import { UserService } from "@/services/userService";
 
@@ -62,6 +64,12 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleWalletSuccess = async () => {
+    // Wallet authentication success - check for userType and redirect accordingly
+    // This will be handled by the existing auth flow
+    router.push("/dashboard");
   };
 
   return (
@@ -146,7 +154,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="mt-4">
+        <div className="mt-4 space-y-3">
           <Button
             type="button"
             onClick={handleGoogleLogin}
@@ -155,6 +163,21 @@ export default function LoginPage() {
           >
             <FcGoogle size={22} /> Login with Google
           </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-[var(--color-border)]" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-[var(--color-surface)] px-2 text-[var(--color-muted)]">Or continue with</span>
+            </div>
+          </div>
+
+          <WalletConnectButton
+            mode="authenticate"
+            onSuccess={handleWalletSuccess}
+            className="w-full"
+          />
         </div>
 
         <div className="mt-6 flex flex-col items-center">

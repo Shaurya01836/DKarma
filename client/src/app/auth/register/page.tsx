@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useUserType } from "@/context/UserTypeContext";
+import { WalletConnectButton } from "@/components/auth/WalletConnectButton";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -59,6 +60,12 @@ export default function RegisterPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleWalletSuccess = async () => {
+    // Wallet registration success - show role selection modal
+    setMode('register');
+    setIsUserTypeModalOpen(true);
   };
 
   return (
@@ -155,7 +162,7 @@ export default function RegisterPage() {
           </Button>
         </form>
 
-        <div className="mt-4">
+        <div className="mt-4 space-y-3">
           <Button
             type="button"
             onClick={handleGoogleRegister}
@@ -164,6 +171,21 @@ export default function RegisterPage() {
           >
             <FcGoogle size={22} /> Register with Google
           </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-[var(--color-border)]" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-[var(--color-surface)] px-2 text-[var(--color-muted)]">Or continue with</span>
+            </div>
+          </div>
+
+          <WalletConnectButton
+            mode="authenticate"
+            onSuccess={handleWalletSuccess}
+            className="w-full"
+          />
         </div>
 
         <div className="mt-6 flex flex-col items-center">

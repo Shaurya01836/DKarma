@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverComponentsExternalPackages: ['@rainbow-me/rainbowkit', 'wagmi', 'viem'],
+  },
   images: {
     domains: [
       "api.microlink.io", // Microlink Image Preview

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
 
 type UserType = 'freelancer' | 'client' | null;
 
@@ -22,21 +21,17 @@ export function UserTypeProvider({ children }: { children: React.ReactNode }) {
   const [userTypeLoaded, setUserTypeLoaded] = useState(false);
   const [isUserTypeModalOpen, setIsUserTypeModalOpen] = useState(false);
   const [mode, setMode] = useState<'login' | 'register'>('login');
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   useEffect(() => {
-    if (user) {
-      const savedUserType = localStorage.getItem('userType');
-      if (savedUserType === 'freelancer' || savedUserType === 'client') {
-        setUserType(savedUserType);
-      } else {
-        setUserType(null);
-      }
-      setUserTypeLoaded(true);
+    const savedUserType = localStorage.getItem('userType');
+    if (savedUserType === 'freelancer' || savedUserType === 'client') {
+      setUserType(savedUserType);
     } else {
-      setUserTypeLoaded(true);
+      setUserType(null);
     }
-  }, [user]);
+    setUserTypeLoaded(true);
+  }, []);
 
   useEffect(() => {
     if (userType) {
