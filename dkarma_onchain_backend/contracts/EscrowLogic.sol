@@ -4,6 +4,20 @@ pragma solidity ^0.8.20;
 import "./EscrowStorage.sol";
 
 abstract contract EscrowLogic is EscrowStorage {
+    // Declare events locally so emit works
+    event TaskAssigned(uint256 indexed taskId, address freelancer);
+    event MilestoneSubmitted(uint256 indexed taskId, string uri);
+    event MilestoneApproved(uint256 indexed taskId, uint256 milestoneIndex);
+    event MilestoneRejected(uint256 indexed taskId, uint256 milestoneIndex);
+    event TaskCompleted(uint256 indexed taskId);
+    event TaskCancelled(uint256 indexed taskId);
+    event FallbackClaimed(uint256 indexed taskId);
+    event FundsReleased(uint256 indexed taskId, uint256 amount);
+    event ValidatorRewardClaimed(uint256 indexed taskId, address validator);
+    event DisputeVoted(uint256 indexed taskId, address voter, bool votedForFreelancer);
+    event DisputeFinalized(uint256 indexed taskId, string outcome);
+    event DAOChanged(address indexed oldDao, address indexed newDao);
+
     // ---------------------- 1. TASK & MILESTONE FLOW ----------------------
 
     function _assignTask(uint256 taskId, address freelancer) internal {
@@ -11,6 +25,8 @@ abstract contract EscrowLogic is EscrowStorage {
         task.freelancer = freelancer;
         task.status = TaskStatus.Assigned;
         task.lastActionAt = block.timestamp;
+
+        emit TaskAssigned(taskId, freelancer);
     }
 
     function _submitMilestone(uint256 taskId, string calldata uri) internal {
@@ -23,42 +39,60 @@ abstract contract EscrowLogic is EscrowStorage {
 
         tasks[taskId].status = TaskStatus.Submitted;
         tasks[taskId].lastActionAt = block.timestamp;
+
+        emit MilestoneSubmitted(taskId, uri);
     }
 
     function _approveMilestone(uint256 taskId) internal {
         uint256 index = milestones[taskId].length - 1;
         milestones[taskId][index].approved = true;
         tasks[taskId].status = TaskStatus.Approved;
+
         _releaseFunds(taskId, index);
 
-        // Check if all milestones are done
         if (_areAllMilestonesApproved(taskId)) {
             _finalizeTask(taskId);
         }
 
         tasks[taskId].lastActionAt = block.timestamp;
+
+        emit MilestoneApproved(taskId, index);
     }
 
     function _rejectMilestone(uint256 taskId) internal {
         tasks[taskId].status = TaskStatus.Disputed;
         tasks[taskId].disputed = true;
         tasks[taskId].lastActionAt = block.timestamp;
+
+        emit MilestoneRejected(taskId, milestones[taskId].length - 1);
     }
 
     function _finalizeTask(uint256 taskId) internal {
         tasks[taskId].status = TaskStatus.Completed;
         tasks[taskId].lastActionAt = block.timestamp;
+
+        emit TaskCompleted(taskId);
     }
 
     // ---------------------- 2. PAYMENT & ESCROW LOGIC ----------------------
 
-    function _releaseFunds(uint256 taskId, uint256 ) internal virtual {
-        
-        payable(tasks[taskId].freelancer).transfer(tasks[taskId].amount);
+    function _releaseFunds(uint256 taskId, uint256 milestoneIndex) internal {
+        Task storage task = tasks[taskId];
+        Milestone storage ms = milestones[taskId][milestoneIndex];
+
+        require(ms.submitted && ms.approved, "Milestone not approved");
+
+        uint256 milestoneAmount = task.amount / milestones[taskId].length;
+        _transferEscrow(payable(task.freelancer), milestoneAmount);
+
+        emit FundsReleased(taskId, milestoneAmount);
     }
 
     function _refundClient(uint256 taskId) internal {
-        payable(tasks[taskId].client).transfer(tasks[taskId].amount);
+        _transferEscrow(payable(tasks[taskId].client), tasks[taskId].amount);
+        tasks[taskId].status = TaskStatus.Cancelled;
+
+        emit TaskCancelled(taskId);
     }
 
     function _applyFallback(uint256 taskId) internal {
@@ -66,28 +100,61 @@ abstract contract EscrowLogic is EscrowStorage {
         uint256 freelancerAmount = (task.amount * fallbackPercent) / 100;
         uint256 clientAmount = task.amount - freelancerAmount;
 
-        payable(task.freelancer).transfer(freelancerAmount);
-        payable(task.client).transfer(clientAmount);
+        _transferEscrow(payable(task.freelancer), freelancerAmount);
+        _transferEscrow(payable(task.client), clientAmount);
 
         disputes[taskId].fallbackApplied = true;
+        disputes[taskId].resolved = true;
+        tasks[taskId].status = TaskStatus.Completed;
+
+        emit FallbackClaimed(taskId);
+    }
+function _payJudges(uint256 taskId, uint256 totalReward) internal {
+    address[] memory judges = disputeJudges[taskId];
+    require(judges.length > 0, "No judges assigned");
+    uint256 share = totalReward / judges.length;
+
+    for (uint256 i = 0; i < judges.length; i++) {
+        _transferEscrow(payable(judges[i]), share);
+        emit ValidatorRewardClaimed(taskId, judges[i]);
     }
 
-    function _withdrawFallback(uint256 taskId, address caller) internal {
-        require(tasks[taskId].freelancer == caller, "Not freelancer");
-        require(disputes[taskId].resolved == false, "Already resolved");
+    platformFeeBalance -= totalReward;
+}
 
-        _applyFallback(taskId);
+    function _withdrawFallback(uint256 taskId, address caller) internal view {
+        require(disputes[taskId].fallbackApplied, "Fallback not triggered");
+        require(tasks[taskId].freelancer == caller, "Only freelancer");
+
+        // Funds already released in _applyFallback
     }
 
-    function _splitAndDistribute(address payable recipient, uint256 amount) internal {
-        uint256 judgeCut = (amount * judgePercent) / 100;
-        uint256 daoCut = amount - judgeCut;
-        payable(recipient).transfer(daoCut);
-        // Validators paid separately via _payJudges
+    function _splitAndDistribute(
+        uint256 taskId,
+        uint256 amount,
+        address toFreelancer,
+        address[] memory judges
+    ) internal {
+        require(judges.length > 0, "No judges");
+        uint256 validatorReward = (tasks[taskId].amount * judgePercent) / 100;
+        require(platformFeeBalance >= validatorReward, "Insufficient platform fees");
+
+        uint256 perJudge = validatorReward / judges.length;
+        for (uint256 i = 0; i < judges.length; i++) {
+            _transferEscrow(payable(judges[i]), perJudge);
+            emit ValidatorRewardClaimed(taskId, judges[i]);
+        }
+
+        platformFeeBalance -= validatorReward;
+        _transferEscrow(payable(toFreelancer), amount);
+
+        emit FundsReleased(taskId, amount);
     }
 
     function _transferEscrow(address payable to, uint256 amount) internal {
-        to.transfer(amount);
+        require(to != address(0), "Invalid address");
+        (bool sent, ) = to.call{value: amount}("");
+        require(sent, "Transfer failed");
     }
 
     // ---------------------- 3. DISPUTE RESOLUTION ----------------------
@@ -108,6 +175,8 @@ abstract contract EscrowLogic is EscrowStorage {
         } else {
             dispute.clientVotes++;
         }
+
+        emit DisputeVoted(taskId, voter, voteForFreelancer);
     }
 
     function _tallyVotes(uint256 taskId) internal view returns (string memory outcome) {
@@ -134,18 +203,8 @@ abstract contract EscrowLogic is EscrowStorage {
 
         disputes[taskId].resolved = true;
         tasks[taskId].status = TaskStatus.Completed;
-    }
 
-    function _payJudges(uint256 taskId, uint256 totalReward) internal {
-        address[] memory judges = disputeJudges[taskId];
-        uint256 share = totalReward / judges.length;
-        for (uint256 i = 0; i < judges.length; i++) {
-            payable(judges[i]).transfer(share);
-        }
-    }
-
-    function _storeVerdict(uint256 taskId, string memory result) internal {
-        // store verdict off-chain or emit from FreelanceEscrow
+        emit DisputeFinalized(taskId, result);
     }
 
     // ---------------------- 4. DAO CONFIGURATION ----------------------
@@ -159,7 +218,10 @@ abstract contract EscrowLogic is EscrowStorage {
     }
 
     function _updateDAO(address newDao) internal {
+        address oldDao = dao;
         dao = newDao;
+
+        emit DAOChanged(oldDao, newDao);
     }
 
     // ---------------------- 5. TIMEOUTS & SAFETY ----------------------
@@ -176,9 +238,10 @@ abstract contract EscrowLogic is EscrowStorage {
         return block.timestamp > tasks[taskId].createdAt + limit;
     }
 
- function _triggerTimeoutCheck(uint256 /* taskId */) internal pure returns (string memory) {
-    return "TimeoutChecked";
-}
+    function _triggerTimeoutCheck(uint256 /*taskId*/) internal pure returns (string memory) {
+        return "TimeoutChecked";
+    }
+
     // ---------------------- 6. UTILITIES & VALIDATION ----------------------
 
     function _updateLastAction(uint256 taskId) internal {

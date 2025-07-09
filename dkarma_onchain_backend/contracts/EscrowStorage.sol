@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "./ValidatorRegistry.sol";
 
 abstract contract EscrowStorage {
     // ---------- Enums ----------
@@ -55,5 +56,14 @@ abstract contract EscrowStorage {
     uint256 public fallbackPercent;
     uint256 public judgePercent;
 
-    // NOTE: validator roles are handled via AccessControl in main contract
+    uint256 public platformFeeBalance;
+
+    ValidatorRegistry public validatorRegistry;
+
+    // Optional: tracking helper mappings (add if needed)
+    // mapping(uint256 => uint256) public taskFees;
+    // mapping(uint256 => uint256) public taskToDisputeId;
+
+    // ---------- Upgradeable Storage Gap ----------
+    uint256[50] private __gap; // Reserve slots for future state variables
 }
