@@ -9,6 +9,8 @@ import { Eye, EyeOff } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useUserType } from "@/context/UserTypeContext";
+import { UserTypeModal } from "@/components/auth/UserTypeModal";
+import { UserService } from "@/services/userService";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -16,7 +18,9 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { setIsUserTypeModalOpen, setMode } = useUserType();
+  const { setUserType } = useUserType();
+  const [showUserTypeModal, setShowUserTypeModal] = useState(false);
+  const [pendingGoogleUser, setPendingGoogleUser] = useState<any>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,9 +32,7 @@ export default function LoginPage() {
     setError("");
     try {
       await signIn(form.email, form.password);
-      setMode('login');
-      setIsUserTypeModalOpen(true);
-      // Don't redirect immediately, let the modal handle it
+      router.push("/dashboard");
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Login failed";
       setError(errorMessage);
@@ -43,16 +45,35 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      await signInWithGoogle();
-      setMode('login');
-      setIsUserTypeModalOpen(true);
-      // Don't redirect immediately, let the modal handle it
+      const { userCredential } = await signInWithGoogle();
+      // Always check Firestore for userType
+      const profile = await UserService.getUserProfile(userCredential.user.uid);
+      if (!profile || !profile.userType) {
+        localStorage.setItem("firebaseUser", JSON.stringify(userCredential.user));
+        localStorage.removeItem("userType"); // Ensure no stale value
+        router.replace("/auth/choose-role");
+        return;
+      }
+      setUserType(profile.userType);
+      localStorage.setItem("userType", profile.userType);
+      router.replace("/dashboard");
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Google login failed";
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleUserTypeSelect = async (userType: 'freelancer' | 'client') => {
+    setUserType(userType);
+    localStorage.setItem('userType', userType);
+    if (pendingGoogleUser) {
+      await UserService.updateUserProfile(pendingGoogleUser.uid, { userType });
+    }
+    setShowUserTypeModal(false);
+    setPendingGoogleUser(null);
+    router.push("/dashboard");
   };
 
   return (
@@ -159,6 +180,12 @@ export default function LoginPage() {
           </Button>
         </div>
       </div>
+      {/* User Type Modal for new Google users */}
+      <UserTypeModal
+        isOpen={showUserTypeModal}
+        onSelect={handleUserTypeSelect}
+        mode="register"
+      />
     </div>
   );
 }

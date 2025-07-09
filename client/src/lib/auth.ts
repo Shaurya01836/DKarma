@@ -101,7 +101,7 @@ export const resetPassword = async (email: string): Promise<void> => {
 };
 
 // Sign in with Google
-export const signInWithGoogle = async (): Promise<UserCredential> => {
+export const signInWithGoogle = async (): Promise<{ userCredential: UserCredential, isNewUser: boolean }> => {
   const provider = new GoogleAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
@@ -124,7 +124,8 @@ export const signInWithGoogle = async (): Promise<UserCredential> => {
         console.error('Error checking/creating user profile in Firestore after Google login:', err);
       }
     }
-    return userCredential;
+    const isNewUser = userCredential?.additionalUserInfo?.isNewUser || false;
+    return { userCredential, isNewUser };
   } catch (error) {
     console.error('Error in signInWithGoogle:', error);
     throw error;

@@ -12,30 +12,32 @@ interface UserTypeContextType {
   setIsUserTypeModalOpen: (open: boolean) => void;
   mode: 'login' | 'register';
   setMode: (mode: 'login' | 'register') => void;
+  userTypeLoaded: boolean;
 }
 
 const UserTypeContext = createContext<UserTypeContextType | undefined>(undefined);
 
 export function UserTypeProvider({ children }: { children: React.ReactNode }) {
   const [userType, setUserType] = useState<UserType>(null);
+  const [userTypeLoaded, setUserTypeLoaded] = useState(false);
   const [isUserTypeModalOpen, setIsUserTypeModalOpen] = useState(false);
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const { user } = useAuth();
 
-  // Load user type from localStorage on mount
   useEffect(() => {
     if (user) {
-      const savedUserType = localStorage.getItem('userType') as UserType;
-      if (savedUserType) {
+      const savedUserType = localStorage.getItem('userType');
+      if (savedUserType === 'freelancer' || savedUserType === 'client') {
         setUserType(savedUserType);
       } else {
-        // If user is logged in but no user type is set, show the modal
-        setIsUserTypeModalOpen(true);
+        setUserType(null);
       }
+      setUserTypeLoaded(true);
+    } else {
+      setUserTypeLoaded(true);
     }
   }, [user]);
 
-  // Save user type to localStorage when it changes
   useEffect(() => {
     if (userType) {
       localStorage.setItem('userType', userType);
@@ -45,6 +47,7 @@ export function UserTypeProvider({ children }: { children: React.ReactNode }) {
   const value = {
     userType,
     setUserType,
+    userTypeLoaded,
     isUserTypeModalOpen,
     setIsUserTypeModalOpen,
     mode,

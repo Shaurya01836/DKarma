@@ -3,6 +3,9 @@ import { SidebarDemo } from "@/components/dashboard/SidebarDemo";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
+import { useUserType } from "@/context/UserTypeContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 function TopBar() {
   const noop = () => { };
@@ -40,6 +43,22 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { userType, userTypeLoaded } = useUserType();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userTypeLoaded && !userType) {
+      router.replace("/auth/choose-role");
+    }
+  }, [userType, userTypeLoaded, router]);
+
+  if (!userTypeLoaded) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+  if (!userType) {
+    return null; // or a spinner, but redirect will happen
+  }
+
   return (
     <div className="dashboard-root">
       <SidebarDemo>
