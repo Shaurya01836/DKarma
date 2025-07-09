@@ -22,13 +22,16 @@ import { cn } from "@/lib/utils";
 import { signOutUser } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useUserType } from "@/context/UserTypeContext";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const router = useRouter();
+  const { userType } = useUserType();
 
-  const links = [
+  // Common links for both user types
+  const commonLinks = [
     {
       label: "Dashboard",
       href: "/dashboard",
@@ -36,6 +39,40 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
         <IconBrandTabler className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
+    {
+      label: "Payments",
+      href: "/dashboard/payment",
+      icon: (
+        <IconCurrencyDollar className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Message & Chats",
+      href: "/dashboard/chats",
+      icon: (
+        <IconMessage2Dollar className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Logout",
+      href: "#logout",
+      icon: (
+        <IconArrowLeft className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+  ];
+
+  // Profile link to be placed above Logout
+  const profileLink = {
+    label: "Profile",
+    href: "/dashboard/profile",
+    icon: (
+      <IconUserBolt className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+    ),
+  };
+
+  // Freelancer-specific links
+  const freelancerLinks = [
     {
       label: "By Organization",
       href: "/dashboard/explore/by-organization",
@@ -71,38 +108,10 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
         <IconStatusChange className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
-    {
-      label: "Payments",
-      href: "/dashboard/payment",
-      icon: (
-        <IconCurrencyDollar className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
-      label: "Message & Chats",
-      href: "/dashboard/chats",
-      icon: (
-        <IconMessage2Dollar className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
+  ];
 
-    {
-      label: "Profile",
-      href: "/dashboard/profile",
-      icon: (
-        <IconUserBolt className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-
-    {
-      label: "Logout",
-      href: "#logout",
-      icon: (
-        <IconArrowLeft className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-
-    //client ke liye
+  // Client-specific links (for minimal client sidebar)
+  const minimalClientLinks = [
     {
       label: "My Tasks",
       href: "/dashboard/myTasks",
@@ -117,7 +126,35 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
         <IconContract className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
+    {
+      label: "Logout",
+      href: "#logout",
+      icon: (
+        <IconArrowLeft className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
   ];
+
+  // Combine links based on user type
+  const getLinks = () => {
+    if (userType === 'freelancer') {
+      // Insert profileLink just before Logout
+      const base = [...commonLinks.slice(0, -1), ...freelancerLinks];
+      base.push(profileLink);
+      base.push(commonLinks[commonLinks.length - 1]);
+      return base;
+    } else if (userType === 'client') {
+      // Only show My Tasks, Contracts, and Logout for client
+      return minimalClientLinks;
+    }
+    // Default to freelancer links if user type is not set
+    const base = [...commonLinks.slice(0, -1), ...freelancerLinks];
+    base.push(profileLink);
+    base.push(commonLinks[commonLinks.length - 1]);
+    return base;
+  };
+
+  const links = getLinks();
 
   const CustomSidebarLink = ({ link, idx }: {
     link: {
@@ -208,37 +245,37 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      {/* Render the page content */}
-      <div className="flex-1 overflow-y-auto">{children}</div>
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full overflow-y-auto">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
 
+// Extract the D logo box as a reusable component
+const DLogoBox = () => (
+  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
+    <span className="text-white font-extrabold text-2xl drop-shadow">D</span>
+  </div>
+);
+
 const Logo = () => {
   return (
-    <Link
-      href="/"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
-    >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium whitespace-pre text-black dark:text-white"
-      >
-        Dkarma
-      </motion.span>
-    </Link>
+    <div className="flex items-center gap-2 px-4 py-2">
+      <div className="flex items-center gap-2">
+        <DLogoBox />
+        <span className="font-bold text-xl text-[var(--color-foreground)]">DKarma</span>
+      </div>
+    </div>
   );
 };
 
 const LogoIcon = () => {
   return (
-    <Link
-      href="/"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
-    >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
-    </Link>
+    <div className="flex items-center justify-center px-4 py-2">
+      <DLogoBox />
+    </div>
   );
 };

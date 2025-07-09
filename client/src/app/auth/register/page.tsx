@@ -8,6 +8,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
+import { useUserType } from "@/context/UserTypeContext";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -20,6 +21,7 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { setIsUserTypeModalOpen, setMode } = useUserType();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,7 +34,9 @@ export default function RegisterPage() {
     setSuccess("");
     try {
       await signUp(form.email, form.password, form.name);
-      router.push("/dashboard");
+      setMode('register');
+      setIsUserTypeModalOpen(true);
+      // Don't redirect immediately, let the modal handle it
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Registration failed";
       setError(errorMessage);
@@ -46,7 +50,9 @@ export default function RegisterPage() {
     setError("");
     try {
       await signInWithGoogle();
-      router.push("/dashboard");
+      setMode('register');
+      setIsUserTypeModalOpen(true);
+      // Don't redirect immediately, let the modal handle it
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Google registration failed";
       setError(errorMessage);
@@ -54,15 +60,19 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-md p-8 bg-surface rounded-2xl shadow-2xl border border-border">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-background)]">
+      {/* Animated background sparkles */}
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-20 animate-pulse bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[var(--color-primary)] via-transparent to-transparent" />
+      
+      <div className="relative w-full max-w-md p-8 bg-[var(--color-surface)]/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--color-border)]">
         <div className="flex flex-col items-center mb-6">
           <Image src="/favicon.ico" alt="Logo" className="w-12 h-12 mb-2" width={48} height={48} />
-          <h1 className="text-3xl font-extrabold text-[--color-foreground] mb-1">
+          <h1 className="text-3xl font-extrabold text-[var(--color-foreground)] mb-1">
             Create Account
           </h1>
-          <p className="text-sm text-muted]">Sign up to get started</p>
+          <p className="text-sm text-[var(--color-muted)]">Sign up to get started</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -72,7 +82,7 @@ export default function RegisterPage() {
             value={form.name}
             onChange={handleChange}
             required
-            className="bg-surface text-foreground] "
+            className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
           />
           <Input
             name="email"
@@ -81,7 +91,7 @@ export default function RegisterPage() {
             value={form.email}
             onChange={handleChange}
             required
-            className="bg-surface text-foreground] "
+            className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
           />
           <div className="relative">
             <Input
@@ -91,12 +101,12 @@ export default function RegisterPage() {
               value={form.password}
               onChange={handleChange}
               required
-              className="bg-surface text-foreground] pr-10"
+              className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)] pr-10"
             />
             <button
               type="button"
               tabIndex={-1}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-primary-hover"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-muted)] hover:text-[var(--color-primary-hover)]"
               onClick={() => setShowPassword((v) => !v)}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -104,16 +114,16 @@ export default function RegisterPage() {
           </div>
 
           {error && (
-            <div className="text-error text-sm text-center">{error}</div>
+            <div className="text-[var(--color-error)] text-sm text-center">{error}</div>
           )}
           {success && (
-            <div className="text-success text-sm text-center">{success}</div>
+            <div className="text-[var(--color-success)] text-sm text-center">{success}</div>
           )}
 
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary-hover1 text-white font-semibold py-2 rounded-lg transition"
+            className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold py-2 rounded-lg transition"
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -157,12 +167,12 @@ export default function RegisterPage() {
         </div>
 
         <div className="mt-6 flex flex-col items-center">
-          <span className="text-sm text-[--color-muted]">
+          <span className="text-sm text-[var(--color-muted)]">
             Already have an account?
           </span>
           <Button
             variant="secondary"
-            className="mt-2 w-full bg-surface text-white border border-border hover:bg-border"
+            className="mt-2 w-full bg-[var(--color-surface)] text-[var(--color-foreground)] border border-[var(--color-border)] hover:bg-[var(--color-border)] hover:text-white transition"
             onClick={() => router.push("/auth/login")}
           >
             Login

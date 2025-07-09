@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
+import { useUserType } from "@/context/UserTypeContext";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { setIsUserTypeModalOpen, setMode } = useUserType();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,7 +28,9 @@ export default function LoginPage() {
     setError("");
     try {
       await signIn(form.email, form.password);
-      router.push("/dashboard");
+      setMode('login');
+      setIsUserTypeModalOpen(true);
+      // Don't redirect immediately, let the modal handle it
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Login failed";
       setError(errorMessage);
@@ -40,7 +44,9 @@ export default function LoginPage() {
     setError("");
     try {
       await signInWithGoogle();
-      router.push("/dashboard");
+      setMode('login');
+      setIsUserTypeModalOpen(true);
+      // Don't redirect immediately, let the modal handle it
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Google login failed";
       setError(errorMessage);
@@ -50,12 +56,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-md p-8 bg-surface rounded-2xl shadow-2xl border border-border">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-background)]">
+      {/* Animated background sparkles */}
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-20 animate-pulse bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[var(--color-primary)] via-transparent to-transparent" />
+      
+      <div className="relative w-full max-w-md p-8 bg-[var(--color-surface)]/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--color-border)]">
         <div className="flex flex-col items-center mb-6">
           <Image src="/favicon.ico" alt="Logo" className="w-12 h-12 mb-2" width={48} height={48} />
-          <h1 className="text-3xl font-extrabold text-foreground mb-1">Welcome Back</h1>
-          <p className="text-sm text-muted">Sign in to your account</p>
+          <h1 className="text-3xl font-extrabold text-[var(--color-foreground)] mb-1">Welcome Back</h1>
+          <p className="text-sm text-[var(--color-muted)]">Sign in to your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -66,7 +75,7 @@ export default function LoginPage() {
             value={form.email}
             onChange={handleChange}
             required
-            className="bg-surface text-foreground"
+            className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
           />
 
           <div className="relative">
@@ -77,26 +86,26 @@ export default function LoginPage() {
               value={form.password}
               onChange={handleChange}
               required
-              className="bg-surface text-foreground pr-10"
+              className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)] pr-10"
             />
             <button
               type="button"
               tabIndex={-1}
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-primary-hover"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-muted)] hover:text-[var(--color-primary-hover)]"
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
 
           {error && (
-            <div className="text-error text-sm text-center">{error}</div>
+            <div className="text-[var(--color-error)] text-sm text-center">{error}</div>
           )}
 
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary-hover1 text-white font-semibold py-2 rounded-lg transition"
+            className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold py-2 rounded-lg transition"
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -140,10 +149,10 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-6 flex flex-col items-center">
-          <span className="text-sm text-muted">Don&apos;t have an account?</span>
+          <span className="text-sm text-[var(--color-muted)]">Don&apos;t have an account?</span>
           <Button
             variant="secondary"
-            className="mt-2 w-full bg-surface text-foreground border border-border hover:bg-border hover:text-white transition"
+            className="mt-2 w-full bg-[var(--color-surface)] text-[var(--color-foreground)] border border-[var(--color-border)] hover:bg-[var(--color-border)] hover:text-white transition"
             onClick={() => router.push("/auth/register")}
           >
             Register

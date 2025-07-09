@@ -331,17 +331,12 @@ export default function FreelancerProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* Sticky Save Button */}
-      {/* <div className="fixed top-6 right-6 z-50 pr-6 pt-4">
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-2xl rounded-xl px-6 py-3">
-          <Save className="w-4 h-4 mr-2" />
-          Save Changes
-        </Button>
-      </div> */}
-
+    <div className="min-h-screen bg-[var(--color-surface)] text-[var(--color-foreground)] relative overflow-x-hidden font-sans">
+      {/* Animated background sparkles */}
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-20 animate-pulse bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[var(--color-primary)] via-transparent to-transparent" />
+      
       {/* Hero Profile Section */}
-      <div className="relative bg-gradient-to-br from-[#111111] to-[#0a0a0a] border-b border-white/10">
+      <div className="relative bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-background)] border-b border-[var(--color-border)]">
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="text-center space-y-8">
             {/* Profile Avatar & Status */}
@@ -360,7 +355,7 @@ export default function FreelancerProfile() {
 
             {/* Name & Title */}
             <div className="space-y-4">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-[var(--color-foreground)] to-[var(--color-muted)] bg-clip-text text-transparent">
                 {fullName}
               </h1>
               <div className="flex items-center justify-center gap-2">
@@ -404,7 +399,7 @@ export default function FreelancerProfile() {
                   />
                 ) : (
                   <Badge
-                    className="bg-blue-600/20 text-blue-400 border-blue-500/30 px-4 py-2 text-lg"
+                    className="bg-[var(--color-primary)]/20 text-[var(--color-primary)] border-[var(--color-primary)]/30 px-4 py-2 text-lg"
                     style={{ cursor: 'pointer' }}
                     onClick={() => setEditingRole(true)}
                     title="Click to edit"
@@ -413,68 +408,68 @@ export default function FreelancerProfile() {
                   </Badge>
                 )}
                 <Badge
-                  className={`px-4 py-2 text-lg ${isAvailable ? "bg-green-600/20 text-green-400 border-green-500/30" : "bg-gray-600/20 text-gray-400 border-gray-500/30"}`}
+                  className={`px-4 py-2 text-lg ${isAvailable ? "bg-[var(--color-success)]/20 text-[var(--color-success)] border-[var(--color-success)]/30" : "bg-[var(--color-muted)]/20 text-[var(--color-muted)] border-[var(--color-muted)]/30"}`}
                 >
                   {isAvailable ? "Available" : "Busy"}
                 </Badge>
               </div>
               {editingBio ? (
-                <textarea
-                  value={bio}
-                  autoFocus
-                  onChange={e => setBio(e.target.value)}
-                  onBlur={async () => {
-                    setEditingBio(false);
-                    if (bio !== (profile?.bio || '')) {
-                      setSaving(true);
-                      try {
-                        await updateUserProfile({ bio });
-                        setShowSuccess(true);
-                        setTimeout(() => setShowSuccess(false), 2000);
-                      } catch {}
-                      setSaving(false);
-                    }
-                  }}
-                  onKeyDown={async (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      (e.target as HTMLTextAreaElement).blur();
-                    }
-                  }}
-                  placeholder="Add a short bio about yourself."
-                  className="w-full text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed bg-transparent border-none outline-none resize-none"
-                  rows={2}
-                />
-              ) : (
-                <p
-                  className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed cursor-pointer"
-                  onClick={() => setEditingBio(true)}
-                  title="Click to edit"
-                >
-                  {bio || "Add a short bio about yourself."}
-                </p>
+                                  <textarea
+                    value={bio}
+                    autoFocus
+                    onChange={e => setBio(e.target.value)}
+                    onBlur={async () => {
+                      setEditingBio(false);
+                      if (bio !== (profile?.bio || '')) {
+                        setSaving(true);
+                        try {
+                          await updateUserProfile({ bio });
+                          setShowSuccess(true);
+                          setTimeout(() => setShowSuccess(false), 2000);
+                        } catch {}
+                        setSaving(false);
+                      }
+                    }}
+                    onKeyDown={async (e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        (e.target as HTMLTextAreaElement).blur();
+                      }
+                    }}
+                    placeholder="Add a short bio about yourself."
+                    className="w-full text-xl text-[var(--color-muted)] max-w-2xl mx-auto leading-relaxed bg-transparent border-none outline-none resize-none"
+                    rows={2}
+                  />
+                ) : (
+                  <p
+                    className="text-xl text-[var(--color-muted)] max-w-2xl mx-auto leading-relaxed cursor-pointer"
+                    onClick={() => setEditingBio(true)}
+                    title="Click to edit"
+                  >
+                    {bio || "Add a short bio about yourself."}
+                  </p>
               )}
             </div>
 
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                <div className="text-3xl font-bold text-emerald-400">₹{totalEarned}</div>
-                <div className="text-gray-400">Total Earned</div>
+              <div className="bg-[var(--color-surface)]/90 backdrop-blur-sm rounded-2xl p-6 border border-[var(--color-border)]">
+                <div className="text-3xl font-bold text-[var(--color-success)]">₹{totalEarned}</div>
+                <div className="text-[var(--color-muted)]">Total Earned</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                <div className="text-3xl font-bold text-blue-400">{projectsDone}</div>
-                <div className="text-gray-400">Projects Done</div>
+              <div className="bg-[var(--color-surface)]/90 backdrop-blur-sm rounded-2xl p-6 border border-[var(--color-border)]">
+                <div className="text-3xl font-bold text-[var(--color-primary)]">{projectsDone}</div>
+                <div className="text-[var(--color-muted)]">Projects Done</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                <div className="text-3xl font-bold text-yellow-400 flex items-center gap-1">
-                  {averageRating !== null && averageRating > 0 ? averageRating.toFixed(1) : '-'} <Star className="w-6 h-6 fill-yellow-400" />
+              <div className="bg-[var(--color-surface)]/90 backdrop-blur-sm rounded-2xl p-6 border border-[var(--color-border)]">
+                <div className="text-3xl font-bold text-amber-400 flex items-center gap-1">
+                  {averageRating !== null && averageRating > 0 ? averageRating.toFixed(1) : '-'} <Star className="w-6 h-6 fill-amber-400" />
                 </div>
-                <div className="text-gray-400">Average Rating</div>
+                <div className="text-[var(--color-muted)]">Average Rating</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+              <div className="bg-[var(--color-surface)]/90 backdrop-blur-sm rounded-2xl p-6 border border-[var(--color-border)]">
                 <div className="text-3xl font-bold text-purple-400">₹{hourlyRateStat}</div>
-                <div className="text-gray-400">Hourly Rate</div>
+                <div className="text-[var(--color-muted)]">Hourly Rate</div>
               </div>
             </div>
           </div>
@@ -484,38 +479,38 @@ export default function FreelancerProfile() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 bg-white/5 border border-white/10 rounded-2xl p-1 mb-8">
+          <TabsList className="grid w-full grid-cols-5 bg-[var(--color-surface)]/90 border border-[var(--color-border)] rounded-2xl p-1 mb-8">
             <TabsTrigger
               value="profile"
-              className="data-[state=active]:bg-white data-[state=active]:text-black rounded-xl"
+              className="data-[state=active]:bg-[var(--color-primary)] data-[state=active]:text-white rounded-xl"
             >
               <User className="w-4 h-4 mr-2" />
               Profile
             </TabsTrigger>
             <TabsTrigger
               value="work"
-              className="data-[state=active]:bg-white data-[state=active]:text-black rounded-xl"
+              className="data-[state=active]:bg-[var(--color-primary)] data-[state=active]:text-white rounded-xl"
             >
               <Briefcase className="w-4 h-4 mr-2" />
               Work
             </TabsTrigger>
             <TabsTrigger
               value="portfolio"
-              className="data-[state=active]:bg-white data-[state=active]:text-black rounded-xl"
+              className="data-[state=active]:bg-[var(--color-primary)] data-[state=active]:text-white rounded-xl"
             >
               <Award className="w-4 h-4 mr-2" />
               Portfolio
             </TabsTrigger>
             <TabsTrigger
               value="payment"
-              className="data-[state=active]:bg-white data-[state=active]:text-black rounded-xl"
+              className="data-[state=active]:bg-[var(--color-primary)] data-[state=active]:text-white rounded-xl"
             >
               <CreditCard className="w-4 h-4 mr-2" />
               Payment
             </TabsTrigger>
             <TabsTrigger
               value="settings"
-              className="data-[state=active]:bg-white data-[state=active]:text-black rounded-xl"
+              className="data-[state=active]:bg-[var(--color-primary)] data-[state=active]:text-white rounded-xl"
             >
               <Settings className="w-4 h-4 mr-2" />
               Settings
@@ -526,9 +521,9 @@ export default function FreelancerProfile() {
           <TabsContent value="profile" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Basic Information */}
-              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+              <Card className="bg-[var(--color-surface)]/90 border-[var(--color-border)] backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                  <CardTitle className="text-xl text-[var(--color-foreground)] flex items-center gap-2">
                     <User className="w-5 h-5" />
                     Basic Information
                   </CardTitle>
@@ -536,25 +531,25 @@ export default function FreelancerProfile() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 gap-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300">Full Name</label>
+                      <label className="text-sm font-medium text-[var(--color-muted)]">Full Name</label>
                       <Input
                         value={fullName}
                         onChange={e => setFullName(e.target.value)}
                         placeholder="Full Name"
-                        className="bg-white/5 border-white/20 text-white focus:border-blue-500"
+                        className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300">Username</label>
+                      <label className="text-sm font-medium text-[var(--color-muted)]">Username</label>
                       <Input
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                         placeholder="Username"
-                        className="bg-white/5 border-white/20 text-white focus:border-blue-500"
+                        className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                      <label className="text-sm font-medium text-[var(--color-muted)] flex items-center gap-2">
                         <Mail className="w-4 h-4" />
                         Email
                       </label>
@@ -563,11 +558,11 @@ export default function FreelancerProfile() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         placeholder="Email"
-                        className="bg-white/5 border-white/20 text-white focus:border-blue-500"
+                        className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                      <label className="text-sm font-medium text-[var(--color-muted)] flex items-center gap-2">
                         <Phone className="w-4 h-4" />
                         Phone
                       </label>
@@ -575,11 +570,11 @@ export default function FreelancerProfile() {
                         value={phone}
                         onChange={e => setPhone(e.target.value)}
                         placeholder="Phone"
-                        className="bg-white/5 border-white/20 text-white focus:border-blue-500"
+                        className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                      <label className="text-sm font-medium text-[var(--color-muted)] flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
                         Location
                       </label>
@@ -587,11 +582,11 @@ export default function FreelancerProfile() {
                         value={location}
                         onChange={e => setLocation(e.target.value)}
                         placeholder="Location"
-                        className="bg-white/5 border-white/20 text-white focus:border-blue-500"
+                        className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                      <label className="text-sm font-medium text-[var(--color-muted)] flex items-center gap-2">
                         <Github className="w-4 h-4" />
                         GitHub
                       </label>
@@ -599,11 +594,11 @@ export default function FreelancerProfile() {
                         value={github}
                         onChange={e => setGithub(e.target.value)}
                         placeholder="github.com/username"
-                        className="bg-white/5 border-white/20 text-white focus:border-blue-500"
+                        className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                      <label className="text-sm font-medium text-[var(--color-muted)] flex items-center gap-2">
                         <Linkedin className="w-4 h-4" />
                         LinkedIn
                       </label>
@@ -611,11 +606,11 @@ export default function FreelancerProfile() {
                         value={linkedin}
                         onChange={e => setLinkedin(e.target.value)}
                         placeholder="linkedin.com/in/username"
-                        className="bg-white/5 border-white/20 text-white focus:border-blue-500"
+                        className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                      <label className="text-sm font-medium text-[var(--color-muted)] flex items-center gap-2">
                         <Globe className="w-4 h-4" />
                         Website
                       </label>
@@ -623,7 +618,7 @@ export default function FreelancerProfile() {
                         value={website}
                         onChange={e => setWebsite(e.target.value)}
                         placeholder="yourwebsite.com"
-                        className="bg-white/5 border-white/20 text-white focus:border-blue-500"
+                        className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)]"
                       />
                     </div>
                   </div>
@@ -640,16 +635,16 @@ export default function FreelancerProfile() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Bio</label>
+                    <label className="text-sm font-medium text-[var(--color-muted)]">Bio</label>
                     <Textarea
                       value={bio}
                       onChange={e => setBio(e.target.value)}
                       placeholder="Tell us about yourself..."
-                      className="bg-white/5 border-white/20 text-white focus:border-blue-500 min-h-[80px]"
+                      className="bg-[var(--color-surface)]/50 border-[var(--color-border)] text-[var(--color-foreground)] focus:border-[var(--color-primary)] min-h-[80px]"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Skills</label>
+                    <label className="text-sm font-medium text-[var(--color-muted)]">Skills</label>
                     
                     {/* Selected Skills Display */}
                     <div className="flex flex-wrap gap-2 mb-3">
@@ -880,7 +875,7 @@ export default function FreelancerProfile() {
                 </div>
               </CardContent>
             </Card>
-            <Button onClick={handleSave} disabled={saving} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white shadow-2xl rounded-xl px-6 py-3">
+            <Button onClick={handleSave} disabled={saving} className="mt-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-2xl rounded-xl px-6 py-3">
               {saving ? 'Saving...' : 'Save Changes'}
             </Button>
           </TabsContent>

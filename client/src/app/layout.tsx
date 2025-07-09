@@ -1,6 +1,8 @@
 import '../styles/globals.css';
 import { Inter, Sora } from 'next/font/google';
 import { AuthProvider } from '@/context/AuthContext';
+import { UserTypeProvider } from '@/context/UserTypeContext';
+import { UserTypeModalWrapper } from '@/components/auth/UserTypeModalWrapper';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -20,7 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${sora.variable}`}>
       <body className="bg-background text-foreground font-sans">
         <AuthProvider>
-          {children}
+          <UserTypeProvider>
+            {children}
+            <UserTypeModalWrapper />
+          </UserTypeProvider>
         </AuthProvider>
       </body>
     </html>
