@@ -210,8 +210,58 @@ export class UserService {
     }
   }
 
-  // Real-time user profile listener
+  // Delete user profile
+  static async deleteUserProfile(userId: string): Promise<void> {
+    try {
+      await this.updateUserProfile(userId, { deleted: true });
+    } catch (error) {
+      console.error('Error deleting user profile:', error);
+      throw error;
+    }
+  }
+
+  // Get user statistics
+  static async getUserStats(userId: string): Promise<{
+    totalEarned: number;
+    projectsDone: number;
+    averageRating: number;
+  }> {
+    try {
+      const profile = await this.getUserProfile(userId);
+      if (!profile) {
+        throw new Error('User profile not found');
+      }
+      
+      return {
+        totalEarned: profile.totalEarned || 0,
+        projectsDone: profile.projectsDone || 0,
+        averageRating: profile.averageRating || 0,
+      };
+    } catch (error) {
+      console.error('Error getting user stats:', error);
+      throw error;
+    }
+  }
+
+  // Update user statistics
+  static async updateUserStats(
+    userId: string,
+    stats: {
+      totalEarned?: number;
+      projectsDone?: number;
+      averageRating?: number;
+    }
+  ): Promise<void> {
+    try {
+      await this.updateUserProfile(userId, stats);
+    } catch (error) {
+      console.error('Error updating user stats:', error);
+      throw error;
+    }
+  }
+
+  // Real-time listener for user profile changes
   static onUserProfileChange(userId: string, callback: (profile: UserProfile | null) => void) {
     return FirestoreService.onDocumentSnapshot<UserProfile>(this.COLLECTION_NAME, userId, callback);
   }
-}
+} 

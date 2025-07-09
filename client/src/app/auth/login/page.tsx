@@ -7,12 +7,10 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-import { Wallet } from "lucide-react";
 import Image from "next/image";
 import { useUserType } from "@/context/UserTypeContext";
-import { WalletConnectButton } from "@/components/auth/WalletConnectButton";
-
-import { UserService } from "@/services/userService";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -32,8 +30,21 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      await signIn(form.email, form.password);
-      router.push("/dashboard");
+      const { user } = await signIn(form.email, form.password);
+      
+      // Check if user has a userType in Firestore
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.data();
+      
+      if (!userData || !userData.userType) {
+        // User doesn't have a role, go to choose role
+        router.replace("/auth/choose-role");
+      } else {
+        // User has a role, set it and go to dashboard
+        setUserType(userData.userType);
+        localStorage.setItem("userType", userData.userType);
+        router.replace("/dashboard");
+      }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Login failed";
       setError(errorMessage);
@@ -47,29 +58,27 @@ export default function LoginPage() {
     setError("");
     try {
       const { userCredential } = await signInWithGoogle();
-      // Always check Firestore for userType
-      const profile = await UserService.getUserProfile(userCredential.user.uid);
-      if (!profile || !profile.userType) {
-        localStorage.setItem("firebaseUser", JSON.stringify(userCredential.user));
-        localStorage.removeItem("userType"); // Ensure no stale value
+      const user = userCredential.user;
+      
+      // Check if user has a userType in Firestore
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.data();
+      
+      if (!userData || !userData.userType) {
+        // User doesn't have a role, go to choose role
         router.replace("/auth/choose-role");
-        return;
+      } else {
+        // User has a role, set it and go to dashboard
+        setUserType(userData.userType);
+        localStorage.setItem("userType", userData.userType);
+        router.replace("/dashboard");
       }
-      setUserType(profile.userType);
-      localStorage.setItem("userType", profile.userType);
-      router.replace("/dashboard");
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Google login failed";
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleWalletSuccess = async () => {
-    // Wallet authentication success - check for userType and redirect accordingly
-    // This will be handled by the existing auth flow
-    router.push("/dashboard");
   };
 
   return (
@@ -154,7 +163,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="mt-4 space-y-3">
+        <div className="mt-4">
           <Button
             type="button"
             onClick={handleGoogleLogin}
@@ -163,21 +172,6 @@ export default function LoginPage() {
           >
             <FcGoogle size={22} /> Login with Google
           </Button>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-[var(--color-border)]" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-[var(--color-surface)] px-2 text-[var(--color-muted)]">Or continue with</span>
-            </div>
-          </div>
-
-          <WalletConnectButton
-            mode="authenticate"
-            onSuccess={handleWalletSuccess}
-            className="w-full"
-          />
         </div>
 
         <div className="mt-6 flex flex-col items-center">

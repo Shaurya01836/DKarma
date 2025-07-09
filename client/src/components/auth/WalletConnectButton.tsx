@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useWalletAuth } from '@/hooks/useWalletAuth';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -44,7 +43,10 @@ export const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   if (mode === 'connect') {
     return (
       <div className={className}>
-        <ConnectButton />
+        <Button className="w-full flex items-center justify-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold py-2 rounded-lg transition">
+          <Wallet size={20} />
+          Connect Wallet
+        </Button>
       </div>
     );
   }
@@ -52,7 +54,10 @@ export const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   return (
     <div className={className}>
       {!isConnected ? (
-        <ConnectButton />
+        <Button className="w-full flex items-center justify-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold py-2 rounded-lg transition">
+          <Wallet size={20} />
+          Connect Wallet
+        </Button>
       ) : (
         <div className="space-y-4">
           <Button

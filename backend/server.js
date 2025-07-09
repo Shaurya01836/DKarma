@@ -8,7 +8,30 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Initialize Firebase Admin
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
+let serviceAccount;
+try {
+  // Try to parse from environment variable
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
+  
+  // If service account is empty or invalid, try to load from file
+  if (!serviceAccount.project_id) {
+    const fs = require('fs');
+    const path = require('path');
+    const serviceAccountPath = path.join(__dirname, 'serviceAccountKey.json');
+    
+    if (fs.existsSync(serviceAccountPath)) {
+      serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+      console.log('✅ Loaded Firebase service account from file');
+    } else {
+      console.log('⚠️  No Firebase service account found. Please set up FIREBASE_SERVICE_ACCOUNT in .env or create serviceAccountKey.json');
+      process.exit(1);
+    }
+  }
+} catch (error) {
+  console.error('❌ Error loading Firebase service account:', error.message);
+  process.exit(1);
+}
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });

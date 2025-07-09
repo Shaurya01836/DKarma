@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { useUserType } from '@/context/UserTypeContext';
+import { WalletAuthService } from '@/lib/walletAuth';
 
 export const useWalletAuth = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  // Temporary mock values until wallet connection is properly set up
+  // Temporary mock values until Wagmi is properly set up
   const address = undefined;
   const isConnected = false;
   const signMessageAsync = null;
 
   const { user } = useAuth();
-  // const { setUserType } = useUserType();
+  const { setUserType } = useUserType();
 
   useEffect(() => {
     setMounted(true);
@@ -38,11 +40,31 @@ export const useWalletAuth = () => {
     setError(null);
 
     try {
-      // This will be implemented to call backend API
-      console.log('Frontend authenticateWithWallet called - will communicate with backend');
+      // Get the message to sign
+      const message = WalletAuthService.getSignMessage(address);
       
-      // Mock success for now
-      return true;
+      // Sign the message
+      const signature = await signMessageAsync({ message });
+      
+      // Authenticate with Firebase
+      const result = await WalletAuthService.authenticateWithWallet(
+        address,
+        signature,
+        message
+      );
+
+      if (result.success) {
+        // Log the JWT token for debugging
+        console.log('🔥 JWT Token received:', result.user?.uid);
+        console.log('🔗 Wallet Address:', address);
+        
+        // Check if user has a role, if not, they'll be redirected to choose role
+        // This integrates with your existing role selection flow
+        return true;
+      } else {
+        setError(result.error || 'Authentication failed');
+        return false;
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
       setError(errorMessage);
@@ -72,11 +94,27 @@ export const useWalletAuth = () => {
     setError(null);
 
     try {
-      // This will be implemented to call backend API
-      console.log('Frontend linkWalletToUser called - will communicate with backend');
+      // Get the message to sign
+      const message = WalletAuthService.getSignMessage(address);
       
-      // Mock success for now
-      return true;
+      // Sign the message
+      const signature = await signMessageAsync({ message });
+      
+      // Link wallet to existing user
+      const result = await WalletAuthService.linkWalletToUser(
+        user.uid,
+        address,
+        signature,
+        message
+      );
+
+      if (result.success) {
+        console.log('✅ Wallet linked successfully');
+        return true;
+      } else {
+        setError(result.error || 'Wallet linking failed');
+        return false;
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Wallet linking failed';
       setError(errorMessage);

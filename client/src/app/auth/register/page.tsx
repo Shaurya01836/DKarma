@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useUserType } from "@/context/UserTypeContext";
-import { WalletConnectButton } from "@/components/auth/WalletConnectButton";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -34,10 +35,20 @@ export default function RegisterPage() {
     setError("");
     setSuccess("");
     try {
-      await signUp(form.email, form.password, form.name);
-      setMode('register');
-      setIsUserTypeModalOpen(true);
-      // Don't redirect immediately, let the modal handle it
+      const { user } = await signUp(form.email, form.password, form.name);
+      
+      // Check if user already has a userType
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.data();
+      
+      if (!userData || !userData.userType) {
+        // User doesn't have a role, show role selection modal
+        setMode('register');
+        setIsUserTypeModalOpen(true);
+      } else {
+        // User already has a role, go to dashboard
+        router.replace("/dashboard");
+      }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Registration failed";
       setError(errorMessage);
@@ -50,22 +61,27 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
     try {
-      await signInWithGoogle();
-      setMode('register');
-      setIsUserTypeModalOpen(true);
-      // Don't redirect immediately, let the modal handle it
+      const { userCredential } = await signInWithGoogle();
+      const user = userCredential.user;
+      
+      // Check if user already has a userType
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.data();
+      
+      if (!userData || !userData.userType) {
+        // User doesn't have a role, show role selection modal
+        setMode('register');
+        setIsUserTypeModalOpen(true);
+      } else {
+        // User already has a role, go to dashboard
+        router.replace("/dashboard");
+      }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Google registration failed";
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleWalletSuccess = async () => {
-    // Wallet registration success - show role selection modal
-    setMode('register');
-    setIsUserTypeModalOpen(true);
   };
 
   return (
@@ -162,7 +178,7 @@ export default function RegisterPage() {
           </Button>
         </form>
 
-        <div className="mt-4 space-y-3">
+        <div className="mt-4">
           <Button
             type="button"
             onClick={handleGoogleRegister}
@@ -171,21 +187,6 @@ export default function RegisterPage() {
           >
             <FcGoogle size={22} /> Register with Google
           </Button>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-[var(--color-border)]" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-[var(--color-surface)] px-2 text-[var(--color-muted)]">Or continue with</span>
-            </div>
-          </div>
-
-          <WalletConnectButton
-            mode="authenticate"
-            onSuccess={handleWalletSuccess}
-            className="w-full"
-          />
         </div>
 
         <div className="mt-6 flex flex-col items-center">

@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
-import { onAuthStateChange, getCurrentUser } from '@/lib/auth';
+import { getCurrentUser, onAuthStateChange } from '@/lib/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -34,19 +34,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // Check if user is already signed in
-    const currentUser = getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    }
+    const checkAuthStatus = async () => {
+      try {
+        const currentUser = getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error('Error checking auth status:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Listen for auth state changes
+    // Set up auth state listener
     const unsubscribe = onAuthStateChange((user) => {
       setUser(user);
       setLoading(false);
     });
 
-    // Cleanup subscription
-    return () => unsubscribe();
+    checkAuthStatus();
+
+    return unsubscribe;
   }, []);
 
   const value: AuthContextType = {
@@ -60,4 +67,4 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}; 
