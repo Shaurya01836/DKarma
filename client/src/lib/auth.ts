@@ -10,6 +10,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup
 } from 'firebase/auth';
+import type { AdditionalUserInfo } from 'firebase/auth';
 import { auth } from './firebase';
 import { UserService } from '@/services/userService';
 
@@ -124,7 +125,8 @@ export const signInWithGoogle = async (): Promise<{ userCredential: UserCredenti
         console.error('Error checking/creating user profile in Firestore after Google login:', err);
       }
     }
-    const isNewUser = userCredential?.additionalUserInfo?.isNewUser || false;
+    const additionalUserInfo = (userCredential as unknown as { additionalUserInfo?: AdditionalUserInfo }).additionalUserInfo;
+    const isNewUser = additionalUserInfo?.isNewUser || false;
     return { userCredential, isNewUser };
   } catch (error) {
     console.error('Error in signInWithGoogle:', error);

@@ -43,6 +43,7 @@ export interface UserProfile {
   linkedin?: string;
   website?: string;
   deleted?: boolean;
+  userType?: 'freelancer' | 'client';
 }
 
 export class UserService {
