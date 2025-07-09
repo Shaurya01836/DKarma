@@ -16,6 +16,7 @@ import {
   IconChecklist,
   IconCloudNetwork,
   IconContract,
+  IconWallet,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -124,6 +125,13 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       href: "/dashboard/contracts",
       icon: (
         <IconContract className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Wallet $ Funds",
+      href: "/dashboard/walletNFunds",
+      icon: (
+        <IconWallet className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
@@ -255,27 +263,32 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
 }
 
 // Extract the D logo box as a reusable component
-const DLogoBox = () => (
-  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
-    <span className="text-white font-extrabold text-2xl drop-shadow">D</span>
-  </div>
-);
 
 const Logo = () => {
   return (
-    <div className="flex items-center gap-2 px-4 py-2">
-      <div className="flex items-center gap-2">
-        <DLogoBox />
-        <span className="font-bold text-xl text-[var(--color-foreground)]">DKarma</span>
-      </div>
-    </div>
+    <Link
+      href="/"
+      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+    >
+      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="font-medium whitespace-pre text-black dark:text-white"
+      >
+        Dkarma
+      </motion.span>
+    </Link>
   );
 };
 
 const LogoIcon = () => {
   return (
-    <div className="flex items-center justify-center px-4 py-2">
-      <DLogoBox />
-    </div>
+    <Link
+      href="/"
+      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+    >
+      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+    </Link>
   );
 };

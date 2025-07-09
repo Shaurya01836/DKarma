@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { Eye, MessageSquare, Calendar, DollarSign, Clock, Star, FileText } from "lucide-react"
-import type { Contract } from "../types/contracts"
-import { getContractStatusColor, getPaymentStatusColor, formatCurrency, formatDate } from "../utils/contractUtils"
+import type { Contract } from "@/types"
+import { getContractStatusColor, getPaymentStatusColor, formatCurrency, formatDate } from "@/utils"
 
 interface ActiveContractsTabProps {
   contracts: Contract[]

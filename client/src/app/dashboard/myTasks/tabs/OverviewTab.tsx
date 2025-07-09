@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { TrendingUp, Clock, Plus, MessageSquare, Download } from "lucide-react"
-import type { Task } from "../types"
-import { getStatusColor } from "../utils/colorUtils"
+import type { Task } from "@/types"
+import { getStatusColor } from "@/utils"
 
 interface OverviewTabProps {
   tasks: Task[]

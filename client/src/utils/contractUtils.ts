@@ -1,4 +1,4 @@
-import type { ContractStatus, PaymentStatus } from "../types/contracts"
+import type { ContractStatus, PaymentStatus } from "@/types"
 
 export const getContractStatusColor = (status: ContractStatus) => {
   switch (status) {
@@ -43,17 +43,3 @@ export const getMilestoneStatusColor = (status: string) => {
   }
 }
 
-export const formatCurrency = (amount: number, currency = "USD") => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency,
-  }).format(amount)
-}
-
-export const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  })
-}

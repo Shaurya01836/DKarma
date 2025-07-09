@@ -74,7 +74,7 @@ export default function ClientTaskDashboard() {
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <p className="text-blue-300 text-sm font-semibold tracking-wide">TOTAL PROJECTS</p>
-                  <p className="text-4xl font-bold text-white">{totalTasks}</p>
+                  <p className="text-2xl font-bold text-white">{totalTasks}</p>
                   <p className="text-blue-200/70 text-xs">All time projects</p>
                 </div>
                 <div className="bg-blue-500/20 p-4 rounded-xl border border-blue-500/30">
@@ -89,7 +89,7 @@ export default function ClientTaskDashboard() {
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <p className="text-violet-300 text-sm font-semibold tracking-wide">ACTIVE PROJECTS</p>
-                  <p className="text-4xl font-bold text-white">{activeTasks}</p>
+                  <p className="text-2xl font-bold text-white">{activeTasks}</p>
                   <p className="text-violet-200/70 text-xs">In progress & review</p>
                 </div>
                 <div className="bg-violet-500/20 p-4 rounded-xl border border-violet-500/30">
@@ -104,7 +104,7 @@ export default function ClientTaskDashboard() {
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <p className="text-emerald-300 text-sm font-semibold tracking-wide">COMPLETED</p>
-                  <p className="text-4xl font-bold text-white">{completedTasks}</p>
+                  <p className="text-2xl font-bold text-white">{completedTasks}</p>
                   <p className="text-emerald-200/70 text-xs">Successfully delivered</p>
                 </div>
                 <div className="bg-emerald-500/20 p-4 rounded-xl border border-emerald-500/30">
@@ -119,7 +119,7 @@ export default function ClientTaskDashboard() {
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <p className="text-amber-300 text-sm font-semibold tracking-wide">TOTAL BUDGET</p>
-                  <p className="text-4xl font-bold text-white">${totalBudget.toLocaleString()}</p>
+                  <p className="text-2xl font-bold text-white">${totalBudget.toLocaleString()}</p>
                   <p className="text-amber-200/70 text-xs">Investment value</p>
                 </div>
                 <div className="bg-amber-500/20 p-4 rounded-xl border border-amber-500/30">

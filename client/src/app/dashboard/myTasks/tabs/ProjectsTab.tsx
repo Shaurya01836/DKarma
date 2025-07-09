@@ -8,8 +8,8 @@ import { Progress } from "@/components/ui/progress"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Eye, Users, MessageSquare, CheckCircle, DollarSign, Calendar, User } from "lucide-react"
-import type { Task } from "../types"
-import { getStatusColor, getPriorityColor } from "../utils/colorUtils"
+import type { Task } from "@/types"
+import { getStatusColor, getPriorityColor } from "@/utils"
 
 interface ProjectsTabProps {
   tasks: Task[]

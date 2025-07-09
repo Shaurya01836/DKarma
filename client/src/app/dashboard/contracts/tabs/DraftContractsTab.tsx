@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Eye, Edit, Send, Calendar, DollarSign, Clock, Star, FileText } from "lucide-react"
-import type { Contract } from "../types/contracts"
-import { getContractStatusColor, formatCurrency, formatDate } from "../utils/contractUtils"
+import type { Contract } from "@/types"
+import { getContractStatusColor, formatCurrency, formatDate } from "@/utils"
 
 interface DraftContractsTabProps {
   contracts: Contract[]

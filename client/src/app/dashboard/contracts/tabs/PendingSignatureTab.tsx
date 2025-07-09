@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Eye, FileSignature, Clock, DollarSign, Calendar, Star, AlertCircle } from "lucide-react"
-import type { Contract } from "../types/contracts"
-import { getContractStatusColor, formatCurrency, formatDate } from "../utils/contractUtils"
+import type { Contract } from "@/types"
+import { getContractStatusColor, formatCurrency, formatDate } from "@/utils"
 
 interface PendingSignatureTabProps {
   contracts: Contract[]

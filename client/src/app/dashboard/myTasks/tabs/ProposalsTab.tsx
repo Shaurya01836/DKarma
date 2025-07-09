@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Eye, XCircle, DollarSign, Timer, Star } from "lucide-react"
-import type { Proposal } from "../types"
-import { getProposalStatusColor } from "../utils/colorUtils"
+import type { Proposal } from "@/types"
+import { getProposalStatusColor } from "@/utils"
 
 interface ProposalsTabProps {
   proposals: Proposal[]
