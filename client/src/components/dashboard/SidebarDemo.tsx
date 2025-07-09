@@ -17,6 +17,7 @@ import {
   IconCloudNetwork,
   IconContract,
   IconWallet,
+  IconBasketBolt,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -132,6 +133,13 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       href: "/dashboard/walletNFunds",
       icon: (
         <IconWallet className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Dispute Center",
+      href: "/dashboard/dispute",
+      icon: (
+        <IconBasketBolt className="h-6 w-6 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {

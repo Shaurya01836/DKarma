@@ -1,4 +1,4 @@
-import type { Task, Proposal } from "../types"
+import type { Task, Proposal } from "@/types"
 
 export const mockTasks: Task[] = [
   {

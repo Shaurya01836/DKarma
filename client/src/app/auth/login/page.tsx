@@ -9,7 +9,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useUserType } from "@/context/UserTypeContext";
-import { UserTypeModal } from "@/components/auth/UserTypeModal";
+
 import { UserService } from "@/services/userService";
 
 export default function LoginPage() {
@@ -19,11 +19,10 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { setUserType } = useUserType();
-  const [showUserTypeModal, setShowUserTypeModal] = useState(false);
-  const [pendingGoogleUser, setPendingGoogleUser] = useState<any>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target as HTMLInputElement;
+    setForm({ ...form, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,17 +62,6 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleUserTypeSelect = async (userType: 'freelancer' | 'client') => {
-    setUserType(userType);
-    localStorage.setItem('userType', userType);
-    if (pendingGoogleUser) {
-      await UserService.updateUserProfile(pendingGoogleUser.uid, { userType });
-    }
-    setShowUserTypeModal(false);
-    setPendingGoogleUser(null);
-    router.push("/dashboard");
   };
 
   return (
@@ -180,12 +168,6 @@ export default function LoginPage() {
           </Button>
         </div>
       </div>
-      {/* User Type Modal for new Google users */}
-      <UserTypeModal
-        isOpen={showUserTypeModal}
-        onSelect={handleUserTypeSelect}
-        mode="register"
-      />
     </div>
   );
 }
