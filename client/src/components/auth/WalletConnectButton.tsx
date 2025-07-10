@@ -5,6 +5,7 @@ import { useWalletAuth } from '@/hooks/useWalletAuth';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Wallet } from 'lucide-react';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 interface WalletConnectButtonProps {
   mode?: 'connect' | 'authenticate' | 'link';
@@ -43,10 +44,7 @@ export const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   if (mode === 'connect') {
     return (
       <div className={className}>
-        <Button className="w-full flex items-center justify-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold py-2 rounded-lg transition">
-          <Wallet size={20} />
-          Connect Wallet
-        </Button>
+        <ConnectButton />
       </div>
     );
   }
@@ -54,10 +52,7 @@ export const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   return (
     <div className={className}>
       {!isConnected ? (
-        <Button className="w-full flex items-center justify-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold py-2 rounded-lg transition">
-          <Wallet size={20} />
-          Connect Wallet
-        </Button>
+        <ConnectButton />
       ) : (
         <div className="space-y-4">
           <Button
