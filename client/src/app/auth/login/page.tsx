@@ -72,7 +72,7 @@ export default function LoginPage() {
         // User has a role, set it and go to dashboard
         setUserType(userData.userType);
         localStorage.setItem("userType", userData.userType);
-        router.replace("/dashboard");
+      router.replace("/dashboard");
       }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Google login failed";
@@ -83,9 +83,22 @@ export default function LoginPage() {
   };
 
   const handleWalletSuccess = async () => {
-    // Handle successful wallet authentication
-    // This will be called when wallet authentication succeeds
-    router.replace("/auth/choose-role");
+    // After wallet authentication, check Firestore for userType/role
+    const user = (await import('firebase/auth')).getAuth().currentUser;
+    if (!user) return;
+
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    const userData = userDoc.data();
+
+    if (!userData || !userData.userType) {
+      // No role, go to choose role
+      router.replace('/auth/choose-role');
+    } else {
+      // Has role, go to dashboard
+      setUserType(userData.userType);
+      localStorage.setItem('userType', userData.userType);
+      router.replace('/dashboard');
+    }
   };
 
   return (
@@ -179,7 +192,7 @@ export default function LoginPage() {
           >
             <FcGoogle size={22} /> Login with Google
           </Button>
-          
+
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-[var(--color-border)]" />
@@ -188,7 +201,7 @@ export default function LoginPage() {
               <span className="bg-[var(--color-surface)] px-2 text-[var(--color-muted)]">Or continue with</span>
             </div>
           </div>
-          
+
           <WalletConnectButton
             mode="authenticate"
             onSuccess={handleWalletSuccess}
