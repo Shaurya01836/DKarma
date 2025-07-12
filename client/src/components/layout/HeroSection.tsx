@@ -1,137 +1,216 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
-import { HeroVideoDialog } from "../magicui/HeroVideoDialog";
+import React, { useState, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  Shield,
+  Zap,
+  Users,
+  Code,
+  ArrowRight,
+} from "lucide-react";
 
 export function HeroSection() {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Typing:", e.target.value);
+  const [mounted, setMounted] = useState(false);
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const translateY = useTransform(scrollY, [0, 300], [0, -50]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Search submitted");
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.6, -0.05, 0.01, 0.99] as [number, number, number, number],
+      },
+    },
   };
+
+  const features = [
+    {
+      icon: Shield,
+      title: "Enterprise Security",
+      description: "Bank-grade encryption and smart contract auditing",
+    },
+    {
+      icon: Zap,
+      title: "Lightning Fast",
+      description: "Sub-second transaction processing and instant settlements",
+    },
+    {
+      icon: Users,
+      title: "Global Network",
+      description: "Connect with verified professionals worldwide",
+    },
+    {
+      icon: Code,
+      title: "Developer First",
+      description: "Comprehensive APIs and SDK for seamless integration",
+    },
+  ];
+
+  if (!mounted) return null;
 
   return (
-    <section className="w-full min-h-screen flex items-center justify-center px-6 text-foreground pt-32 md:pt-32">
-      <div className="max-w-6xl w-full text-center space-y-10">
+    <section className="relative overflow-hidden">
+      {/* Sophisticated Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(255,255,255)_1px,_transparent_0)] bg-[length:50px_50px]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-transparent to-purple-500/20" />
+      </div>
+
+      {/* Animated Orbs */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 blur-3xl"
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-500/30 blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.2, 0.4, 0.2],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+      />
+
+      {/* Hero Content with Scroll Animation */}
+      <motion.div
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20"
+        style={{ opacity, y: translateY }}
+      >
         <motion.div
-          className="inline-block px-5 py-1.5 text-sm rounded-full bg-surface border border-border text-muted-foreground tracking-wide"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          className="text-center space-y-12"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          🚀 Web3-Powered Freelancing Revolution
+          {/* Status Badge */}
+          <motion.div variants={itemVariants}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-sm font-medium text-slate-300">
+                Now Live • 50,000+ Active Users
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Main Heading */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white">
+              The Future of
+              <br />
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Decentralized Work
+              </span>
+            </h1>
+            <p className="max-w-3xl mx-auto text-xl text-slate-300 leading-relaxed">
+              Enterprise-grade blockchain platform connecting global talent with
+              businesses. Secure smart contracts, instant payments, and zero
+              platform fees.
+            </p>
+          </motion.div>
+
+          {/* CTA Buttons */}
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <button className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl font-semibold text-white shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden">
+              <span className="relative z-10 flex items-center gap-2">
+               Explore the future
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </button>
+            <button className="px-8 py-4 border border-white/20 rounded-xl font-semibold text-white hover:bg-white/5 transition-all duration-300 backdrop-blur-sm">
+              View Documentation
+            </button>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div variants={itemVariants} className="pt-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+              {[
+                { value: "$50M+", label: "Total Volume" },
+                { value: "15k+", label: "Active Projects" },
+                { value: "99.9%", label: "Uptime" },
+                { value: "150+", label: "Countries" },
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className="text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
+                >
+                  <div className="text-3xl font-bold text-white mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-slate-400">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </motion.div>
+      </motion.div>
 
-        <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight font-display"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          Your{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-hover to-primary">
-            Decentralized Career
-          </span>{" "}
-          Starts Here
-        </motion.h1>
-
-        <motion.p
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-sans"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Connect, collaborate, and earn trustlessly using smart contracts. Join
-          the global shift to secure, transparent freelance ecosystems.
-        </motion.p>
-
+      {/* Feature Grid - Outside of scroll animation */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="max-w-2xl mx-auto"
+          className="mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <PlaceholdersAndVanishInput
-            placeholders={[
-              "Search blockchain-based gigs...",
-              "Find Solidity experts...",
-              "Post an escrow-protected task...",
-              "Hire contributors for your DAO...",
-            ]}
-            onChange={handleChange}
-            onSubmit={handleSubmit}
-          />
-        </motion.div>
-
-        <motion.div
-          className="flex justify-center pt-4"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.45 }}
-        >
-          <div className="relative">
-            <HeroVideoDialog
-              className="block dark:hidden"
-              animationStyle="from-center"
-              videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
-              thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"
-              thumbnailAlt="Hero Video"
-            />
-            <HeroVideoDialog
-              className="hidden dark:block"
-              animationStyle="from-center"
-              videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
-              thumbnailSrc="https://startup-template-sage.vercel.app/hero-dark.png"
-              thumbnailAlt="Hero Video"
-            />
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="flex flex-wrap justify-center gap-4 pt-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
-          {[
-            "Smart Contract Payments",
-            "Decentralized Hiring",
-            "Trustless Workflows",
-            "DAO Collaboration",
-          ].map((label, index) => (
-            <span
+          {features.map((feature, index) => (
+            <motion.div
               key={index}
-              className="px-4 py-1.5 rounded-full bg-surface border border-border text-sm text-muted-foreground"
+              variants={itemVariants}
+              className="group relative p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
             >
-              {label}
-            </span>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <feature.icon className="w-6 h-6 text-blue-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">
+                {feature.title}
+              </h3>
+              <p className="text-sm text-slate-400">{feature.description}</p>
+            </motion.div>
           ))}
         </motion.div>
-
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm text-muted-foreground pt-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <div>
-            <span className="text-white text-2xl font-bold">15K+</span>
-            <div>Verified Web3 Freelancers</div>
-          </div>
-          <div>
-            <span className="text-white text-2xl font-bold">200+</span>
-            <div>Trusted DAOs & Projects</div>
-          </div>
-          <div>
-            <span className="text-white text-2xl font-bold">$100M+</span>
-            <div>Secured via Smart Contracts</div>
-          </div>
-        </motion.div>
       </div>
+
+      {/* Subtle Grid Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_90%)]" />
     </section>
   );
 }

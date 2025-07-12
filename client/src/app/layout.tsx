@@ -23,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${sora.variable}`}>
       <body className="bg-background text-foreground font-sans">
+       
         <WagmiProvider>
           <AuthProvider>
             <UserTypeProvider>

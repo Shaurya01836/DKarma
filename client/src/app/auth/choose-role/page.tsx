@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation";
 import { UserTypeModal } from "@/components/auth/UserTypeModal";
 import { useUserType } from "@/context/UserTypeContext";
 import { auth, db } from "@/lib/firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { onAuthStateChanged, User } from "firebase/auth";
 
 export default function ChooseRolePage() {
   const router = useRouter();
   const { setUserType } = useUserType();
   const [showModal, setShowModal] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

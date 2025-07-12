@@ -1,5 +1,5 @@
 import { auth } from './firebase';
-import { signInWithCustomToken } from 'firebase/auth';
+import { signInWithCustomToken, User } from 'firebase/auth';
 
 export class WalletAuthService {
   private static readonly BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
@@ -13,7 +13,7 @@ export class WalletAuthService {
     address: string,
     signature: string,
     message: string
-  ): Promise<{ success: boolean; user?: any; error?: string }> {
+  ): Promise<{ success: boolean; user?: User; error?: string }> {
     try {
       // Call the backend wallet authentication endpoint
       const response = await fetch(`${this.BACKEND_URL}/auth/wallet`, {

@@ -19,14 +19,16 @@ export const signIn = async (email: string, password: string) => {
     
     console.log('User signed in:', user.email);
     return { user };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Sign in error:', error);
-    if (error.code === 'auth/user-not-found') {
-      throw new Error('Email not registered. Please register first.');
-    } else if (error.code === 'auth/wrong-password') {
-      throw new Error('Invalid password.');
-    } else {
-      throw new Error('Login failed. Please try again.');
+    if (error instanceof Error) {
+      if (error.message === 'auth/user-not-found') {
+        throw new Error('Email not registered. Please register first.');
+      } else if (error.message === 'auth/wrong-password') {
+        throw new Error('Invalid password.');
+      } else {
+        throw new Error('Login failed. Please try again.');
+      }
     }
   }
 };
@@ -53,12 +55,14 @@ export const signUp = async (email: string, password: string, displayName?: stri
     
     console.log('User registered in Firebase:', { email, displayName });
     return { user };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Sign up error:', error);
-    if (error.code === 'auth/email-already-in-use') {
-      throw new Error('Email already registered. Please login instead.');
-    } else {
-      throw new Error('Registration failed. Please try again.');
+    if (error instanceof Error) {
+      if (error.message === 'auth/email-already-in-use') {
+        throw new Error('Email already registered. Please login instead.');
+      } else {
+        throw new Error('Registration failed. Please try again.');
+      }
     }
   }
 };
@@ -89,9 +93,11 @@ export const signInWithGoogle = async () => {
     }
     
     return { userCredential: { user } };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Google sign in error:', error);
-    throw new Error('Google login failed. Please try again.');
+    if (error instanceof Error) {
+      throw new Error('Google login failed. Please try again.');
+    }
   }
 };
 
@@ -102,9 +108,11 @@ export const signOutUser = async () => {
     await auth.signOut();
     localStorage.removeItem('user');
     return true;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Sign out error:', error);
-    throw new Error('Sign out failed.');
+    if (error instanceof Error) {
+      throw new Error('Sign out failed.');
+    }
   }
 };
 

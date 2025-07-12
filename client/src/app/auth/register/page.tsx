@@ -36,7 +36,11 @@ export default function RegisterPage() {
     setError("");
     setSuccess("");
     try {
-      const { user } = await signUp(form.email, form.password, form.name);
+      const result = await signUp(form.email, form.password, form.name);
+      if (!result) {
+        throw new Error("Registration failed");
+      }
+      const { user } = result;
       
       // Check if user already has a userType
       const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -62,8 +66,11 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
     try {
-      const { userCredential } = await signInWithGoogle();
-      const user = userCredential.user;
+      const result = await signInWithGoogle();
+      if (!result) {
+        throw new Error("Google registration failed");
+      }
+      const user = result.userCredential.user;
       
       // Check if user already has a userType
       const userDoc = await getDoc(doc(db, 'users', user.uid));

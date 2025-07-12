@@ -82,7 +82,7 @@ export default function WalletDemoPage() {
           <CardHeader>
             <CardTitle>Features Included</CardTitle>
             <CardDescription>
-              What's implemented in this wallet connection system
+              What&apos;s implemented in this wallet connection system
             </CardDescription>
           </CardHeader>
           <CardContent>

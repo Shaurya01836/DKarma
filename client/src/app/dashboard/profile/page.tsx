@@ -33,7 +33,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useUser } from "@/hooks/useUser"
 import { useAuth } from "@/context/AuthContext"
 import { getAuth, EmailAuthProvider, reauthenticateWithCredential, updatePassword, deleteUser } from 'firebase/auth'
-import { auth, db } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'

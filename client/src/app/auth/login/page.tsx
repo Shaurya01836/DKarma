@@ -31,7 +31,11 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      const { user } = await signIn(form.email, form.password);
+      const result = await signIn(form.email, form.password);
+      if (!result) {
+        throw new Error("Login failed");
+      }
+      const { user } = result;
       
       // Check if user has a userType in Firestore
       const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -58,8 +62,11 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      const { userCredential } = await signInWithGoogle();
-      const user = userCredential.user;
+      const result = await signInWithGoogle();
+      if (!result) {
+        throw new Error("Google login failed");
+      }
+      const user = result.userCredential.user;
       
       // Check if user has a userType in Firestore
       const userDoc = await getDoc(doc(db, 'users', user.uid));
