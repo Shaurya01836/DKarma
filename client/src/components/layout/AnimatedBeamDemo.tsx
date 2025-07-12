@@ -1,7 +1,9 @@
 "use client";
 import React, { forwardRef, useRef } from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
+import { SparklesIcon } from "@heroicons/react/24/solid";
 
 const Circle = forwardRef<
   HTMLDivElement,
@@ -34,51 +36,76 @@ export function AnimatedBeamDemo() {
   const daoRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8">
-      <div className="w-full max-w-6xl">
-        {/* Title */}
-        <div className="text-center mb-10">
-          <h1 className="font-display text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-hover)] to-primary inline-block tracking-tight">
-            How Cryptify Connects Freelancers & Clients
-          </h1>
-          <div className="flex justify-center mt-2 mb-2">
-            <span className="block w-16 h-1 rounded-full bg-gradient-to-r from-[var(--color-primary)] via-primary-hover to-primary opacity-70"></span>
+    <section className="relative py-24 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.08),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(147,51,234,0.08),transparent_50%)]" />
+      
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:80px_80px] [mask-image:radial-gradient(ellipse_at_center,black_70%,transparent_100%)]" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-6">
+            <SparklesIcon className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-slate-300">
+              Platform Architecture
+            </span>
           </div>
-          <p className="mx-auto mt-3 max-w-xl text-base sm:text-lg font-normal tracking-tight text-[var(--color-muted)]">
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            How Dkarma Connects
+            <br />
+            <span className="bg-gradient-to-r from-primary via-primary-hover to-primary bg-clip-text text-transparent">
+              Freelancers & Clients
+            </span>
+          </h2>
+          <p className="max-w-2xl mx-auto text-lg text-slate-300 leading-relaxed">
             A visual journey of secure, decentralized collaboration on our
-            platform.
+            platform with trustless payments and global accessibility.
           </p>
-        </div>
+        </motion.div>
 
         {/* Legend */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded-full bg-gradient-to-br from-[var(--color-success)] to-emerald-700 border border-[var(--color-border)]" />
-            <span className="text-[var(--color-muted)] text-sm">
-              Freelancer
-            </span>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex flex-wrap justify-center gap-6 mb-12"
+        >
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
+            <span className="w-3 h-3 rounded-full bg-gradient-to-br from-[var(--color-success)] to-emerald-700 border border-[var(--color-border)]" />
+            <span className="text-slate-300 text-sm font-medium">Freelancer</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 border border-[var(--color-border)]" />
-            <span className="text-[var(--color-muted)] text-sm">Client</span>
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
+            <span className="w-3 h-3 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 border border-[var(--color-border)]" />
+            <span className="text-slate-300 text-sm font-medium">Client</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border border-[var(--color-border)]" />
-            <span className="text-[var(--color-muted)] text-sm">
-              Escrow Contract
-            </span>
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
+            <span className="w-3 h-3 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border border-[var(--color-border)]" />
+            <span className="text-slate-300 text-sm font-medium">Escrow Contract</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded-full bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-border)] border border-[var(--color-border)]" />
-            <span className="text-[var(--color-muted)] text-sm">
-              Infrastructure
-            </span>
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
+            <span className="w-3 h-3 rounded-full bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-border)] border border-[var(--color-border)]" />
+            <span className="text-slate-300 text-sm font-medium">Infrastructure</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Animated Beams Section */}
-        <div
-          className="relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] backdrop-blur-sm"
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-black/20 border border-[var(--color-border)] backdrop-blur-sm shadow-2xl"
           ref={containerRef}
         >
           <div className="flex size-full max-h-[350px] max-w-5xl flex-col items-stretch justify-between gap-8 p-8">
@@ -87,7 +114,7 @@ export function AnimatedBeamDemo() {
               <div className="flex flex-col items-center">
                 <Circle
                   ref={freelancerRef}
-                  className="bg-gradient-to-br from-[var(--color-success)] to-emerald-700 border-[var(--color-success)]"
+                  className="bg-gradient-to-br from-[var(--color-success)] to-emerald-700 border-[var(--color-success)] shadow-lg shadow-emerald-500/20"
                 >
                   <Icons.freelancer />
                 </Circle>
@@ -98,7 +125,7 @@ export function AnimatedBeamDemo() {
               <div className="flex flex-col items-center">
                 <Circle
                   ref={clientRef}
-                  className="bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 border-[var(--color-primary)]"
+                  className="bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 border-[var(--color-primary)] shadow-lg shadow-blue-500/20"
                 >
                   <Icons.client />
                 </Circle>
@@ -113,7 +140,7 @@ export function AnimatedBeamDemo() {
               <div className="flex flex-col items-center">
                 <Circle
                   ref={walletRef}
-                  className="bg-gradient-to-br from-orange-400 to-orange-700 border-orange-400"
+                  className="bg-gradient-to-br from-orange-400 to-orange-700 border-orange-400 shadow-lg shadow-orange-500/20"
                 >
                   <Icons.wallet />
                 </Circle>
@@ -124,7 +151,7 @@ export function AnimatedBeamDemo() {
               <div className="flex flex-col items-center">
                 <Circle
                   ref={smartContractRef}
-                  className="size-20 bg-gradient-to-br from-purple-600 to-pink-600 border-purple-600"
+                  className="size-20 bg-gradient-to-br from-purple-600 to-pink-600 border-purple-600 shadow-lg shadow-purple-500/20"
                 >
                   <Icons.smartContract />
                 </Circle>
@@ -135,7 +162,7 @@ export function AnimatedBeamDemo() {
               <div className="flex flex-col items-center">
                 <Circle
                   ref={ipfsRef}
-                  className="bg-gradient-to-br from-[var(--color-primary-hover)] to-[var(--color-border)] border-[var(--color-primary-hover)]"
+                  className="bg-gradient-to-br from-[var(--color-primary-hover)] to-[var(--color-border)] border-[var(--color-primary-hover)] shadow-lg shadow-cyan-500/20"
                 >
                   <Icons.ipfs />
                 </Circle>
@@ -150,7 +177,7 @@ export function AnimatedBeamDemo() {
               <div className="flex flex-col items-center">
                 <Circle
                   ref={blockchainRef}
-                  className="bg-gradient-to-br from-yellow-400 to-yellow-700 border-yellow-400"
+                  className="bg-gradient-to-br from-yellow-400 to-yellow-700 border-yellow-400 shadow-lg shadow-yellow-500/20"
                 >
                   <Icons.blockchain />
                 </Circle>
@@ -161,7 +188,7 @@ export function AnimatedBeamDemo() {
               <div className="flex flex-col items-center">
                 <Circle
                   ref={tokenRef}
-                  className="bg-gradient-to-br from-pink-500 to-rose-600 border-pink-500"
+                  className="bg-gradient-to-br from-pink-500 to-rose-600 border-pink-500 shadow-lg shadow-pink-500/20"
                 >
                   <Icons.token />
                 </Circle>
@@ -172,7 +199,7 @@ export function AnimatedBeamDemo() {
               <div className="flex flex-col items-center">
                 <Circle
                   ref={daoRef}
-                  className="bg-gradient-to-br from-teal-400 to-cyan-600 border-teal-400"
+                  className="bg-gradient-to-br from-teal-400 to-cyan-600 border-teal-400 shadow-lg shadow-teal-500/20"
                 >
                   <Icons.dao />
                 </Circle>
@@ -245,57 +272,63 @@ export function AnimatedBeamDemo() {
             gradientStartColor="var(--color-primary-hover)"
             gradientStopColor="#2dd4bf"
           />
-        </div>
+        </motion.div>
 
         {/* Features Grid */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-[var(--color-surface)] backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+          <div className="group bg-gradient-to-br from-[var(--color-surface)] to-black/20 backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6 hover:border-white/20 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-success)] to-emerald-700 flex items-center justify-center mr-3">
-                <Icons.shield className="w-4 h-4 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-success)] to-emerald-700 flex items-center justify-center mr-4 shadow-lg shadow-emerald-500/20">
+                <Icons.shield className="w-5 h-5 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-[var(--color-foreground)] font-display">
                 Trustless Payments
               </h3>
             </div>
-            <p className="text-[var(--color-muted)]">
+            <p className="text-[var(--color-muted)] leading-relaxed">
               Escrow contracts ensure automatic payment release upon milestone
-              completion, eliminating disputes.
+              completion, eliminating disputes and building trust.
             </p>
           </div>
 
-          <div className="bg-[var(--color-surface)] backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6">
+          <div className="group bg-gradient-to-br from-[var(--color-surface)] to-black/20 backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6 hover:border-white/20 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 flex items-center justify-center mr-3">
-                <Icons.globe className="w-4 h-4 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-cyan-700 flex items-center justify-center mr-4 shadow-lg shadow-blue-500/20">
+                <Icons.globe className="w-5 h-5 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-[var(--color-foreground)] font-display">
                 Global Access
               </h3>
             </div>
-            <p className="text-[var(--color-muted)]">
+            <p className="text-[var(--color-muted)] leading-relaxed">
               Borderless platform accessible to anyone with a crypto wallet, no
-              traditional banking required.
+              traditional banking required for global collaboration.
             </p>
           </div>
 
-          <div className="bg-[var(--color-surface)] backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6">
+          <div className="group bg-gradient-to-br from-[var(--color-surface)] to-black/20 backdrop-blur-sm border border-[var(--color-border)] rounded-xl p-6 hover:border-white/20 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mr-3">
-                <Icons.users className="w-4 h-4 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mr-4 shadow-lg shadow-pink-500/20">
+                <Icons.users className="w-5 h-5 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-[var(--color-foreground)] font-display">
                 Community Governed
               </h3>
             </div>
-            <p className="text-[var(--color-muted)]">
+            <p className="text-[var(--color-muted)] leading-relaxed">
               DAO governance allows the community to vote on platform changes
-              and dispute resolutions.
+              and dispute resolutions, ensuring transparency.
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </section>
   );
 }
 
