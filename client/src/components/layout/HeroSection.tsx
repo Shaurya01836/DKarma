@@ -6,8 +6,8 @@ import { ArrowRight } from "lucide-react";
 export function HeroSection() {
   const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const translateY = useTransform(scrollY, [0, 300], [0, -50]);
+  const opacity = useTransform(scrollY, [0, 750], [1, 0]);
+  const translateY = useTransform(scrollY, [0, 750], [0, -100]);
 
   useEffect(() => {
     setMounted(true);
@@ -42,7 +42,7 @@ export function HeroSection() {
     <section className="relative lg:min-h-screen overflow-hidden">
       {/* Hero Content with Scroll Animation */}
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20"
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen"
         style={{ opacity, y: translateY }}
       >
         <motion.div
