@@ -1,41 +1,111 @@
 import { useState, useEffect } from 'react';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase'; // adjust this path to your Firebase config
 import { useAuth } from '@/context/AuthContext';
-import { UserService, UserProfile } from '@/services/userService';
+
+interface UserProfile {
+  id: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
+  bio?: string;
+  skills?: string[];
+  organization?: string;
+  role?: string;
+  location?: string;
+  phone?: string;
+  username?: string;
+  experience?: string;
+  domain?: string;
+  hourlyRate?: string;
+  available?: boolean;
+  workingDays?: string[];
+  github?: string;
+  linkedin?: string;
+  website?: string;
+  totalEarned?: number;
+  projectsDone?: number;
+  averageRating?: number | null;
+  workHistory?: Array<{
+    id: string | number;
+    title: string;
+    organization: string;
+    payment: string;
+    rating: number;
+    date: string;
+  }>;
+  portfolio?: Array<{
+    id: string;
+    title: string;
+    description: string;
+    tech: string[];
+    tags: string[];
+    link: string;
+    demo: string;
+    github: string;
+    year: string;
+    image: string;
+  }>;
+  userType?: 'freelancer' | 'client';
+  walletAddress?: string;
+}
 
 export const useUser = () => {
   const { user, loading, isAuthenticated } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
 
-  // Load user profile when user changes
+  // Load user profile from Firestore
   useEffect(() => {
-    if (user && isAuthenticated) {
-      setProfileLoading(true);
-      UserService.getUserProfile(user.uid)
-        .then((userProfile) => {
-          setProfile(userProfile);
-        })
-        .catch((error) => {
-          console.error('Error loading user profile:', error);
-        })
-        .finally(() => {
+    const fetchProfile = async () => {
+      if (user && isAuthenticated) {
+        setProfileLoading(true);
+        try {
+          const userRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(userRef);
+          if (docSnap.exists()) {
+            setProfile({ id: user.uid, email: user.email || '', ...docSnap.data() } as UserProfile);
+          } else {
+            // User doc not found – use default fallback
+            const fallbackProfile: UserProfile = {
+              id: user.uid,
+              email: user.email || '',
+              displayName: user.displayName || '',
+              photoURL: user.photoURL || '',
+              userType: 'freelancer',
+            };
+            setProfile(fallbackProfile);
+          }
+        } catch (err) {
+          console.error('Error fetching profile:', err);
+        } finally {
           setProfileLoading(false);
-        });
-    } else {
-      setProfile(null);
-    }
+        }
+      } else {
+        setProfile(null);
+      }
+    };
+
+    fetchProfile();
   }, [user, isAuthenticated]);
 
-  // Create or update user profile
+  // Create or update Firestore profile
   const createUserProfile = async (additionalData?: Partial<UserProfile>) => {
     if (!user) throw new Error('User not authenticated');
-    
+
     try {
       setProfileLoading(true);
-      await UserService.createUserProfile(user, additionalData);
-      // Reload profile
-      const updatedProfile = await UserService.getUserProfile(user.uid);
-      setProfile(updatedProfile);
+      const userRef = doc(db, 'users', user.uid);
+      const newProfile: UserProfile = {
+        id: user.uid,
+        email: user.email || '',
+        displayName: user.displayName || '',
+        photoURL: user.photoURL || '',
+        userType: 'freelancer',
+        ...additionalData,
+      };
+      await setDoc(userRef, newProfile, { merge: true });
+      setProfile(newProfile);
     } catch (error) {
       console.error('Error creating user profile:', error);
       throw error;
@@ -44,16 +114,16 @@ export const useUser = () => {
     }
   };
 
-  // Update user profile
   const updateUserProfile = async (data: Partial<UserProfile>) => {
     if (!user) throw new Error('User not authenticated');
-    
+
     try {
       setProfileLoading(true);
-      await UserService.updateUserProfile(user.uid, data);
-      // Reload profile
-      const updatedProfile = await UserService.getUserProfile(user.uid);
-      setProfile(updatedProfile);
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, data);
+      if (profile) {
+        setProfile({ ...profile, ...data });
+      }
     } catch (error) {
       console.error('Error updating user profile:', error);
       throw error;
@@ -62,17 +132,16 @@ export const useUser = () => {
     }
   };
 
-  // Upload profile picture
-  const uploadProfilePicture = async (file: File) => {
+  const uploadProfilePicture = async (url: string) => {
     if (!user) throw new Error('User not authenticated');
-    
     try {
       setProfileLoading(true);
-      const photoURL = await UserService.uploadProfilePicture(user.uid, file);
-      // Reload profile
-      const updatedProfile = await UserService.getUserProfile(user.uid);
-      setProfile(updatedProfile);
-      return photoURL;
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, { photoURL: url });
+      if (profile) {
+        setProfile({ ...profile, photoURL: url });
+      }
+      return url;
     } catch (error) {
       console.error('Error uploading profile picture:', error);
       throw error;
@@ -90,4 +159,4 @@ export const useUser = () => {
     updateUserProfile,
     uploadProfilePicture,
   };
-}; 
+};

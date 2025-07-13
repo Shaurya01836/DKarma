@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase'; // adjust this path to your Firebase config
 import { useAuth } from '@/context/AuthContext';
+import { useAccount } from 'wagmi';
 
 interface UserProfile {
   id: string;
@@ -50,49 +53,76 @@ interface UserProfile {
 
 export const useUser = () => {
   const { user, loading, isAuthenticated } = useAuth();
+  const { address, isConnected } = useAccount(); // <-- Add this line
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
 
-  // Load user profile when user changes
+  // Load user profile from Firestore
   useEffect(() => {
-    if (user && isAuthenticated) {
+    const fetchProfile = async () => {
+      if (user && isAuthenticated) {
+        setProfileLoading(true);
+        try {
+          const userRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(userRef);
+          if (docSnap.exists()) {
+            setProfile({ id: user.uid, email: user.email || '', ...docSnap.data() } as UserProfile);
+          } else {
+            // User doc not found – use default fallback
+            const fallbackProfile: UserProfile = {
+              id: user.uid,
+              email: user.email || '',
+              displayName: user.displayName || '',
+              photoURL: user.photoURL || '',
+              userType: 'freelancer',
+            };
+            setProfile(fallbackProfile);
+          }
+        } catch (err) {
+          console.error('Error fetching profile:', err);
+        } finally {
+          setProfileLoading(false);
+        }
+      } else if (isConnected && address) {
+        setProfileLoading(true);
+        try {
+          const userRef = doc(db, 'users', address);
+          const docSnap = await getDoc(userRef);
+          if (docSnap.exists()) {
+            setProfile({ id: address, email: '', walletAddress: address, ...docSnap.data() } as UserProfile);
+          } else {
+            setProfile(null);
+          }
+        } catch (err) {
+          console.error('Error fetching wallet profile:', err);
+        } finally {
+          setProfileLoading(false);
+        }
+      } else {
+        setProfile(null);
+      }
+    };
+
+    fetchProfile();
+  }, [user, isAuthenticated, isConnected, address]);
+
+  // Create or update Firestore profile
+  const createUserProfile = async (additionalData?: Partial<UserProfile>) => {
+    if (!user) throw new Error('User not authenticated');
+
+    try {
       setProfileLoading(true);
-      // This will be implemented to call backend API
-      console.log('Frontend useUser: Loading user profile from backend');
-      
-      // Mock profile for now
-      const mockProfile: UserProfile = {
+      const userRef = doc(db, 'users', user.uid);
+      const newProfile: UserProfile = {
         id: user.uid,
         email: user.email || '',
         displayName: user.displayName || '',
         photoURL: user.photoURL || '',
         userType: 'freelancer',
-      };
-      
-      setProfile(mockProfile);
-      setProfileLoading(false);
-    } else {
-      setProfile(null);
-    }
-  }, [user, isAuthenticated]);
-
-  // Create or update user profile
-  const createUserProfile = async (additionalData?: Partial<UserProfile>) => {
-    if (!user) throw new Error('User not authenticated');
-    
-    try {
-      setProfileLoading(true);
-      // This will be implemented to call backend API
-      console.log('Frontend createUserProfile: Will call backend API');
-      
-      // Mock success for now
-      const mockProfile: UserProfile = {
-        id: user.uid,
-        email: user.email || '',
-        displayName: user.displayName || '',
         ...additionalData,
       };
-      setProfile(mockProfile);
+      await setDoc(userRef, newProfile, { merge: true });
+      setProfile(newProfile);
     } catch (error) {
       console.error('Error creating user profile:', error);
       throw error;
@@ -101,16 +131,13 @@ export const useUser = () => {
     }
   };
 
-  // Update user profile
   const updateUserProfile = async (data: Partial<UserProfile>) => {
     if (!user) throw new Error('User not authenticated');
-    
+
     try {
       setProfileLoading(true);
-      // This will be implemented to call backend API
-      console.log('Frontend updateUserProfile: Will call backend API');
-      
-      // Mock success for now
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, data);
       if (profile) {
         setProfile({ ...profile, ...data });
       }
@@ -122,21 +149,16 @@ export const useUser = () => {
     }
   };
 
-  // Upload profile picture
-  const uploadProfilePicture = async () => {
+  const uploadProfilePicture = async (url: string) => {
     if (!user) throw new Error('User not authenticated');
-    
     try {
       setProfileLoading(true);
-      // This will be implemented to call backend API
-      console.log('Frontend uploadProfilePicture: Will call backend API');
-      
-      // Mock success for now
-      const mockUrl = 'https://example.com/mock-profile-picture.jpg';
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, { photoURL: url });
       if (profile) {
-        setProfile({ ...profile, photoURL: mockUrl });
+        setProfile({ ...profile, photoURL: url });
       }
-      return mockUrl;
+      return url;
     } catch (error) {
       console.error('Error uploading profile picture:', error);
       throw error;
@@ -154,4 +176,4 @@ export const useUser = () => {
     updateUserProfile,
     uploadProfilePicture,
   };
-}; 
+};

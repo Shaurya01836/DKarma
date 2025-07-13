@@ -1,58 +1,53 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { signIn, signInWithGoogle } from "@/lib/auth";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { Eye, EyeOff } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
-import Image from "next/image";
-import { useUserType } from "@/context/UserTypeContext";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import { WalletConnectButton } from "@/components/auth/WalletConnectButton";
+import { useState } from 'react';
+import { signIn, signInWithGoogle } from '@/lib/auth';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
+import { FcGoogle } from 'react-icons/fc';
+import Image from 'next/image';
+import { useUserType } from '@/context/UserTypeContext';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { WalletConnectButton } from '@/components/auth/WalletConnectButton';
 
 export default function LoginPage() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { setUserType } = useUserType();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target as HTMLInputElement;
+    const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setError('');
     try {
       const result = await signIn(form.email, form.password);
-      if (!result) {
-        throw new Error("Login failed");
-      }
       const { user } = result;
-      
-      // Check if user has a userType in Firestore
+
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       const userData = userDoc.data();
-      
-      if (!userData || !userData.userType) {
-        // User doesn't have a role, go to choose role
-        router.replace("/auth/choose-role");
+
+      if (!userData || !userData.name) {
+        router.replace('/auth/complete-profile'); // Profile incomplete
+      } else if (!userData.userType) {
+        router.replace('/auth/choose-role'); // Role missing
       } else {
-        // User has a role, set it and go to dashboard
         setUserType(userData.userType);
-        localStorage.setItem("userType", userData.userType);
-        router.replace("/dashboard");
+        localStorage.setItem('userType', userData.userType);
+        router.replace('/dashboard');
       }
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Login failed";
-      setError(errorMessage);
+    } catch (err: any) {
+      setError(err.message || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -60,57 +55,32 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     setLoading(true);
-    setError("");
+    setError('');
     try {
       const result = await signInWithGoogle();
-      if (!result) {
-        throw new Error("Google login failed");
-      }
       const user = result.userCredential.user;
-      
-      // Check if user has a userType in Firestore
+
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       const userData = userDoc.data();
-      
-      if (!userData || !userData.userType) {
-        // User doesn't have a role, go to choose role
-        router.replace("/auth/choose-role");
+
+      if (!userData || !userData.name) {
+        router.replace('/auth/complete-profile'); // Profile incomplete
+      } else if (!userData.userType) {
+        router.replace('/auth/choose-role'); // Role missing
       } else {
-        // User has a role, set it and go to dashboard
         setUserType(userData.userType);
-        localStorage.setItem("userType", userData.userType);
-      router.replace("/dashboard");
+        localStorage.setItem('userType', userData.userType);
+        router.replace('/dashboard');
       }
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Google login failed";
-      setError(errorMessage);
+    } catch (err: any) {
+      setError(err.message || 'Google login failed');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleWalletSuccess = async () => {
-    // After wallet authentication, check Firestore for userType/role
-    const user = (await import('firebase/auth')).getAuth().currentUser;
-    if (!user) return;
-
-    const userDoc = await getDoc(doc(db, 'users', user.uid));
-    const userData = userDoc.data();
-
-    if (!userData || !userData.userType) {
-      // No role, go to choose role
-      router.replace('/auth/choose-role');
-    } else {
-      // Has role, go to dashboard
-      setUserType(userData.userType);
-      localStorage.setItem('userType', userData.userType);
-      router.replace('/dashboard');
-    }
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-background)]">
-      {/* Animated background sparkles */}
       <div className="pointer-events-none fixed inset-0 z-0 opacity-20 animate-pulse bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[var(--color-primary)] via-transparent to-transparent" />
       
       <div className="relative w-full max-w-md p-8 bg-[var(--color-surface)]/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--color-border)]">
@@ -134,7 +104,7 @@ export default function LoginPage() {
           <div className="relative">
             <Input
               name="password"
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
@@ -151,9 +121,7 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {error && (
-            <div className="text-[var(--color-error)] text-sm text-center">{error}</div>
-          )}
+          {error && <div className="text-[var(--color-error)] text-sm text-center">{error}</div>}
 
           <Button
             type="submit"
@@ -168,24 +136,13 @@ export default function LoginPage() {
                   fill="none"
                   viewBox="0 0 24 24"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8z"
-                  ></path>
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
                 </svg>
                 Logging in...
               </span>
             ) : (
-              "Login"
+              'Login'
             )}
           </Button>
         </form>
@@ -209,10 +166,10 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* Wallet users will be redirected to /auth/complete-profile after connect */}
           <WalletConnectButton
-            mode="authenticate"
-            onSuccess={handleWalletSuccess}
             className="w-full"
+            onSuccess={() => router.replace('/auth/complete-profile')}
           />
         </div>
 
@@ -221,7 +178,7 @@ export default function LoginPage() {
           <Button
             variant="secondary"
             className="mt-2 w-full bg-[var(--color-surface)] text-[var(--color-foreground)] border border-[var(--color-border)] hover:bg-[var(--color-border)] hover:text-white transition"
-            onClick={() => router.push("/auth/register")}
+            onClick={() => router.push('/auth/register')}
           >
             Register
           </Button>

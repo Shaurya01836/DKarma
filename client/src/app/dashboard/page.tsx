@@ -114,6 +114,8 @@ const motivationalQuotes = [
 export default function FreelancerDashboard() {
   const { user } = useAuth();
   const { profile, loading } = useUser()
+  console.log("🔥 profile", profile)
+
   const [visibleJobs, setVisibleJobs] = useState(3)
   const [quoteIdx, setQuoteIdx] = useState(0)
   const [quoteFade, setQuoteFade] = useState(true)
@@ -144,7 +146,8 @@ export default function FreelancerDashboard() {
   // Get user's display name
   const getUserDisplayName = () => {
     if (loading) return "Loading...";
-    if (profile?.displayName) return profile.displayName;
+if (profile?.displayName) return profile.displayName;
+if (profile?.walletAddress) return `${profile.walletAddress.slice(0, 6)}...${profile.walletAddress.slice(-4)}`;
     if (user?.displayName) return user.displayName;
     return "User";
   }

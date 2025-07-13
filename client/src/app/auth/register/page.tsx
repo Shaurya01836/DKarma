@@ -212,11 +212,10 @@ export default function RegisterPage() {
             </div>
           </div>
           
-          <WalletConnectButton
-            mode="authenticate"
-            onSuccess={handleWalletSuccess}
-            className="w-full"
-          />
+               <WalletConnectButton
+  className="w-full"
+  onSuccess={() => router.replace('/dashboard')}
+/>
         </div>
 
         <div className="mt-6 flex flex-col items-center">
