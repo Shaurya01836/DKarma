@@ -153,7 +153,7 @@ if (profile?.walletAddress) return `${profile.walletAddress.slice(0, 6)}...${pro
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] relative overflow-x-hidden font-sans">
+    <div className="min-h-screen text-[var(--color-foreground)] relative overflow-x-hidden font-sans">
       {/* Animated background sparkles */}
       <div className="pointer-events-none fixed inset-0 z-0 opacity-20 animate-pulse bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[var(--color-primary)] via-transparent to-transparent" />
       {/* Top Bar */}

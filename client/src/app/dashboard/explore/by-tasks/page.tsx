@@ -70,7 +70,7 @@ export default function WorkTask() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--color-background)] via-[var(--color-surface)] to-[var(--color-background)] text-[var(--color-foreground)] font-sans">
+    <div className="min-h-screen text-[var(--color-foreground)] font-sans">
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Header Section */}
         <div className="mb-10 border-b border-[var(--color-border)] pb-6">

@@ -47,7 +47,7 @@ export default function WalletDemoPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <WalletConnectButton mode="connect" />
+                  <WalletConnectButton />
                 </CardContent>
               </Card>
 
@@ -59,7 +59,7 @@ export default function WalletDemoPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <WalletConnectButton mode="authenticate" />
+                  <WalletConnectButton />
                 </CardContent>
               </Card>
 
@@ -71,7 +71,7 @@ export default function WalletDemoPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <WalletConnectButton mode="link" />
+                  <WalletConnectButton />
                 </CardContent>
               </Card>
             </div>

@@ -221,7 +221,7 @@ export default function TaskOverview() {
     return (
       <Card
         key={task.id}
-        className="bg-[var(--color-surface)]/90 border-[var(--color-border)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10 transition-all duration-500 hover:scale-[1.03] cursor-pointer group backdrop-blur-lg relative overflow-hidden shadow-xl rounded-3xl"
+        className=" border-[var(--color-border)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10 transition-all duration-500 hover:scale-[1.03] cursor-pointer group backdrop-blur-lg relative overflow-hidden shadow-xl rounded-3xl"
       >
         {task.urgent && (
           <div className="absolute top-4 right-4 z-10 animate-pulse">

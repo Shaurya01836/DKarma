@@ -47,7 +47,7 @@ export default function ClientTaskDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--color-background)] via-[var(--color-surface)] to-[var(--color-background)] text-[var(--color-foreground)] font-sans">
+    <div className="min-h-screen text-[var(--color-foreground)] font-sans">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-6">

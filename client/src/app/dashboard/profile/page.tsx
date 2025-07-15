@@ -38,6 +38,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useUserType } from "@/context/UserTypeContext";
+import { signOutUser } from "@/lib/auth";
 
 const workingDaysList = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -333,12 +334,17 @@ export default function FreelancerProfile() {
     }
   };
 
+  const handleLogout = async () => {
+    await signOutUser();
+    router.push("/");
+  };
+
   if (profileLoading || authLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-surface)] text-[var(--color-foreground)] relative overflow-x-hidden font-sans">
+    <div className="min-h-screen text-[var(--color-foreground)] relative overflow-x-hidden font-sans">
       {/* Switch Role Button for Clients and Freelancers */}
       {(userType === 'client' || userType === 'freelancer') && (
         <div className="flex justify-end max-w-7xl mx-auto px-6 pt-8">
@@ -1337,6 +1343,13 @@ export default function FreelancerProfile() {
           Profile saved successfully!
         </div>
       )}
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        className="absolute top-4 right-4 px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition z-20"
+      >
+        Logout
+      </button>
     </div>
   )
 }

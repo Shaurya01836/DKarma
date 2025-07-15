@@ -92,13 +92,6 @@ export default function RegisterPage() {
     }
   };
 
-  const handleWalletSuccess = async () => {
-    // Handle successful wallet authentication
-    // This will be called when wallet authentication succeeds
-    setMode('register');
-    setIsUserTypeModalOpen(true);
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-background)]">
       {/* Animated background sparkles */}

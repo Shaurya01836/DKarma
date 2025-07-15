@@ -32,6 +32,11 @@ export default function LoginPage() {
     setError('');
     try {
       const result = await signIn(form.email, form.password);
+      if (!result || !result.user) {
+        setError("Login failed. Please try again.");
+        setLoading(false);
+        return;
+      }
       const { user } = result;
 
       const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -46,8 +51,8 @@ export default function LoginPage() {
         localStorage.setItem('userType', userData.userType);
         router.replace('/dashboard');
       }
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
+    } catch (err: unknown) {
+      setError((err as Error).message || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -58,6 +63,11 @@ export default function LoginPage() {
     setError('');
     try {
       const result = await signInWithGoogle();
+      if (!result || !result.userCredential || !result.userCredential.user) {
+        setError("Google login failed. Please try again.");
+        setLoading(false);
+        return;
+      }
       const user = result.userCredential.user;
 
       const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -72,8 +82,8 @@ export default function LoginPage() {
         localStorage.setItem('userType', userData.userType);
         router.replace('/dashboard');
       }
-    } catch (err: any) {
-      setError(err.message || 'Google login failed');
+    } catch (err: unknown) {
+      setError((err as Error).message || 'Google login failed');
     } finally {
       setLoading(false);
     }

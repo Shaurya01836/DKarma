@@ -27,7 +27,7 @@ export default function Payments() {
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--color-background)] via-[var(--color-surface)] to-[var(--color-background)] text-[var(--color-foreground)] font-sans">
+    <div className="min-h-screen text-[var(--color-foreground)] font-sans">
       <main className="max-w-7xl mx-auto px-4 py-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 border-b border-[var(--color-border)] pb-4">

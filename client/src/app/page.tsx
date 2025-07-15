@@ -40,7 +40,9 @@ function page() {
         <GlareCardDemo />
         <AnimatedPinDemo />
         <AnimatedBeamDemo />
-        <PricingTable />
+        <div id="pricing-table-section">
+          <PricingTable />
+        </div>
         <Footer />
       </div>
     </div>

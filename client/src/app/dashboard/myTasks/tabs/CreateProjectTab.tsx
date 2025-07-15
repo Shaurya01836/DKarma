@@ -7,15 +7,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Target, ArrowRight, Zap, Upload } from "lucide-react"
+import { Target, ArrowRight, Upload } from "lucide-react"
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { ESCROW_ABI, ESCROW_ADDRESS } from '@/lib/escrowABI';
 import { parseEther } from 'viem';
 import type { Hex } from 'viem';
-import type { Chain } from 'viem/chains'
 import { readContract } from 'wagmi/actions';
 import { Interface } from 'ethers';
-import { createConfig, http } from 'wagmi'
 import { eduChain } from '../../../../lib/eduChain'
 import { config } from '@/lib/wagmi-config'; // adjust path as needed
 
@@ -31,7 +29,6 @@ export default function CreateProjectTab() {
   const [deadline, setDeadline] = useState("");
   const [duration, setDuration] = useState("");
   const [skills, setSkills] = useState("");
-  const [files, setFiles] = useState<any[]>([]);
   // Milestones
   const [milestones, setMilestones] = useState([
     { title: '', amount: '', description: '', deadline: '' }
@@ -44,7 +41,6 @@ export default function CreateProjectTab() {
   const deadlineTimestamp = deadline ? Math.floor(new Date(deadline).getTime() / 1000) : 0;
 
   // Submission state
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState("");
   const [txHash, setTxHash] = useState<Hex | undefined>(undefined);
@@ -52,8 +48,8 @@ export default function CreateProjectTab() {
   // Write contract
   const { writeContractAsync, isPending: isTxLoading, error: txError } = useWriteContract();
 
-  // Wait for transaction receipt (only if txHash is set)
-  const receiptResult = txHash ? useWaitForTransactionReceipt({ hash: txHash }) : undefined;
+  // Wait for transaction receipt (always call the hook, even if txHash is undefined)
+  const receiptResult = useWaitForTransactionReceipt(txHash ? { hash: txHash } : { hash: undefined as unknown as Hex });
   const receipt = receiptResult?.data;
   const isTxPending = receiptResult?.isLoading ?? false;
   const isTxSuccess = receiptResult?.isSuccess ?? false;
@@ -90,9 +86,6 @@ export default function CreateProjectTab() {
 
   // Publish handler (called after on-chain tx)
   const handlePublish = async (onChainTaskId: string) => {
-    setIsSubmitting(true);
-    setSubmitError("");
-    setSubmitSuccess("");
     try {
       const res = await fetch('/api/tasks', {
         method: 'POST',
@@ -105,7 +98,6 @@ export default function CreateProjectTab() {
           priority,
           deadline,
           skills,
-          files,
           onChainTaskId,
           milestones,
           clientAddress,
@@ -115,10 +107,12 @@ export default function CreateProjectTab() {
       if (!res.ok) throw new Error(data.error || 'Failed to create project');
       setSubmitSuccess('Project created successfully!');
       // Optionally reset form or redirect
-    } catch (err: any) {
-      setSubmitError(err.message);
-    } finally {
-      setIsSubmitting(false);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setSubmitError(err.message);
+      } else {
+        setSubmitError("Failed to create project.");
+      }
     }
   };
 
@@ -439,7 +433,7 @@ const judgePercent = await readContract(
     address: ESCROW_ADDRESS,
     abi: ESCROW_ABI,
     functionName: 'judgePercent',
-    chainId: eduChain.id as any,
+    chainId: eduChain.id as unknown as number,
   }
 ) as bigint;
 
@@ -458,9 +452,13 @@ const tx = await writeContractAsync({
 });
 
                 setTxHash(tx);
-              } catch (err: any) {
+              } catch (err: unknown) {
                 // MetaMask user rejection or other error
-                setSubmitError(err?.shortMessage || err?.message || "Transaction failed or was rejected.");
+                if (err instanceof Error) {
+                  setSubmitError(err.message);
+                } else {
+                  setSubmitError("Transaction failed or was rejected.");
+                }
               }
             }}
             disabled={currentStep === 4 ? (txHash && (isTxLoading || isTxPending)) : false}

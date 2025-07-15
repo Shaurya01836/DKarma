@@ -138,7 +138,7 @@ export default function ExploreOrganizations() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--color-background)] via-[var(--color-surface)] to-[var(--color-background)] text-[var(--color-foreground)] font-sans">
+    <div className="min-h-screen text-[var(--color-foreground)] font-sans">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 pb-0">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-2">
