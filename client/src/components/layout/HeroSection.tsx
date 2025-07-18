@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export function HeroSection() {
   const [mounted, setMounted] = useState(false);
@@ -40,9 +40,31 @@ export function HeroSection() {
 
   return (
     <section className="relative lg:min-h-screen overflow-hidden">
+
+      
+      {/* Earth Image as Horizon */}
+      <motion.div
+        className="absolute left-1/2 bottom-16 transform -translate-x-1/2 translate-y-[40%] w-full flex justify-center pointer-events-none z-0"
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+        style={{ maxWidth: "100vw" }}
+      >
+        <div className="relative w-[900px] h-[400px] sm:w-[1200px] sm:h-[500px]">
+          <Image
+            src="https://res.cloudinary.com/dg2q2tzbv/image/upload/v1752832833/IMG_20250718_152628_nd6gft.png"
+            alt="Earth Horizon"
+            width={1200}
+            height={500}
+            className="w-full h-full object-cover object-top shadow-2xl select-none"
+            draggable={false}
+          />
+        </div>
+      </motion.div>
+
       {/* Hero Content with Scroll Animation */}
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen"
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen -mt-32"
         style={{ opacity, y: translateY }}
       >
         <motion.div
@@ -51,78 +73,24 @@ export function HeroSection() {
           initial="hidden"
           animate="visible"
         >
-          {/* Status Badge */}
-          <motion.div variants={itemVariants}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-sm font-medium text-slate-300">
-                Now Live • 50,000+ Active Users
-              </span>
-            </div>
-          </motion.div>
-
           {/* Main Heading */}
           <motion.div variants={itemVariants} className="space-y-6">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white">
-              The Future of
-              <br />
               <span className="bg-gradient-to-r from-primary via-primary-hover to-primary bg-clip-text text-transparent">
-                Decentralized Work
+                Decentralized Freelancing
               </span>
+              <br />
+              <span className="text-4xl sm:text-5xl lg:text-6xl">Platform</span>
             </h1>
             <p className="max-w-3xl mx-auto text-xl text-slate-300 leading-relaxed">
-              Enterprise-grade blockchain platform connecting global talent with
-              businesses. Secure smart contracts, instant payments, and zero
-              platform fees.
+              Connect with global talent on the blockchain. Secure payments,
+              transparent escrows, and zero platform fees.
             </p>
           </motion.div>
 
           {/* CTA Buttons */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <button className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary-hover1 rounded-xl font-semibold text-white shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden">
-              <span className="relative z-10 flex items-center gap-2">
-                Explore the future
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-hover1 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </button>
-            <button className="px-8 py-4 border border-white/20 rounded-xl font-semibold text-white hover:bg-white/5 transition-all duration-300 backdrop-blur-sm">
-              View Documentation
-            </button>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div variants={itemVariants} className="pt-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              {[
-                { value: "$50M+", label: "Total Volume" },
-                { value: "15k+", label: "Active Projects" },
-                { value: "99.9%", label: "Uptime" },
-                { value: "150+", label: "Countries" },
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className="text-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
-                >
-                  <div className="text-3xl font-bold text-white mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-slate-400">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
         </motion.div>
       </motion.div>
-
-      {/* Subtle Grid Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_90%)]" />
     </section>
   );
 }

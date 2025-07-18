@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       "ui.aceternity.com", // Allow linear webp images
       "fiverr-res.cloudinary.com", // Allow Fiverr images
       "tailwindcss.com", // Allow Tailwind component images
+      "res.cloudinary.com", // Allow Cloudinary images
     ],
   },
 };
