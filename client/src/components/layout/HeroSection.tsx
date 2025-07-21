@@ -52,7 +52,7 @@ export function HeroSection() {
       >
         <div className="relative w-[900px] h-[400px] sm:w-[1200px] sm:h-[500px]">
           <Image
-            src="https://res.cloudinary.com/dg2q2tzbv/image/upload/v1752832833/IMG_20250718_152628_nd6gft.png"
+            src="https://res.cloudinary.com/dg2q2tzbv/image/upload/v1752832833/upscalemedia-transformed_1_1_d1o9p5.png"
             alt="Earth Horizon"
             width={1200}
             height={500}
