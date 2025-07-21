@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { PinContainer } from "../ui/3d-pin";
 import { StarIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 export function AnimatedPinDemo() {
   const cards = [
     {
       title: "Website Development",
-      href: "#",
+      href: "/website-development",
       image:
         "https://fiverr-res.cloudinary.com/q_auto,f_auto,w_188,dpr_2.0/v1/attachments/generic_asset/asset/798403f5b92b1b5af997acc704a3d21c-1702465156477/website-development.png",
     },
@@ -86,23 +87,33 @@ export function AnimatedPinDemo() {
 
         {/* Cards Grid */}
         <div className="flex flex-wrap justify-center w-full gap-6 md:gap-10 xl:gap-20 max-w-full">
-          {cards.map((card, index) => (
-            <PinContainer
-              key={index}
-              title={card.title}
-              href={card.href}
-              containerClassName="flex-none w-[8rem] h-[10rem]"
-            >
-              <div className="w-[10rem] h-[10rem]">
-                <Image
-                  src={card.image as string}
-                  alt={card.title}
-                  fill
-                  className="object-cover rounded-md"
-                />
-              </div>
-            </PinContainer>
-          ))}
+          {cards.map((card, index) => {
+            const isInternal = card.href && card.href.startsWith("/");
+            const cardContent = (
+              <PinContainer
+                key={index}
+                title={card.title}
+                href={card.href}
+                containerClassName="flex-none w-[8rem] h-[10rem]"
+              >
+                <div className="w-[10rem] h-[10rem]">
+                  <Image
+                    src={card.image as string}
+                    alt={card.title}
+                    fill
+                    className="object-cover rounded-md"
+                  />
+                </div>
+              </PinContainer>
+            );
+            return isInternal ? (
+              <Link href={card.href} key={index} legacyBehavior>
+                <a style={{ textDecoration: "none" }}>{cardContent}</a>
+              </Link>
+            ) : (
+              cardContent
+            );
+          })}
         </div>
       </div>
     </section>
