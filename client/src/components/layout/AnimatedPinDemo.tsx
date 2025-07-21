@@ -10,37 +10,37 @@ export function AnimatedPinDemo() {
   const cards = [
     {
       title: "Website Development",
-      href: "/website-development",
+      href: "/services/website-development",
       image:
         "https://fiverr-res.cloudinary.com/q_auto,f_auto,w_188,dpr_2.0/v1/attachments/generic_asset/asset/798403f5b92b1b5af997acc704a3d21c-1702465156477/website-development.png",
     },
     {
       title: "Video Editing",
-      href: "#",
+      href: "/services/video-editing",
       image:
         "https://fiverr-res.cloudinary.com/q_auto,f_auto,w_188,dpr_2.0/v1/attachments/generic_asset/asset/798403f5b92b1b5af997acc704a3d21c-1702465156494/video-editing.png",
     },
     {
       title: "Software Development",
-      href: "#",
+      href: "/services/software-development",
       image:
         "https://fiverr-res.cloudinary.com/q_auto,f_auto,w_188,dpr_2.0/v1/attachments/generic_asset/asset/798403f5b92b1b5af997acc704a3d21c-1702465156476/software-development.png",
     },
     {
       title: "SEO",
-      href: "#",
+      href: "/services/seo",
       image:
         "https://fiverr-res.cloudinary.com/q_auto,f_auto,w_188,dpr_2.0/v1/attachments/generic_asset/asset/798403f5b92b1b5af997acc704a3d21c-1702465156488/seo.png",
     },
     {
       title: "Architecture & Interior Design",
-      href: "#",
+      href: "/services/architecture-interior-design",
       image:
         "https://fiverr-res.cloudinary.com/q_auto,f_auto,w_188,dpr_2.0/v1/attachments/generic_asset/asset/798403f5b92b1b5af997acc704a3d21c-1702465156473/architecture-design.png",
     },
     {
       title: "Book Design",
-      href: "#",
+      href: "/services/book-design",
       image:
         "https://fiverr-res.cloudinary.com/q_auto,f_auto,w_188,dpr_2.0/v1/attachments/generic_asset/asset/af48c6702af221956ea7adf0055854e6-1745826082297/Book%20Design.png",
     },
