@@ -26,7 +26,6 @@ import {
   Users,
   TrendingUp,
   Award,
-  Clock,
 } from "lucide-react"
 
 const serviceConfig = {
